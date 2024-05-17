@@ -28,7 +28,7 @@ public class FlyD extends Check {
         )
             return;
 
-        if(data.playerInfo.deltaY > data.playerInfo.lDeltaY) {
+        if (data.playerInfo.deltaY > data.playerInfo.lDeltaY) {
             vl++;
             flag("dy=%.2f ldy=%.2f", data.playerInfo.deltaY, data.playerInfo.lDeltaY);
 

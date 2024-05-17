@@ -19,7 +19,7 @@ public class AutoclickerJ extends Check {
 
     @Packet
     public void onArm(WrappedInArmAnimationPacket packet, long timeStamp) {
-        if(data.playerInfo.breakingBlock
+        if (data.playerInfo.breakingBlock
                 || data.playerInfo.lookingAtBlock
                 || data.clickProcessor.isNotReady()
                 || data.playerInfo.lastBrokenBlock.isNotPassed(5)
@@ -28,11 +28,11 @@ public class AutoclickerJ extends Check {
             return;
 
         double skew = Math.abs(data.clickProcessor.getSkewness());
-        if(data.clickProcessor.getKurtosis() < 0
+        if (data.clickProcessor.getKurtosis() < 0
                 && data.clickProcessor.getMean() < 3
                 && skew < 0.15
                 && (data.clickProcessor.getZeros() <= 1 ||  data.clickProcessor.getMean() <= 1)) {
-            if(buffer++ > 40) {
+            if (buffer++ > 40) {
                 vl++;
                 flag(20 * 40, "k=%.4f avg=%.3f s=%.3f v=%.3f b=%.1f zeros=%s",
                         data.clickProcessor.getKurtosis(), data.clickProcessor.getMean(),

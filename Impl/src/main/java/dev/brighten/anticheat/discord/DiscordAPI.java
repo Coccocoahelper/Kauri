@@ -51,7 +51,7 @@ public class DiscordAPI {
     private static boolean devAlerts = false;
 
     public void load() {
-        if(!enabled) {
+        if (!enabled) {
             MiscUtils.printToConsole("&7Discord webhooks not enabled. Cancelling...");
             return;
         }
@@ -72,7 +72,7 @@ public class DiscordAPI {
             author = new WebhookEmbed.EmbedAuthor("Kauri", "https://i.imgur.com/QkJPEor.jpg",
                     "https://i.imgur.com/QkJPEor.jpg");
 
-            if(startMsg)
+            if (startMsg)
             client.send(new WebhookMessageBuilder().setUsername(author.getName()).setAvatarUrl(author.getIconUrl())
                     .setContent("Started webhook").build());
         }
@@ -81,7 +81,7 @@ public class DiscordAPI {
 
     public void unload() {
         MiscUtils.printToConsole("&cUnloading Discord Webhook...");
-        if(client != null) {
+        if (client != null) {
             client.close();
             client = null;
         }
@@ -95,12 +95,12 @@ public class DiscordAPI {
     private static final int banRed = 0xD9471A, noBanOrange = 0xE8A83A, flagYellow = 0xFFEB33;
 
     public void sendBan(Player player, KauriCheck check, boolean exempt) {
-        if(!enabled) return;
-        if(!sendBans || client == null || (!devAlerts && check.getDevStage() != DevStage.RELEASE)) return;
+        if (!enabled) return;
+        if (!sendBans || client == null || (!devAlerts && check.getDevStage() != DevStage.RELEASE)) return;
 
         lastDiscordSend.compute(player.getUniqueId(), (key, lastTime) -> {
             long now = System.currentTimeMillis();
-            if(lastTime == null || now - lastTime > delay) {
+            if (lastTime == null || now - lastTime > delay) {
                 client.send(new WebhookEmbedBuilder().setAuthor(author)
                         .setColor(check.isExecutable() || exempt ? banRed : noBanOrange)
                         .setTitle(new WebhookEmbed.EmbedTitle("Kauri Ban", ""))
@@ -120,11 +120,11 @@ public class DiscordAPI {
     }
 
     public void sendFlag(Player player, KauriCheck check, boolean dev, float vl) {
-        if(!enabled) return;
-        if(!sendAlerts || client == null || (!devAlerts && dev)) return;
+        if (!enabled) return;
+        if (!sendAlerts || client == null || (!devAlerts && dev)) return;
         lastDiscordSend.compute(player.getUniqueId(), (key, lastTime) -> {
             long now = System.currentTimeMillis();
-            if(lastTime == null || now - lastTime > delay) {
+            if (lastTime == null || now - lastTime > delay) {
                 client.send(new WebhookEmbedBuilder().setAuthor(author).setColor(flagYellow)
                         .setTitle(new WebhookEmbed.EmbedTitle("Kauri Flag", ""))
                         .addField(field("Player", player.getName()))

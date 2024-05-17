@@ -19,7 +19,7 @@ public class AutoclickerH extends Check {
 
     @Packet
     public void onArm(WrappedInArmAnimationPacket packet) {
-        if(data.playerInfo.breakingBlock
+        if (data.playerInfo.breakingBlock
                 || data.playerInfo.lookingAtBlock
                 || data.clickProcessor.isNotReady()
                 || data.playerInfo.lastBrokenBlock.isNotPassed(5)
@@ -28,11 +28,11 @@ public class AutoclickerH extends Check {
             return;
 
         long range = data.clickProcessor.getMax() - data.clickProcessor.getMin();
-        if(data.clickProcessor.getStd() < 0.3
+        if (data.clickProcessor.getStd() < 0.3
                 && data.clickProcessor.getMean() < 3
                 && range > 3) {
             buffer++;
-        } else if(buffer > 0) buffer-= 0.25f;
+        } else if (buffer > 0) buffer-= 0.25f;
 
         debug("std=%.2f mean=%.1f range=%s buffer.1", data.clickProcessor.getStd(),
                 data.clickProcessor.getMean(), range, buffer);

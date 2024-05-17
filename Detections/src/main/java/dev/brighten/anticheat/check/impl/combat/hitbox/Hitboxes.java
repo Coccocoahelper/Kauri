@@ -33,10 +33,10 @@ public class Hitboxes extends Check {
 
     @Packet
     public void onUse(WrappedInUseEntityPacket packet, long now) {
-        if(packet.getAction() != WrappedInUseEntityPacket.EnumEntityUseAction.ATTACK) return;
+        if (packet.getAction() != WrappedInUseEntityPacket.EnumEntityUseAction.ATTACK) return;
 
         Hitboxes: {
-            if(data.playerInfo.creative
+            if (data.playerInfo.creative
                     || data.targetPastLocation.previousLocations.size() < 10
                     || data.playerInfo.inVehicle
                     || data.target == null
@@ -65,14 +65,14 @@ public class Hitboxes extends Check {
                         intersecFrom = vanillaBox.rayTrace(forigin.toVector(),
                                 MathUtils.getDirection(forigin), 10);
 
-                if(intersectTo != null || intersecFrom != null) {
-                    if(buffer > 0) buffer-= 0.2;
+                if (intersectTo != null || intersecFrom != null) {
+                    if (buffer > 0) buffer-= 0.2;
                     debug("hit: %.1f", buffer);
                     return;
                 }
             }
 
-            if(now - data.lagInfo.lastClientTrans < 150L
+            if (now - data.lagInfo.lastClientTrans < 150L
                     && data.lagInfo.lastPingDrop.isPassed(5) && ++buffer > 5) {
                 vl++;
                 flag("");

@@ -21,7 +21,7 @@ public class KillauraF extends Check {
 
     @Packet
     public void onFlying(WrappedInFlyingPacket packet) {
-        if(attack && data.playerInfo.sprinting) {
+        if (attack && data.playerInfo.sprinting) {
             double px = data.playerInfo.lDeltaX, pz = data.playerInfo.lDeltaZ;
 
             px*= 0.6;
@@ -33,14 +33,14 @@ public class KillauraF extends Check {
             double deltaYes = Math.abs(deltaXZ - pxz),
                     deltaNo = Math.abs(deltaXZ - noxz);
 
-            if(deltaYes > 0.0049 && deltaNo < 0.0001 && data.target != null
+            if (deltaYes > 0.0049 && deltaNo < 0.0001 && data.target != null
                     && data.target.getType().equals(EntityType.PLAYER)) {
-                if(++buffer > 5) {
+                if (++buffer > 5) {
                      vl++;
                      flag("dy=%.3f dn=%.3f dxz=%.2f noxz=%.2f",
                              deltaYes, deltaNo, data.playerInfo.deltaXZ, noxz);
                 }
-            } else if(buffer > 0) buffer--;
+            } else if (buffer > 0) buffer--;
 
             debug("(%s) dxz=%.3f pxz=%.3f noxz=%.3f dYes=%.3f dNo=%.3f",
                     buffer, data.playerInfo.deltaXZ, pxz, noxz, deltaYes, deltaNo);
@@ -50,7 +50,7 @@ public class KillauraF extends Check {
 
     @Packet
     public void onUse(WrappedInUseEntityPacket packet) {
-        if(packet.getAction() == WrappedInUseEntityPacket.EnumEntityUseAction.ATTACK
+        if (packet.getAction() == WrappedInUseEntityPacket.EnumEntityUseAction.ATTACK
                 && packet.getEntity() instanceof Player) {
             attack = true;
         }

@@ -21,7 +21,7 @@ public class InventoryB extends Check {
 
     @Packet
     public void onFlying(WrappedInFlyingPacket packet) {
-        if(packet.isPos()
+        if (packet.isPos()
                 && data.playerInfo.inventoryOpen
                 && !data.playerInfo.flying
                 && !data.blockInfo.inLava
@@ -30,11 +30,11 @@ public class InventoryB extends Check {
                 && !data.blockInfo.collidesHorizontally
                 && data.playerInfo.deltaXZ > 0.1
                 && (data.predictionService.strafe != 0 || data.predictionService.forward != 0)) {
-            if(verbose++ > 10) {
+            if (verbose++ > 10) {
                 vl++;
                 flag("key=[%s], dxz=%s", data.predictionService.key,
                         MathUtils.round(data.playerInfo.deltaXZ, 2));
-                if(cancellable) TinyProtocolHandler.sendPacket(packet.getPlayer(),
+                if (cancellable) TinyProtocolHandler.sendPacket(packet.getPlayer(),
                         new WrappedOutCloseWindowPacket(data.playerInfo.inventoryId).getObject());
             }
         } else verbose = 0;

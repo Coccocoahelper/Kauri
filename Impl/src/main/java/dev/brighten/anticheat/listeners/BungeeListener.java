@@ -28,19 +28,19 @@ public class BungeeListener implements AtlasListener, Listener {
 
     @Listen
     public void onBungee(BungeeReceiveEvent event) {
-        if(!Config.bungeeAlerts || event.objects.length != 4) return;
+        if (!Config.bungeeAlerts || event.objects.length != 4) return;
         final UUID uuid = (UUID)event.objects[0];
         final String checkName = (String)event.objects[1];
         final CheckEntry entry = new CheckEntry(uuid, checkName);
         final Timer lastAlert;
-        if(!lastAlertsMap.containsKey(entry)) {
+        if (!lastAlertsMap.containsKey(entry)) {
             lastAlert = new AtlasTimer(MathUtils.millisToTicks(Config.alertsDelay));
             lastAlertsMap.put(entry, lastAlert);
         } else {
             lastAlert = lastAlertsMap.get(entry);
         }
 
-        if(lastAlert.isPassed(MathUtils.millisToTicks(Config.alertsDelay))) {
+        if (lastAlert.isPassed(MathUtils.millisToTicks(Config.alertsDelay))) {
             final float vl = (float)event.objects[2];
             final String info = (String)event.objects[3];
 

@@ -57,7 +57,7 @@ public class ReachA extends Check {
                 double current = MiscUtils.getDistanceWithoutRoot(torigin, copy);
 
                 //If the calculated distance is smaller, we want to set it until we reach the smallest distance
-                if(distance > current) {
+                if (distance > current) {
                     distance = current;
                 }
             }

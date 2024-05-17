@@ -23,11 +23,11 @@ public class AutoclickerB extends Check {
 
     @Packet
     public void onBlockPlace(WrappedInBlockPlacePacket packet, int currentTick) {
-        if(data.playerInfo.breakingBlock || data.getPlayer().getItemInHand().getType().isBlock()) return;
+        if (data.playerInfo.breakingBlock || data.getPlayer().getItemInHand().getType().isBlock()) return;
         int deltaPlace = currentTick - lastPlace;
 
         tickDeltas.add(deltaPlace);
-        if(tickDeltas.size() > 8) {
+        if (tickDeltas.size() > 8) {
             int max = -10000000, min = Integer.MAX_VALUE;
             double average = 0;
             int range, total = 0;
@@ -43,12 +43,12 @@ public class AutoclickerB extends Check {
             average/= total;
             range = max - min;
 
-            if(average < 3 && range <= 1) {
-                if(++buffer > 12) {
+            if (average < 3 && range <= 1) {
+                if (++buffer > 12) {
                     vl++;
                     flag("range=%s", range);
                 }
-            } else if(vl > 0) buffer-= 0.5f;
+            } else if (vl > 0) buffer-= 0.5f;
 
             debug("range=%s average=%.1f vl=%.1f", range, average, vl);
         }

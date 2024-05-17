@@ -84,7 +84,7 @@ public class LogsGUI extends ChestMenu {
                 Math.min(page * 45, filteredLogs.size()));
         for (int i = 0; i < subList.size(); i++) setItem(i, buttonFromLog(subList.get(i)));
 
-        if(subList.size() < 45) {
+        if (subList.size() < 45) {
             for(int i = subList.size() ; i < 45 ; i++) {
                 setItem(i, new FillerButton());
             }
@@ -152,7 +152,7 @@ public class LogsGUI extends ChestMenu {
             setItem(48, back);
         } else setItem(48, new FillerButton());
 
-        if(filtered.size() > 0) {
+        if (filtered.size() > 0) {
             List<String> lore = new ArrayList<>(Arrays.asList("", Color.translate("&eFilters:")));
 
             for (String s : filtered) {
@@ -213,8 +213,8 @@ public class LogsGUI extends ChestMenu {
                                             "&f&oLeft-Click &7&oto add check to vl filter.",
                                             "&f&oRight-Click &7&oto remove check from vl filter.").build(),
                             (player, info) -> {
-                                if(info.getClickType().name().contains("LEFT")) filtered.add(check);
-                                else if(info.getClickType().name().contains("RIGHT")) filtered.remove(check);
+                                if (info.getClickType().name().contains("LEFT")) filtered.add(check);
+                                else if (info.getClickType().name().contains("RIGHT")) filtered.remove(check);
                                 else return;
 
                                 setButtons(1);
@@ -251,7 +251,7 @@ public class LogsGUI extends ChestMenu {
                             });
                     summary.addItem(button);
                 });
-        if(filtered.size() > 0) {
+        if (filtered.size() > 0) {
             List<String> lore = new ArrayList<>(Arrays.asList("", Color.translate("&eFilters:")));
 
             for (String s : filtered) {

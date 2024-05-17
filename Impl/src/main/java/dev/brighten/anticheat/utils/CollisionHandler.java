@@ -79,9 +79,9 @@ CollisionHandler {
 			}
 		}
 
-		if(bitmask == 0) {
+		if (bitmask == 0) {
 			for(Entity entity : entities) {
-				if(EntityData.getEntityBox(entity.getLocation(), entity).isCollided(playerBox))
+				if (EntityData.getEntityBox(entity.getLocation(), entity).isCollided(playerBox))
 					return true;
 			}
 		}
@@ -112,9 +112,9 @@ CollisionHandler {
 			}
 		}
 
-		if(bitmask == 0) {
+		if (bitmask == 0) {
 			for(Entity entity : entities) {
-				if(EntityData.getEntityBox(entity.getLocation(), entity).isIntersected(playerBox))
+				if (EntityData.getEntityBox(entity.getLocation(), entity).isIntersected(playerBox))
 					return true;
 			}
 		}
@@ -124,7 +124,7 @@ CollisionHandler {
 
 	public boolean isCollidedWithEntity(SimpleCollisionBox box) {
 		for(Entity entity : entities) {
-			if(EntityData.getEntityBox(entity.getLocation(), entity).isCollided(box))
+			if (EntityData.getEntityBox(entity.getLocation(), entity).isCollided(box))
 				return true;
 		}
 		return false;
@@ -168,14 +168,14 @@ CollisionHandler {
 			Material material = data.playerInfo.shitMap.getOrDefault(block, b.getType());
 
 			CollisionBox box;
-			if((box = BlockData.getData(material).getBox(b, ProtocolVersion.getGameVersion())).isCollided(playerBox)) {
+			if ((box = BlockData.getData(material).getBox(b, ProtocolVersion.getGameVersion())).isCollided(playerBox)) {
 				collided.add(box);
 			}
 		}
 
 		for(Entity entity : entities) {
 			CollisionBox box = EntityData.getEntityBox(entity.getLocation(), entity);
-			if(box.isCollided(playerBox))
+			if (box.isCollided(playerBox))
 				collided.add(box);
 		}
 
@@ -212,9 +212,9 @@ CollisionHandler {
 			}
 		}
 
-		if(materials.length == 0) {
+		if (materials.length == 0) {
 			for(Entity entity : entities) {
-				if(EntityData.getEntityBox(entity.getLocation(), entity).isCollided(playerBox))
+				if (EntityData.getEntityBox(entity.getLocation(), entity).isCollided(playerBox))
 					return true;
 			}
 		}
@@ -242,7 +242,7 @@ CollisionHandler {
 			Location block = b.getLocation();
 			Material material = data.playerInfo.shitMap.getOrDefault(block, b.getType());
 			for (Triad<Double[], Integer, Consumer<Boolean>> intersect : intersects) {
-				if(!Materials.checkFlag(material, intersect.second)) continue;
+				if (!Materials.checkFlag(material, intersect.second)) continue;
 
 				SimpleCollisionBox playerBox = new SimpleCollisionBox()
 						.offset(location.x, location.y, location.z)
@@ -256,7 +256,7 @@ CollisionHandler {
 				}
 			}
 			for (Triad<Double[], Integer, Consumer<Boolean>> collides : collides) {
-				if(!Materials.checkFlag(material, collides.second)) continue;
+				if (!Materials.checkFlag(material, collides.second)) continue;
 
 				SimpleCollisionBox playerBox = new SimpleCollisionBox()
 						.offset(location.x, location.y, location.z)

@@ -62,7 +62,7 @@ public class PlayerTimer implements Timer {
 
     @Override
     public void reset() {
-        if(getPassed() <= 1) resetStreak++;
+        if (getPassed() <= 1) resetStreak++;
         else resetStreak = 0;
         currentTick = data.playerTicks;
     }

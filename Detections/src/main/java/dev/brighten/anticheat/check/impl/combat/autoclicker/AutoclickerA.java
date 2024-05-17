@@ -23,9 +23,9 @@ public class AutoclickerA extends Check {
     @Packet
     public void onFlying(WrappedInFlyingPacket packet, long timeStamp) {
         flyingTicks++;
-        if(flyingTicks >= 20) {
-            if(cps > cpsToFlag) {
-                if(cps > cpsToBan) vl++;
+        if (flyingTicks >= 20) {
+            if (cps > cpsToFlag) {
+                if (cps > cpsToBan) vl++;
                 flag("cps=%s", cps);
             }
             debug("cps=%s", cps);
@@ -36,7 +36,7 @@ public class AutoclickerA extends Check {
 
     @Packet
     public void onArmAnimation(WrappedInArmAnimationPacket packet) {
-        if(!data.playerInfo.breakingBlock
+        if (!data.playerInfo.breakingBlock
                 && data.playerInfo.lastBrokenBlock.isPassed(5)
                 && data.playerInfo.lastBlockDigPacket.isPassed(1)
                 && data.playerInfo.lastBlockPlacePacket.isPassed(1))

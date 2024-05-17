@@ -33,18 +33,18 @@ public class CheckManager {
      * @param timeStamp Long time of packet received
      */
     public void runPacket(NMSObject object, long timeStamp) {
-        if(objectData.bypassing) return;
+        if (objectData.bypassing) return;
         val methods = checkMethods.get(object.getClass());
 
-        if(methods == null) return;
+        if (methods == null) return;
 
         int currentTick = Kauri.INSTANCE.currentTick;
         for (WrappedCheck wrapped : methods) {
             try {
-                if(!wrapped.isBoolean && wrapped.isPacket && wrapped.check.enabled && wrapped.isCompatible()) {
-                    if(wrapped.oneParam) wrapped.access.invoke(wrapped.check, wrapped.methodIndex, object);
+                if (!wrapped.isBoolean && wrapped.isPacket && wrapped.check.enabled && wrapped.isCompatible()) {
+                    if (wrapped.oneParam) wrapped.access.invoke(wrapped.check, wrapped.methodIndex, object);
                     else {
-                        if(wrapped.isTimeStamp) {
+                        if (wrapped.isTimeStamp) {
                             wrapped.access.invoke(wrapped.check, wrapped.methodIndex, object, timeStamp);
                         } else wrapped.access.invoke(wrapped.check, wrapped.methodIndex, object, currentTick);
                     }
@@ -58,23 +58,23 @@ public class CheckManager {
     }
 
     public boolean runPacketCancellable(NMSObject object, long timeStamp) {
-        if(objectData.bypassing) return false;
+        if (objectData.bypassing) return false;
         val methods = checkMethods.get(object.getClass());
 
-        if(methods == null) return false;
+        if (methods == null) return false;
 
         int currentTick = Kauri.INSTANCE.currentTick;
         boolean cancelled = false;
         for (WrappedCheck wrapped : methods) {
-            if(!wrapped.isBoolean) continue;
+            if (!wrapped.isBoolean) continue;
             try {
-                if(wrapped.isPacket && wrapped.check.enabled && wrapped.isCompatible()) {
-                    if(wrapped.oneParam) {
-                        if((boolean)wrapped.access.invoke(wrapped.check, wrapped.methodIndex, object)) cancelled = true;
-                    } else if(wrapped.isTimeStamp) {
-                        if((boolean)wrapped.access.invoke(wrapped.check, wrapped.methodIndex, object, timeStamp))
+                if (wrapped.isPacket && wrapped.check.enabled && wrapped.isCompatible()) {
+                    if (wrapped.oneParam) {
+                        if ((boolean)wrapped.access.invoke(wrapped.check, wrapped.methodIndex, object)) cancelled = true;
+                    } else if (wrapped.isTimeStamp) {
+                        if ((boolean)wrapped.access.invoke(wrapped.check, wrapped.methodIndex, object, timeStamp))
                             cancelled = true;
-                    } else if((boolean)wrapped.access.invoke(wrapped.check, wrapped.methodIndex, object, currentTick))
+                    } else if ((boolean)wrapped.access.invoke(wrapped.check, wrapped.methodIndex, object, currentTick))
                         cancelled = true;
                 }
             } catch(Exception e) {
@@ -87,14 +87,14 @@ public class CheckManager {
     }
 
     public void runEvent(Event event) {
-        if(objectData.bypassing) return;
+        if (objectData.bypassing) return;
         synchronized (checkMethods) {
             val methods = checkMethods.get(event.getClass());
 
-            if(methods == null) return;
+            if (methods == null) return;
 
             for (WrappedCheck wrapped : methods) {
-                if(wrapped.isEvent && wrapped.check.enabled) {
+                if (wrapped.isEvent && wrapped.check.enabled) {
                     try {
                         wrapped.access.invoke(wrapped.check, wrapped.methodIndex, event);
                     } catch(Exception e) {
@@ -108,29 +108,29 @@ public class CheckManager {
     }
 
     public boolean runEvent(Object event) {
-        if(objectData.bypassing) return false;
+        if (objectData.bypassing) return false;
         val methods = checkMethods.get(event.getClass());
 
-        if(methods == null) return false;
+        if (methods == null) return false;
 
         boolean cancelled = false;
         for (WrappedCheck wrapped : methods) {
-            if(!wrapped.isPacket && wrapped.check.enabled) {
-                if(!wrapped.isBoolean) {
+            if (!wrapped.isPacket && wrapped.check.enabled) {
+                if (!wrapped.isBoolean) {
                     wrapped.access.invoke(wrapped.check, wrapped.methodIndex, event);
-                } else if((boolean)wrapped.access.invoke(wrapped.check, wrapped.methodIndex, event)) cancelled = true;
+                } else if ((boolean)wrapped.access.invoke(wrapped.check, wrapped.methodIndex, event)) cancelled = true;
             }
         }
         return cancelled;
     }
 
     public void runEvent(AtlasEvent event) {
-        if(objectData.bypassing || !checkMethods.containsKey(event.getClass())) return;
+        if (objectData.bypassing || !checkMethods.containsKey(event.getClass())) return;
 
         val methods = checkMethods.get(event.getClass());
 
         for (WrappedCheck wrapped : methods) {
-            if(!wrapped.isPacket && wrapped.check.enabled) {
+            if (!wrapped.isPacket && wrapped.check.enabled) {
                 wrapped.access.invoke(wrapped.check, wrapped.methodIndex, event);
             }
         }
@@ -138,12 +138,12 @@ public class CheckManager {
 
     public void addChecks() {
         assert objectData != null: "ObjectData is null in CheckManager";
-        if(objectData.getPlayer()
+        if (objectData.getPlayer()
                 .hasPermission("kauri.bypass")
                 && Config.flagBypassPerm) return;
 
         //Whitelisting players with prefix for bedrock users
-        if(!Config.prefixWhitelist.equals("disabled")
+        if (!Config.prefixWhitelist.equals("disabled")
                 && objectData.getPlayer().getName().startsWith(Config.prefixWhitelist)) return;
 
         synchronized (checks) {
@@ -189,7 +189,7 @@ public class CheckManager {
                                     new ArrayList<>());
 
                             methods.add(new WrappedCheck(check, method));
-                            if(method.getMethod().isAnnotationPresent(Packet.class)) {
+                            if (method.getMethod().isAnnotationPresent(Packet.class)) {
                                 methods.sort(Comparator.comparing(m ->
                                         m.method.getMethod().getAnnotation(Packet.class).priority().getPriority()));
                             } else {

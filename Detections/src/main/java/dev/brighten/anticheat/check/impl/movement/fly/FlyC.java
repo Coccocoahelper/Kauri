@@ -33,7 +33,7 @@ public class FlyC extends Check {
                 flag("deltaY=%.4f maxHeight=%.4f", data.playerInfo.deltaY, data.playerInfo.jumpHeight);
 
                 fixMovementBugs();
-            } else if(vl > 0) vl-= 0.01f;
+            } else if (vl > 0) vl-= 0.01f;
 
             debug("deltaY=%s above=%s", data.playerInfo.deltaY,
                     data.playerInfo.blockAboveTimer.getPassed());

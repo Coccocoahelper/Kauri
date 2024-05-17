@@ -39,12 +39,12 @@ public class MongoStorage implements DataStorage {
     public MongoStorage() {
         MongoClient client;
 
-        if(!MongoConfig.connectionURL.equals("This will override your connection details")) {
+        if (!MongoConfig.connectionURL.equals("This will override your connection details")) {
             ConnectionString cs = new ConnectionString(MongoConfig.connectionURL);
             MongoClientSettings settings = MongoClientSettings.builder().applyConnectionString(cs).build();
             client = MongoClients.create(settings);
         } else {
-            if(MongoConfig.loginDetails) {
+            if (MongoConfig.loginDetails) {
                 client = MongoClients.create(MongoClientSettings.builder().readPreference(ReadPreference.nearest()).applyToClusterSettings(builder ->
                         builder.hosts(Collections.singletonList(new ServerAddress(MongoConfig.ip, MongoConfig.port))))
                         .credential(MongoCredential.createCredential(MongoConfig.username,
@@ -66,7 +66,7 @@ public class MongoStorage implements DataStorage {
         Kauri.INSTANCE.loggingThread.execute(() -> {
             AtomicInteger indexes = new AtomicInteger();
             logsCollection.listIndexes().forEach((Consumer<? super Document>) doc -> indexes.getAndIncrement());
-            if(indexes.get() < 4) {
+            if (indexes.get() < 4) {
                 MiscUtils.printToConsole("&7Creating indexes for logs...");
                 MiscUtils.printToConsole("&oCreating uuid index...");
                 logsCollection.createIndex(Indexes.ascending("uuid"));
@@ -78,7 +78,7 @@ public class MongoStorage implements DataStorage {
             }
             indexes.set(0);
             logsCollection.listIndexes().forEach((Consumer<? super Document>) doc -> indexes.getAndIncrement());
-            if(indexes.get() < 2) {
+            if (indexes.get() < 2) {
                 MiscUtils.printToConsole("&7Creating index for punishments...");
                 punishmentsCollection.createIndex(Indexes.ascending("uuid"));
                 MiscUtils.printToConsole("&aCompleted index creation!");
@@ -91,11 +91,11 @@ public class MongoStorage implements DataStorage {
             final List<Document> docsToInsert = new ArrayList<>();
             while((doc = logs.poll()) != null) {
                 docsToInsert.add(doc);
-                if(++count >= MongoConfig.batchInsertMax)
+                if (++count >= MongoConfig.batchInsertMax)
                     break;
             }
 
-            if(count > 0) {
+            if (count > 0) {
                 logsCollection.insertMany(docsToInsert);
                 docsToInsert.clear();
                 count = 0;
@@ -104,11 +104,11 @@ public class MongoStorage implements DataStorage {
 
             while((doc = punishments.poll()) != null) {
                 docsToInsert.add(doc);
-                if(++count >= MongoConfig.batchInsertMax)
+                if (++count >= MongoConfig.batchInsertMax)
                     break;
             }
 
-            if(count > 0) {
+            if (count > 0) {
                 punishmentsCollection.insertMany(docsToInsert);
                 docsToInsert.clear();
                 count = 0;
@@ -123,13 +123,13 @@ public class MongoStorage implements DataStorage {
 
         List<Bson> aggregates = new ArrayList<>();
 
-        if(uuid != null) aggregates.add(Aggregates.match(Filters.eq("uuid", uuid.toString())));
-        if(check != null) aggregates.add(Aggregates.match(Filters.eq("check", check.name)));
+        if (uuid != null) aggregates.add(Aggregates.match(Filters.eq("uuid", uuid.toString())));
+        if (check != null) aggregates.add(Aggregates.match(Filters.eq("check", check.name)));
 
         aggregates.addAll(Arrays.asList(Aggregates.match(Filters.eq("time", document)),
                 new BasicDBObject("$sort", new BasicDBObject("time", -1))));
 
-        if(arrayMin != 0 && arrayMax != Integer.MAX_VALUE) {
+        if (arrayMin != 0 && arrayMax != Integer.MAX_VALUE) {
             aggregates.addAll(Arrays.asList(new BasicDBObject("$skip", arrayMin), new BasicDBObject("$limit", arrayMax)));
         }
 
@@ -231,10 +231,10 @@ public class MongoStorage implements DataStorage {
                         doc.getDouble("vl").floatValue(), doc.getInteger("ping"), doc.getLong("time"),
                         doc.getDouble("tps")))
                 .forEach(log -> {
-                    if(logsMax.containsKey(log.checkName)) {
+                    if (logsMax.containsKey(log.checkName)) {
                         Log toCheck = logsMax.get(log.checkName);
 
-                        if(toCheck.vl < log.vl) {
+                        if (toCheck.vl < log.vl) {
                             logsMax.put(log.checkName, log);
                         }
                     } else logsMax.put(log.checkName, log);
@@ -279,7 +279,7 @@ public class MongoStorage implements DataStorage {
     public UUID getUUIDFromName(String name) {
         Document doc = nameUUIDCollection.find(Filters.eq("name", name)).first();
 
-        if(doc != null) {
+        if (doc != null) {
             return UUID.fromString(doc.getString("uuid"));
         }
 
@@ -290,7 +290,7 @@ public class MongoStorage implements DataStorage {
     public String getNameFromUUID(UUID uuid) {
         Document doc = nameUUIDCollection.find(Filters.eq("uuid", uuid.toString())).first();
 
-        if(doc != null) {
+        if (doc != null) {
             return doc.getString("name");
         }
 
@@ -302,7 +302,7 @@ public class MongoStorage implements DataStorage {
         Kauri.INSTANCE.loggingThread.execute(() -> {
             Document doc = alertsCollection.find(Filters.eq("uuid", uuid.toString())).first();
 
-            if(doc == null) {
+            if (doc == null) {
                 doc = new Document("uuid", uuid.toString());
                 doc.put("normal", alertsEnabled);
                 doc.put("dev", false);
@@ -320,7 +320,7 @@ public class MongoStorage implements DataStorage {
         Kauri.INSTANCE.loggingThread.execute(() -> {
             Document doc = alertsCollection.find(Filters.eq("uuid", uuid.toString())).first();
 
-            if(doc == null) {
+            if (doc == null) {
                 doc = new Document("uuid", uuid.toString());
                 doc.put("normal", false);
                 doc.put("dev", devAlertsEnabled);
@@ -338,7 +338,7 @@ public class MongoStorage implements DataStorage {
         Kauri.INSTANCE.loggingThread.execute(() -> {
             Document doc = alertsCollection.find(Filters.eq("uuid", uuid.toString())).first();
 
-            if(doc != null) {
+            if (doc != null) {
                 result.accept(doc.getBoolean("normal"));
             } else result.accept(false);
         });
@@ -349,7 +349,7 @@ public class MongoStorage implements DataStorage {
         Kauri.INSTANCE.loggingThread.execute(() -> {
             Document doc = alertsCollection.find(Filters.eq("uuid", uuid.toString())).first();
 
-            if(doc != null) {
+            if (doc != null) {
                 result.accept(doc.getBoolean("dev"));
             } else result.accept(false);
         });

@@ -66,7 +66,7 @@ public class MiscUtils {
         Check ban = data.checkManager.checks.get("ForceBan");
 
         //Fixing users potentially misconfiguring forceban
-        if(!ban.isExecutable()) ban.setExecutable(true);
+        if (!ban.isExecutable()) ban.setExecutable(true);
 
         ban.vl = 2;
         ban.flag("Banning user for: " + reason);
@@ -92,8 +92,8 @@ public class MiscUtils {
                     Location loc = new Location(world, x, y, z);
                     Optional<Block> op = BlockUtils.getBlockAsync(loc);
 
-                    if(op.isPresent()) {
-                        if(XMaterial.matchXMaterial(op.get().getType()).equals(xmaterial))
+                    if (op.isPresent()) {
+                        if (XMaterial.matchXMaterial(op.get().getType()).equals(xmaterial))
                             return true;
                     }
                 }
@@ -116,8 +116,8 @@ public class MiscUtils {
                     Location loc = new Location(world, x, y, z);
                     Optional<Block> op = BlockUtils.getBlockAsync(loc);
 
-                    if(op.isPresent()) {
-                        if(Materials.checkFlag(op.get().getType(), bitmask))
+                    if (op.isPresent()) {
+                        if (Materials.checkFlag(op.get().getType(), bitmask))
                             return true;
                     }
                 }
@@ -142,13 +142,13 @@ public class MiscUtils {
         final SimpleCollisionBox playerBox = new SimpleCollisionBox(player.getLocation(), 0.6, 1.8);
 
         for(Entity entity : Atlas.getInstance().getTrackedEntities().values()) {
-            if(!entity.getWorld().getUID().equals(player.getWorld().getUID())
+            if (!entity.getWorld().getUID().equals(player.getWorld().getUID())
                     || player.getEntityId() == entity.getEntityId()) continue;
 
             SimpleCollisionBox box = new SimpleCollisionBox(entity.getLocation(), horz * 2, vert / 2)
                     .expandMin(0, -(vert / 2), 0);
 
-            if(box.isCollided(playerBox)) nearbyEntities.add(entity);
+            if (box.isCollided(playerBox)) nearbyEntities.add(entity);
         }
 
         return nearbyEntities;
@@ -174,7 +174,7 @@ public class MiscUtils {
 
     public static void sendMessage(CommandSender player, String message, Object... objects) {
         String toSend = String.format(Color.translate(message), objects);
-        if(player instanceof Player) {
+        if (player instanceof Player) {
             ((Player)player).spigot().sendMessage(TextComponent.fromLegacyText(toSend));
         } else player.sendMessage(toSend);
     }
@@ -246,7 +246,7 @@ public class MiscUtils {
     private static Object minecraftServer = null;
     //TODO Make this use the new abstraction system.
     public static int currentTick() {
-        if(minecraftServer == null) minecraftServer = CraftReflection.getMinecraftServer();
+        if (minecraftServer == null) minecraftServer = CraftReflection.getMinecraftServer();
         return ticksField.get(minecraftServer);
     }
 
@@ -265,7 +265,7 @@ public class MiscUtils {
      * @return GCD of both inputs
      */
     public static float gcdSmall(float current, float previous) {
-        if(current < previous) return gcdSmall(Math.abs(previous), Math.abs(current));
+        if (current < previous) return gcdSmall(Math.abs(previous), Math.abs(current));
         //The larger number has to be first.
         return (Math.abs(previous) <= 0.001f) ? current : gcdSmall(previous,
                 current - (float)Math.floor(current / previous) * previous);
@@ -289,7 +289,7 @@ public class MiscUtils {
     public static boolean isAnimated(HumanEntity entity) {
         Object itemInUse = MinecraftReflection.getItemInUse(entity);
 
-        if(itemInUse == null) return false;
+        if (itemInUse == null) return false;
 
         Object animation = MinecraftReflection.getItemAnimation(itemInUse);
 
@@ -358,7 +358,7 @@ public class MiscUtils {
     //Args: Tuple (a) is low outliers, Tupe (B) is high outliers
     public static Tuple<List<Double>, List<Double>> getOutliers(List<Double> values) {
 
-        if(values.size() < 4) return new Tuple<>(new ArrayList<>(), new ArrayList<>());
+        if (values.size() < 4) return new Tuple<>(new ArrayList<>(), new ArrayList<>());
 
         double q1 = getMedian(values.subList(0, values.size() / 2)),
                 q3 = getMedian(values.subList(values.size() / 2, values.size()));
@@ -369,16 +369,16 @@ public class MiscUtils {
         val tuple = new Tuple<List<Double>, List<Double>>(new ArrayList<>(), new ArrayList<>());
 
         for (Double value : values) {
-            if(value < lowThreshold) tuple.one.add(value);
-            if(value < lowThreshold) tuple.one.add(value);
-            else if(value > highThreshold) tuple.two.add(value);
+            if (value < lowThreshold) tuple.one.add(value);
+            if (value < lowThreshold) tuple.one.add(value);
+            else if (value > highThreshold) tuple.two.add(value);
         }
 
         return tuple;
     }
 
     public static Tuple<List<Float>, List<Float>> getOutliersFloat(List<Float> values) {
-        if(values.size() < 4) return new Tuple<>(new ArrayList<>(), new ArrayList<>());
+        if (values.size() < 4) return new Tuple<>(new ArrayList<>(), new ArrayList<>());
 
         double q1 = getMedian(values.subList(0, values.size() / 2)),
                 q3 = getMedian(values.subList(values.size() / 2, values.size()));
@@ -389,8 +389,8 @@ public class MiscUtils {
         val tuple = new Tuple<List<Float>, List<Float>>(new ArrayList<>(), new ArrayList<>());
 
         for (Float value : values) {
-            if(value < lowThreshold) tuple.one.add(value);
-            else if(value > highThreshold) tuple.two.add(value);
+            if (value < lowThreshold) tuple.one.add(value);
+            else if (value > highThreshold) tuple.two.add(value);
         }
 
         return tuple;
@@ -399,7 +399,7 @@ public class MiscUtils {
     public static Tuple<List<Long>, List<Long>> getOutliersLong(List<Long> collection) {
         List<Long> values = new ArrayList<>(collection);
 
-        if(values.size() < 4) return new Tuple<>(new ArrayList<>(), new ArrayList<>());
+        if (values.size() < 4) return new Tuple<>(new ArrayList<>(), new ArrayList<>());
 
         double q1 = getMedian(values.subList(0, values.size() / 2)),
                 q3 = getMedian(values.subList(values.size() / 2, values.size()));
@@ -410,15 +410,15 @@ public class MiscUtils {
         val tuple = new Tuple<List<Long>, List<Long>>(new ArrayList<>(), new ArrayList<>());
 
         for (Long value : values) {
-            if(value < lowThreshold) tuple.one.add(value);
-            else if(value > highThreshold) tuple.two.add(value);
+            if (value < lowThreshold) tuple.one.add(value);
+            else if (value > highThreshold) tuple.two.add(value);
         }
 
         return tuple;
     }
 
     public static double getMedian(List<Double> data) {
-        if(data.size() > 1) {
+        if (data.size() > 1) {
             if (data.size() % 2 == 0)
                 return (data.get(data.size() / 2) + data.get(data.size() / 2 - 1)) / 2;
             else
@@ -448,7 +448,7 @@ public class MiscUtils {
             values.add(v);
         }
 
-        if(values.size() < 2) return kurt;
+        if (values.size() < 2) return kurt;
 
         double mean = total / values.size();
         double stdDev = MathUtils.stdev(values);
@@ -494,7 +494,7 @@ public class MiscUtils {
     public static float pow(float number, int times) {
         float answer = number;
 
-        if(times <= 0) return 0;
+        if (times <= 0) return 0;
 
         for(int i = 1 ; i < times ; i++) {
             answer*= number;
@@ -546,7 +546,7 @@ public class MiscUtils {
             values.add(v);
         }
 
-        if(values.size() < 2) return skew;
+        if (values.size() < 2) return skew;
 
         double m = total / values.size();
         double accum = 0.0D;
@@ -647,9 +647,9 @@ public class MiscUtils {
         double deltaX = entity.getLocation().getX() - player.getLocation().getX();
         double deltaZ = entity.getLocation().getZ() - player.getLocation().getZ();
         double yawToEntity;
-        if(deltaZ < 0.0D && deltaX < 0.0D) {
+        if (deltaZ < 0.0D && deltaX < 0.0D) {
             yawToEntity = 90.0D + Math.toDegrees(Math.atan(deltaZ / deltaX));
-        } else if(deltaZ < 0.0D && deltaX > 0.0D) {
+        } else if (deltaZ < 0.0D && deltaX > 0.0D) {
             yawToEntity = -90.0D + Math.toDegrees(Math.atan(deltaZ / deltaX));
         } else {
             yawToEntity = Math.toDegrees(-Math.atan(deltaX / deltaZ));

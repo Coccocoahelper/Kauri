@@ -31,7 +31,7 @@ public class AutoclickerF extends Check {
     public void onFlying(WrappedInTransactionPacket packet) {
         val optional = Kauri.INSTANCE.keepaliveProcessor.getKeepById(packet.getAction());
 
-        if(optional.isPresent()) {
+        if (optional.isPresent()) {
             flying++;
         }
     }
@@ -43,7 +43,7 @@ public class AutoclickerF extends Check {
 
     @Packet
     public void onArm(WrappedInArmAnimationPacket packet, int current) {
-        if(data.playerInfo.breakingBlock
+        if (data.playerInfo.breakingBlock
                 || data.playerInfo.lookingAtBlock
                 || data.playerInfo.lastBrokenBlock.isNotPassed(5)
                 || data.playerInfo.lastBlockDigPacket.isNotPassed(1)

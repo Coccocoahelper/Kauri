@@ -38,8 +38,8 @@ public class LogCommand extends BaseCommand {
     @Description("View the logs of a user")
     public void onCommand(CommandSender sender, String[] args) {
         Kauri.INSTANCE.executor.execute(() -> {
-            if(args.length == 0) {
-                if(sender instanceof Player) {
+            if (args.length == 0) {
+                if (sender instanceof Player) {
                     Player player = (Player) sender;
                     LogsGUI gui = new LogsGUI(player.getName(), player.getUniqueId());
                     RunUtils.task(() -> {
@@ -54,14 +54,14 @@ public class LogCommand extends BaseCommand {
             } else {
                 OfflinePlayer player = Bukkit.getOfflinePlayer(args[0]);
 
-                if(player == null) {
+                if (player == null) {
                     sender.sendMessage(Kauri.INSTANCE.msgHandler.getLanguage()
                             .msg("offline-player-not-found", "&cSomehow, out of hundreds of millions of"
                                     + "Minecraft accounts, you found one that doesn't exist."));
                     return;
                 }
 
-                if(sender instanceof Player) {
+                if (sender instanceof Player) {
                     LogsGUI gui = new LogsGUI(player.getName(), player.getUniqueId());
                     RunUtils.task(() -> {
                         gui.showMenu((Player) sender);
@@ -83,8 +83,8 @@ public class LogCommand extends BaseCommand {
     @Description("View the logs of a user")
     public void onLogsWeb(CommandSender sender, String[] args) {
         Kauri.INSTANCE.executor.execute(() -> {
-            if(args.length == 0) {
-                if(sender instanceof Player) {
+            if (args.length == 0) {
+                if (sender instanceof Player) {
                     Player player = (Player) sender;
 
                     runWebLog(sender, player);
@@ -95,7 +95,7 @@ public class LogCommand extends BaseCommand {
             } else {
                 OfflinePlayer player = Bukkit.getOfflinePlayer(args[0]);
 
-                if(player == null) {
+                if (player == null) {
                     sender.sendMessage(Kauri.INSTANCE.msgHandler.getLanguage()
                             .msg("offline-player-not-found", "&cSomehow, out of hundreds of millions of"
                                     + "Minecraft accounts, you found one that doesn't exist."));
@@ -114,21 +114,21 @@ public class LogCommand extends BaseCommand {
     @CommandCompletion("@players")
     @Description("Clear logs of a player")
     public void onLogsClear(CommandSender sender, String[] args) {
-        if(args.length > 0) {
+        if (args.length > 0) {
             OfflinePlayer player = Bukkit.getOfflinePlayer(args[0]);
 
-            if(player == null) {
+            if (player == null) {
                 sender.sendMessage(Kauri.INSTANCE.msgHandler.getLanguage()
                         .msg("offline-player-not-found", "&cSomehow, out of hundreds of millions of"
                                 + "Minecraft accounts, you found one that doesn't exist."));
                 return;
             }
 
-            if(sender instanceof Player) {
+            if (sender instanceof Player) {
                 ConfirmationMenu menu = new ConfirmationMenu(
                         "Clear " + player.getName() + "'s logs?",
                         (pl, confirmed) -> {
-                            if(confirmed) {
+                            if (confirmed) {
                                 Kauri.INSTANCE.executor.execute(() -> {
                                     sender.sendMessage(Kauri.INSTANCE.msgHandler.getLanguage()
                                             .msg("clearing-logs", "&7Clearing logs from %player%...")
@@ -158,7 +158,7 @@ public class LogCommand extends BaseCommand {
         Map<String, Integer> violations = new HashMap<>();
         for (Log log : logs) {
             violations.compute(log.checkName, (name, count) -> {
-               if(count == null) {
+               if (count == null) {
                    return 1;
                }
 
@@ -222,7 +222,7 @@ public class LogCommand extends BaseCommand {
         List<Log> logs = Kauri.INSTANCE.loggerManager.getLogs(uuid, null, 0, 2000, 0, System.currentTimeMillis());
         List<Punishment> punishments = Kauri.INSTANCE.loggerManager.getPunishments(uuid);
 
-        if(logs.size() == 0) return "No Logs";
+        if (logs.size() == 0) return "No Logs";
 
         String body;
 

@@ -16,7 +16,7 @@ public class StringUtils {
 
 
     public static void sendMessage(CommandSender sender, TextComponent component) {
-        if(sender instanceof Player) {
+        if (sender instanceof Player) {
             ((Player) sender).spigot().sendMessage(component);
         } else {
             sender.sendMessage(component.toLegacyText());

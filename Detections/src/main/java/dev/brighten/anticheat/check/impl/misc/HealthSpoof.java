@@ -29,17 +29,17 @@ public class HealthSpoof extends Check {
 
     @Packet
     public boolean onMetadata(WrappedOutEntityMetadata packet) {
-        if(packet.getEntityId() == data.getPlayer().getEntityId()) return true;
+        if (packet.getEntityId() == data.getPlayer().getEntityId()) return true;
         val wobjects = packet.getWatchableObjects()
                 .stream().map(WrappedWatchableObject::new)
                 .collect(Collectors.toList());
 
         val optional = wobjects.stream().filter(wobj -> wobj.getDataValueId() == 6).findFirst();
 
-        if(optional.isPresent()) {
+        if (optional.isPresent()) {
             val object = optional.get();
 
-            if(object.getWatchedObject() instanceof Float
+            if (object.getWatchedObject() instanceof Float
                     && ((float)object.getWatchedObject()) != 1.f) {
                 //debug
                 List<String> strings = new ArrayList<>();
@@ -56,7 +56,7 @@ public class HealthSpoof extends Check {
                 for (int i = 0; i < wobjects.size(); i++) {
                     val wobj = wobjects.get(i);
 
-                    if(!newer) wobj.setPacket(wobj.getFirstInt(),
+                    if (!newer) wobj.setPacket(wobj.getFirstInt(),
                                 wobj.getDataValueId(), wobj.getWatchedObject());
                     else wobj.setPacket(wobj.getDataWatcherObject(), wobj.getWatchedObject());
 

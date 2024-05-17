@@ -87,7 +87,7 @@ public class PagedMenu implements Menu {
 
     @Override
     public Optional<Button> getButtonByIndex(int index) {
-        if(index >= contents.size() - 1) return Optional.empty();
+        if (index >= contents.size() - 1) return Optional.empty();
 
         return Optional.ofNullable(contents.get(index));
     }

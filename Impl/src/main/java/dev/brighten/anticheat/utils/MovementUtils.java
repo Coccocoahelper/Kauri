@@ -45,17 +45,17 @@ public class MovementUtils {
             : MinecraftReflection.playerConnection.getFieldByName(ProtocolVersion.getGameVersion()
             .isOrAbove(ProtocolVersion.v1_17) ? "y" : "teleportPos");
     public static boolean checkMovement(Object playerConnection) {
-        if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_9)) {
+        if (ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_9)) {
             return checkMovement.get(playerConnection);
         } else return (checkMovement.get(playerConnection) == null);
     }
 
     public static int getDepthStriderLevel(Player player) {
-        if(DEPTH == null) return 0;
+        if (DEPTH == null) return 0;
 
         val boots = player.getInventory().getBoots();
 
-        if(boots == null) return 0;
+        if (boots == null) return 0;
 
         return boots.getEnchantmentLevel(DEPTH);
     }
@@ -74,7 +74,7 @@ public class MovementUtils {
     public static float getFriction(Block block) {
         Optional<XMaterial> matched = XMaterial.matchXMaterial(block.getType().name());
 
-        if(!matched.isPresent()) return 0.6f;
+        if (!matched.isPresent()) return 0.6f;
         switch(matched.get()) {
             case SLIME_BLOCK:
                 return 0.8f;
@@ -97,7 +97,7 @@ public class MovementUtils {
         int count = 0;
         while ((nextCalc = (nextCalc - 0.08f) * 0.98f) > (version.isOrBelow(ProtocolVersion.V1_8_9) ?  0.005 : 0)) {
             total+= nextCalc;
-            if(count++ > 15) {
+            if (count++ > 15) {
                 return total * 4;
             }
         }
@@ -107,7 +107,7 @@ public class MovementUtils {
 
     static {
         try {
-            if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_8)) {
+            if (ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_8)) {
                 DEPTH = Enchantment.getByName("DEPTH_STRIDER");
             }
 

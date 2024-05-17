@@ -22,7 +22,7 @@ public class FlyI extends Check {
 
     @Packet
     public void onFlying(WrappedInFlyingPacket packet) {
-        if(!packet.isPos()
+        if (!packet.isPos()
                 || data.playerInfo.generalCancel
                 || (data.playerInfo.serverGround
                         || (data.playerInfo.clientGround && data.playerInfo.groundTicks < 3))
@@ -37,7 +37,7 @@ public class FlyI extends Check {
             debug("Resetting buffer");
         }
 
-        if(++buffer > 6) {
+        if (++buffer > 6) {
             vl++;
             flag("b=%s a=%s", buffer, data.playerInfo.airTicks);
         }

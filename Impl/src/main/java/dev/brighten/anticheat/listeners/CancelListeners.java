@@ -25,14 +25,14 @@ public class CancelListeners implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onEvent(PlayerMoveEvent event) {
         //Packet exemption check
-        if(KauriAPI.INSTANCE.getPacketExemptedPlayers().contains(event.getPlayer().getUniqueId())) return;
+        if (KauriAPI.INSTANCE.getPacketExemptedPlayers().contains(event.getPlayer().getUniqueId())) return;
 
         ObjectData data = Kauri.INSTANCE.dataManager.getData(event.getPlayer());
 
-        if(data != null && data.typesToCancel.size() > 0) {
+        if (data != null && data.typesToCancel.size() > 0) {
             data.playerInfo.lastMoveCancel.reset();
             for (CancelType cancelType : data.typesToCancel) {
-                if(!cancelType.equals(CancelType.MOVEMENT)) continue;
+                if (!cancelType.equals(CancelType.MOVEMENT)) continue;
 
                 val ground = event.getTo().getWorld().equals(data.playerInfo.setbackLocation.getWorld()) ?
                         data.playerInfo.setbackLocation
@@ -50,16 +50,16 @@ public class CancelListeners implements Listener {
     /** Cancels for ATTACK **/
     @EventHandler(priority = EventPriority.MONITOR)
     public void onEvent(EntityDamageByEntityEvent event) {
-        if(!(event.getDamager() instanceof Player)) return;
+        if (!(event.getDamager() instanceof Player)) return;
 
         //Packet exemption check
-        if(KauriAPI.INSTANCE.getPacketExemptedPlayers().contains(event.getDamager().getUniqueId())) return;
+        if (KauriAPI.INSTANCE.getPacketExemptedPlayers().contains(event.getDamager().getUniqueId())) return;
 
         ObjectData data = Kauri.INSTANCE.dataManager.getData((Player)event.getDamager());
 
-        if(data != null && data.typesToCancel.size() > 0) {
+        if (data != null && data.typesToCancel.size() > 0) {
             for (CancelType cancelType : data.typesToCancel) {
-                if(!cancelType.equals(CancelType.ATTACK)) continue;
+                if (!cancelType.equals(CancelType.ATTACK)) continue;
 
                 event.setCancelled(true);
                 synchronized (data.typesToCancel) {
@@ -74,13 +74,13 @@ public class CancelListeners implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onEvent(BlockPlaceEvent event) {
         //Packet exemption check
-        if(KauriAPI.INSTANCE.getPacketExemptedPlayers().contains(event.getPlayer().getUniqueId())) return;
+        if (KauriAPI.INSTANCE.getPacketExemptedPlayers().contains(event.getPlayer().getUniqueId())) return;
 
         ObjectData data = Kauri.INSTANCE.dataManager.getData(event.getPlayer());
 
-        if(data != null && data.typesToCancel.size() > 0) {
+        if (data != null && data.typesToCancel.size() > 0) {
             for (CancelType cancelType : data.typesToCancel) {
-                if(!cancelType.equals(CancelType.PLACE)) continue;
+                if (!cancelType.equals(CancelType.PLACE)) continue;
 
                 event.setCancelled(true);
                 synchronized (data.typesToCancel) {
@@ -95,12 +95,12 @@ public class CancelListeners implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onEvent(BlockBreakEvent event) {
         //Packet exemption check
-        if(KauriAPI.INSTANCE.getPacketExemptedPlayers().contains(event.getPlayer().getUniqueId())) return;
+        if (KauriAPI.INSTANCE.getPacketExemptedPlayers().contains(event.getPlayer().getUniqueId())) return;
         ObjectData data = Kauri.INSTANCE.dataManager.getData(event.getPlayer());
 
-        if(data != null && data.typesToCancel.size() > 0) {
+        if (data != null && data.typesToCancel.size() > 0) {
             for (CancelType cancelType : data.typesToCancel) {
-                if(!cancelType.equals(CancelType.BREAK)) continue;
+                if (!cancelType.equals(CancelType.BREAK)) continue;
 
                 event.setCancelled(true);
                 synchronized (data.typesToCancel) {
@@ -116,12 +116,12 @@ public class CancelListeners implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onEvent(PlayerInteractEvent event) {
         //Packet exemption check
-        if(KauriAPI.INSTANCE.getPacketExemptedPlayers().contains(event.getPlayer().getUniqueId())) return;
+        if (KauriAPI.INSTANCE.getPacketExemptedPlayers().contains(event.getPlayer().getUniqueId())) return;
         ObjectData data = Kauri.INSTANCE.dataManager.getData(event.getPlayer());
 
-        if(data != null && data.typesToCancel.size() > 0) {
+        if (data != null && data.typesToCancel.size() > 0) {
             for (CancelType cancelType : data.typesToCancel) {
-                if(!cancelType.equals(CancelType.INTERACT)) continue;
+                if (!cancelType.equals(CancelType.INTERACT)) continue;
 
                 event.setCancelled(true);
                 synchronized (data.typesToCancel) {
@@ -136,16 +136,16 @@ public class CancelListeners implements Listener {
     //Done for interacting with entities like NPC or players.
     @EventHandler(priority = EventPriority.MONITOR)
     public void onEvent(EntityInteractEvent event) {
-        if(!(event.getEntity() instanceof Player)) return;
+        if (!(event.getEntity() instanceof Player)) return;
 
         //Packet exemption check
-        if(KauriAPI.INSTANCE.getPacketExemptedPlayers().contains(event.getEntity().getUniqueId())) return;
+        if (KauriAPI.INSTANCE.getPacketExemptedPlayers().contains(event.getEntity().getUniqueId())) return;
 
         ObjectData data = Kauri.INSTANCE.dataManager.getData((Player)event.getEntity());
 
-        if(data != null && data.typesToCancel.size() > 0) {
+        if (data != null && data.typesToCancel.size() > 0) {
             for (CancelType cancelType : data.typesToCancel) {
-                if(!cancelType.equals(CancelType.INTERACT)) continue;
+                if (!cancelType.equals(CancelType.INTERACT)) continue;
 
                 event.setCancelled(true);
                 synchronized (data.typesToCancel) {

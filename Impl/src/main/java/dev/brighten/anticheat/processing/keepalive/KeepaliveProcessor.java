@@ -55,17 +55,17 @@ public class KeepaliveProcessor implements Runnable {
         for (ObjectData value : Kauri.INSTANCE.dataManager.dataMap.values()) {
             totalPlayers++;
 
-            if(value.lagInfo.lastPingDrop.isNotPassed(2)
+            if (value.lagInfo.lastPingDrop.isNotPassed(2)
                     || System.currentTimeMillis() - value.lagInfo.lastClientTrans > 135L) laggyPlayers++;
 
-            if(value.target != null) {
+            if (value.target != null) {
                 value.targetPastLocation.addLocation(value.target.getLocation());
             }
 
             TinyProtocolHandler.sendPacket(value.getPlayer(), packet);
 
             double dh = value.playerInfo.deltaXZ, dy = Math.abs(value.playerInfo.deltaY);
-            if(tick % 5 == 0) {
+            if (tick % 5 == 0) {
                 if (dh < 1 && dy < 1)
                     value.playerInfo.nearbyEntities = value.getPlayer()
                             .getNearbyEntities(2 + dh, 3 + dy, 2 + dh);
@@ -74,7 +74,7 @@ public class KeepaliveProcessor implements Runnable {
 
             //Checking for AtlasBungee stuff incase a player joined before a heartbeat check could be sent
             //by Atlas
-            if(Atlas.getInstance().getBungeeManager().isBungee()) {
+            if (Atlas.getInstance().getBungeeManager().isBungee()) {
                 value.atlasBungeeInstalled = Atlas.getInstance().getBungeeManager().isAtlasBungeeInstalled();
             }
         }
@@ -89,14 +89,14 @@ public class KeepaliveProcessor implements Runnable {
     }
 
     public Optional<KeepAlive> getResponse(ObjectData data) {
-        if(!lastResponses.containsKey(data.uuid.hashCode()))
+        if (!lastResponses.containsKey(data.uuid.hashCode()))
             return Optional.empty();
 
         return getKeepById(lastResponses.get(data.uuid.hashCode()));
     }
 
     public void start() {
-        if(task == null) {
+        if (task == null) {
             task = RunUtils.taskTimer(this, Kauri.INSTANCE, 20L, 0L);
         }
     }
@@ -109,7 +109,7 @@ public class KeepaliveProcessor implements Runnable {
     }
 
     public void stop() {
-        if(task != null) {
+        if (task != null) {
             task.cancel();
             task = null;
         }

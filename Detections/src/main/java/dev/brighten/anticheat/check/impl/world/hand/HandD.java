@@ -18,9 +18,9 @@ public class HandD extends Check {
 
     @Packet
     public void onFlying(WrappedInUseEntityPacket packet) {
-        if(!packet.getAction().equals(WrappedInUseEntityPacket.EnumEntityUseAction.ATTACK)) return;
+        if (!packet.getAction().equals(WrappedInUseEntityPacket.EnumEntityUseAction.ATTACK)) return;
 
-        if(attackTicks++ > 3
+        if (attackTicks++ > 3
                 && data.playerInfo.lastFlyingTimer.isNotPassed(1)
                 && !data.lagInfo.lagging) {
             vl++;

@@ -12,13 +12,13 @@ public class HandE extends Check {
 
     @Packet
     public void onUse(WrappedInUseEntityPacket packet) {
-        if(!(packet.getEntity() instanceof Player) || packet.getVec() == null) return;
+        if (!(packet.getEntity() instanceof Player) || packet.getVec() == null) return;
         double x = Math.abs(packet.getVec().a), y = Math.abs(packet.getVec().b), z = Math.abs(packet.getVec().c);
 
         debug("x=%.2f y=%.2f z=%.2f", x, y, z);
-        if(packet.getVec().a == -1 && packet.getVec().b == -1 && packet.getVec().c == -1) return;
+        if (packet.getVec().a == -1 && packet.getVec().b == -1 && packet.getVec().c == -1) return;
 
-        if(x > 0.4001 || y > 1.901 || z > 0.4001) {
+        if (x > 0.4001 || y > 1.901 || z > 0.4001) {
             vl++;
             flag("size too large");
         }

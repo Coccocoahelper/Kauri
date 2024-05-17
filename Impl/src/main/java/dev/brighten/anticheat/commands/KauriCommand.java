@@ -54,7 +54,7 @@ public class KauriCommand extends BaseCommand {
         contexts.registerOptionalContext(Integer.class, c -> {
             String arg = c.popFirstArg();
 
-            if(arg == null) return null;
+            if (arg == null) return null;
             try {
                 return Integer.parseInt(arg);
             } catch(NumberFormatException e) {
@@ -77,8 +77,8 @@ public class KauriCommand extends BaseCommand {
     @CommandPermission("kauri.command.test")
     @Description("Toggle test debug alerts")
     public void onTest(Player player) {
-        if(MiscUtils.testers.contains(player.getUniqueId())) {
-            if(MiscUtils.testers.remove(player.getUniqueId())) {
+        if (MiscUtils.testers.contains(player.getUniqueId())) {
+            if (MiscUtils.testers.remove(player.getUniqueId())) {
                 player.sendMessage(Kauri.INSTANCE.msgHandler.getLanguage()
                         .msg("tester-remove-success", "&cRemoved you from test messaging for developers."));
             } else player.sendMessage(Kauri.INSTANCE.msgHandler.getLanguage()
@@ -97,11 +97,11 @@ public class KauriCommand extends BaseCommand {
     public void onCommand(Player player) {
         ObjectData data = Kauri.INSTANCE.dataManager.getData(player);
 
-        if(data != null) {
+        if (data != null) {
             synchronized (Kauri.INSTANCE.dataManager.hasAlerts) {
                 boolean hasAlerts = Kauri.INSTANCE.dataManager.hasAlerts.contains(data.uuid.hashCode());
 
-                if(!hasAlerts) {
+                if (!hasAlerts) {
                     Kauri.INSTANCE.dataManager.hasAlerts.add(data.uuid.hashCode());
                     player.sendMessage(Kauri.INSTANCE.msgHandler.getLanguage().msg("alerts-on",
                             "&aYou are now viewing cheat alerts."));
@@ -123,10 +123,10 @@ public class KauriCommand extends BaseCommand {
     public void onDevAlertsMain(Player player) {
         ObjectData data = Kauri.INSTANCE.dataManager.getData(player);
 
-        if(data != null) {
+        if (data != null) {
             synchronized (Kauri.INSTANCE.dataManager.devAlerts) {
                 boolean hasDevAlerts = Kauri.INSTANCE.dataManager.devAlerts.contains(data.uuid.hashCode());
-                if(!hasDevAlerts) {
+                if (!hasDevAlerts) {
                     Kauri.INSTANCE.dataManager.devAlerts.add(data.uuid.hashCode());
                     player.sendMessage(Kauri.INSTANCE.msgHandler.getLanguage().msg("dev-alerts-on",
                             "&aYou are now viewing developer cheat alerts."));
@@ -149,12 +149,12 @@ public class KauriCommand extends BaseCommand {
     public void onCommand(Player player, @Single String check, @Optional OnlinePlayer target) {
         ObjectData data = Kauri.INSTANCE.dataManager.getData(player);
 
-        if(data == null) {
+        if (data == null) {
             player.sendMessage(Color.Red + "There was an error trying to find your data object.");
             return;
         }
 
-        if(check.equalsIgnoreCase("none")) {
+        if (check.equalsIgnoreCase("none")) {
             for (ObjectData tdata : Kauri.INSTANCE.dataManager.dataMap.values()) {
                 synchronized (tdata.boxDebuggers) {
                     tdata.boxDebuggers.remove(player);
@@ -169,8 +169,8 @@ public class KauriCommand extends BaseCommand {
         } else {
             final Player targetPlayer = target != null ? target.getPlayer() : player;
             final ObjectData targetData = Kauri.INSTANCE.dataManager.getData(targetPlayer);
-            if(check.equalsIgnoreCase("sniff")) {
-                if(!targetData.sniffing) {
+            if (check.equalsIgnoreCase("sniff")) {
+                if (!targetData.sniffing) {
                     player.sendMessage("Sniffing + " + targetPlayer.getName());
                     targetData.sniffing = true;
                 } else {
@@ -186,7 +186,7 @@ public class KauriCommand extends BaseCommand {
                     targetData.sniffedPackets.clear();
                 }
             } else {
-                if(Check.isCheck(check.replace("_", " "))) {
+                if (Check.isCheck(check.replace("_", " "))) {
                     targetData.debugging.put(player.getUniqueId(), check.replace("_", " "));
 
                     player.sendMessage(Color.Green + "You are now debugging " + check
@@ -204,15 +204,15 @@ public class KauriCommand extends BaseCommand {
     @CommandPermission("kauri.command.block")
     public void onBlock(CommandSender sender, @Optional String block) {
         Material material;
-        if(block != null) {
-            if(MiscUtils.isInteger(block)) {
+        if (block != null) {
+            if (MiscUtils.isInteger(block)) {
                 material = Material.getMaterial(Integer.parseInt(block));
             } else material = Arrays.stream(Material.values())
                     .filter(mat -> mat.name().equalsIgnoreCase(block)).findFirst()
                     .orElse((XMaterial.AIR.parseMaterial()));
-        } else if(sender instanceof Player) {
+        } else if (sender instanceof Player) {
             Player player = (Player) sender;
-            if(player.getItemInHand() != null) {
+            if (player.getItemInHand() != null) {
                 material = player.getItemInHand().getType();
             } else {
                 sender.sendMessage(Kauri.INSTANCE.msgHandler.getLanguage()
@@ -226,7 +226,7 @@ public class KauriCommand extends BaseCommand {
             return;
         }
 
-        if(material != null) {
+        if (material != null) {
             sender.sendMessage(cc.funkemunky.api.utils.MiscUtils.line(Color.Dark_Gray));
             sender.sendMessage(Color.Gold + Color.Bold + material.name() + Color.Gray + ":");
             sender.sendMessage("");
@@ -257,7 +257,7 @@ public class KauriCommand extends BaseCommand {
     public void onDebugBox(Player player, @Optional OnlinePlayer target) {
         String[] debuggingPlayers;
         ObjectData.debugBoxes(false, player);
-        if(target == null) {
+        if (target == null) {
             ObjectData.debugBoxes(true, player, player.getUniqueId());
             debuggingPlayers = new String[] {player.getName()};
         } else {
@@ -394,7 +394,7 @@ public class KauriCommand extends BaseCommand {
     public void onLagPlayer(CommandSender sender, OnlinePlayer target) {
         ObjectData data = Kauri.INSTANCE.dataManager.getData(target.getPlayer());
 
-        if(data != null) {
+        if (data != null) {
             StringUtils.Messages.LINE.send(sender);
             StringUtils.sendMessage(sender, Color.Gold + Color.Bold + target.getPlayer().getName()
                     + "'s Lag Information");
@@ -411,7 +411,7 @@ public class KauriCommand extends BaseCommand {
     @Description("Debug collision boxes")
     @CommandPermission("kauri.command.wand")
     public void onWand(Player player) {
-        if(Arrays.stream(player.getInventory().getContents())
+        if (Arrays.stream(player.getInventory().getContents())
                 .anyMatch(item -> item == null || item.getType().equals(XMaterial.AIR.parseMaterial()))) {
             player.getInventory().addItem(BukkitListener.MAGIC_WAND);
             player.updateInventory();
@@ -429,13 +429,13 @@ public class KauriCommand extends BaseCommand {
     @CommandPermission("kauri.command.info")
     public void onCommand(Player player, String[] args) {
         Kauri.INSTANCE.executor.execute(() -> {
-            if(args.length > 0) {
+            if (args.length > 0) {
                 Player target = Bukkit.getPlayer(args[0]);
 
-                if(target != null) {
+                if (target != null) {
                     ObjectData targetData = Kauri.INSTANCE.dataManager.getData(target);
 
-                    if(targetData != null) {
+                    if (targetData != null) {
                         PlayerInformationGUI info = new PlayerInformationGUI(targetData);
 
                         RunUtils.task(() -> {
@@ -457,7 +457,7 @@ public class KauriCommand extends BaseCommand {
     @CommandPermission("kauri.command.simlag")
     public void onSimLag(CommandSender sender, @Optional Integer amount) {
         PacketProcessor.simLag = !PacketProcessor.simLag;
-        if(amount != null)
+        if (amount != null)
         PacketProcessor.amount = amount;
 
         sender.sendMessage(String.format(Color.translate("&aSimLag (%s): "
@@ -492,7 +492,7 @@ public class KauriCommand extends BaseCommand {
     @CommandCompletion("@checks")
     public void onCommand(CommandSender sender, @Single String check) {
         Kauri.INSTANCE.executor.execute(() -> {
-            if(Check.isCheck(check)) {
+            if (Check.isCheck(check)) {
                 CheckInfo checkInfo = Check.getCheckInfo(check.replace("_", " "));
 
                 String path = "checks." + checkInfo.name() + ".enabled";

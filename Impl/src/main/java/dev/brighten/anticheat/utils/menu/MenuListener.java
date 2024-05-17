@@ -72,7 +72,7 @@ public class MenuListener implements Listener {
                 }
             }
         }
-        if(!event.getAction().equals(InventoryAction.NOTHING)
+        if (!event.getAction().equals(InventoryAction.NOTHING)
                 && inventory instanceof AnvilInventory
                 && anvils.containsKey(inventory)) {
             event.setResult(Event.Result.DENY);
@@ -104,7 +104,7 @@ public class MenuListener implements Listener {
                 });
             }
         }
-        if(inventory instanceof AnvilInventory && anvils.containsKey(inventory)) {
+        if (inventory instanceof AnvilInventory && anvils.containsKey(inventory)) {
             AnvilInventory anvil = (AnvilInventory) inventory;
 
             anvils.get(anvil).consumer.accept(event.getPlayer(), Color.translate(anvil.getName()));

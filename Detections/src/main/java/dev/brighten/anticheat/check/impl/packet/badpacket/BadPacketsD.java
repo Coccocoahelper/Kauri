@@ -22,25 +22,25 @@ public class BadPacketsD extends Check {
 
     @Packet
     public void server(WrappedOutAbilitiesPacket packet) {
-        if(packet.isAllowedFlight()) {
+        if (packet.isAllowedFlight()) {
             serverAllowed = true;
-        } else if(!clientAllowed) {
+        } else if (!clientAllowed) {
             serverAllowed = false;
         }
     }
 
     @Packet
     public void client(WrappedInAbilitiesPacket packet) {
-        if(packet.isAllowedFlight()) {
+        if (packet.isAllowedFlight()) {
             clientAllowed = true;
-        } else if(!serverAllowed) {
+        } else if (!serverAllowed) {
             clientAllowed = false;
         }
     }
 
     @Packet
     public void flying(WrappedInFlyingPacket packet, long timeStamp) {
-        if(timeStamp - data.creation < 1000L) {
+        if (timeStamp - data.creation < 1000L) {
             serverAllowed = data.getPlayer().getAllowFlight();
             clientAllowed = data.getPlayer().getAllowFlight();
             RunUtils.task(() -> {
@@ -49,8 +49,8 @@ public class BadPacketsD extends Check {
                 data.getPlayer().setGameMode(GameMode.SURVIVAL);
             }, Kauri.INSTANCE);
         } else {
-            if(!serverAllowed && clientAllowed) {
-                if(vl++ > 1) {
+            if (!serverAllowed && clientAllowed) {
+                if (vl++ > 1) {
                     flag("server=" + serverAllowed + " client=" + clientAllowed);
                     RunUtils.task(() -> {
                         data.getPlayer().setFlying(false);

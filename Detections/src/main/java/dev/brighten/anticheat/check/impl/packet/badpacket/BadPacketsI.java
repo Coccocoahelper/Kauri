@@ -14,7 +14,7 @@ public class BadPacketsI extends Check {
 
     @Packet
     public void onFlying(WrappedInAbilitiesPacket packet) {
-        if(packet.isFlying() && !packet.isAllowedFlight()
+        if (packet.isFlying() && !packet.isAllowedFlight()
                 && !packet.getPlayer().getAllowFlight() && !data.lagInfo.lagging) {
             vl+= 2;
             flag("isFlying=" + packet.isFlying() + " allowed=" + packet.isAllowedFlight());

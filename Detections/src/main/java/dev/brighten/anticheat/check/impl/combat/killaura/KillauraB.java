@@ -19,17 +19,17 @@ public class KillauraB extends Check {
 
     @Packet
     public void use(WrappedInUseEntityPacket packet, long current) {
-        if(current - lastFlying < 10 && data.lagInfo.lastPacketDrop.isPassed(1)) {
-            if(++buffer > 7) {
+        if (current - lastFlying < 10 && data.lagInfo.lastPacketDrop.isPassed(1)) {
+            if (++buffer > 7) {
                 vl++;
                 flag("delta=%s", current - lastFlying);
             }
-        } else if(buffer > 0) buffer--;
+        } else if (buffer > 0) buffer--;
     }
 
     @Packet
     public void flying(WrappedInFlyingPacket packet, long current) {
-        if(data.playerInfo.lastTeleportTimer.isPassed(0))
+        if (data.playerInfo.lastTeleportTimer.isPassed(0))
         lastFlying = current;
     }
 }

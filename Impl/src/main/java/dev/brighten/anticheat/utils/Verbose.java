@@ -15,7 +15,7 @@ public class Verbose {
     }
 
     public boolean flag(double toAdd, double max) {
-        if(lastFlag.isPassed()) {
+        if (lastFlag.isPassed()) {
             vl.subtract(maxVl * 1.5);
         }
         lastFlag.reset();

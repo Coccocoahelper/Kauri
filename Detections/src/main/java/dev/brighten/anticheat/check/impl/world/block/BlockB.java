@@ -22,34 +22,34 @@ public class BlockB extends Check {
 
     @Packet
     public void onFlying(WrappedInFlyingPacket packet, long timestamp) {
-        if(data.playerInfo.creative || data.excuseNextFlying) return;
+        if (data.playerInfo.creative || data.excuseNextFlying) return;
 
-        if(place) {
+        if (place) {
             long delta = timestamp - lastPlace;
-            if(delta >= 25) {
-                if(++buffer >= 10f) {
+            if (delta >= 25) {
+                if (++buffer >= 10f) {
                     vl++;
                     flag("");
                 }
-            } else if(vl > 0) vl-= 0.25f;
+            } else if (vl > 0) vl-= 0.25f;
             place = false;
         }
     }
 
     @Packet
     public void onBlockPlace(WrappedInBlockPlacePacket packet, long timestamp) {
-        if(data.pastLocations.isEmpty()) return;
+        if (data.pastLocations.isEmpty()) return;
 
         KLocation lastMovePacket = data.pastLocations.getLast().one;
 
-        if(lastMovePacket == null) return;
+        if (lastMovePacket == null) return;
 
         final long delta = timestamp - lastMovePacket.timeStamp;
 
-        if(delta <= 25) {
+        if (delta <= 25) {
             lastPlace = timestamp;
             place = true;
-        } else if(buffer > 0) buffer-= 0.25f;
+        } else if (buffer > 0) buffer-= 0.25f;
 
     }
 }

@@ -45,7 +45,7 @@ public class BadPacketsN extends Check {
     @Packet
     public void onFlying(WrappedInFlyingPacket packet) {
 
-        if(lastSentTrans.isNotPassed(300L)
+        if (lastSentTrans.isNotPassed(300L)
                 && ++flying > 305 + (data.lagInfo.ping / 50.)
                 && Kauri.INSTANCE.tps.getAverage() > 19.6
                 && lastKeepAlive.isNotPassed(4000L)) {
@@ -58,21 +58,21 @@ public class BadPacketsN extends Check {
 
     @Event
     public void onEvent(PlayerMoveEvent event) {
-        if(flying > 10) {
+        if (flying > 10) {
             event.setCancelled(true);
         }
     }
 
     @Event
     public void onEvent(EntityDamageByEntityEvent event) {
-        if(flying > 10) {
+        if (flying > 10) {
             event.setCancelled(true);
         }
     }
 
     @Event
     public void onEvent(PlayerInteractEvent event) {
-        if(flying > 10) {
+        if (flying > 10) {
             event.setCancelled(true);
         }
     }
@@ -94,7 +94,7 @@ public class BadPacketsN extends Check {
 
     @Packet
     public void onTransaction(WrappedInTransactionPacket packet, long now) {
-        if(packet.getId() != 0) return;
+        if (packet.getId() != 0) return;
 
         val response
                 = Kauri.INSTANCE.keepaliveProcessor.getKeepById(packet.getAction());

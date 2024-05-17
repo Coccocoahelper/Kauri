@@ -15,9 +15,9 @@ public class Blink extends Check {
     private int buffer = 0;
     @Packet
     public void onTrans(WrappedInTransactionPacket packet) {
-        if(data.playerInfo.lastFlyingTimer.isPassed(
+        if (data.playerInfo.lastFlyingTimer.isPassed(
                 (data.playerVersion.isAbove(ProtocolVersion.V1_8_9) ? 40 : 25) + data.lagInfo.transPing)) {
-            if(++buffer > 2) {
+            if (++buffer > 2) {
                 vl++;
                 flag(40, "%s", data.playerInfo.lastFlyingTimer.getPassed());
             }

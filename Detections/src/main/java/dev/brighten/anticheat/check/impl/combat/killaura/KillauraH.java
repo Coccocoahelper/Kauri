@@ -22,13 +22,13 @@ public class KillauraH extends Check {
 
     @Packet
     public void onArm(WrappedInArmAnimationPacket packet) {
-        if(data.playerInfo.deltaXZ > 0.21 && data.target != null
+        if (data.playerInfo.deltaXZ > 0.21 && data.target != null
                 && MathUtils.getDelta(data.target.getVelocity().getY(), -0.078) > 0.001) validAmount++;
-        if(++arm >= 14) {
+        if (++arm >= 14) {
             float ratio = useEntity / (float)arm;
 
-            if(ratio > 0.99f) {
-                if(validAmount > 6 && ++buffer > 4) {
+            if (ratio > 0.99f) {
+                if (validAmount > 6 && ++buffer > 4) {
                     vl++;
                     flag("r=%.1f%% b=%s", ratio * 100f, buffer);
                 }

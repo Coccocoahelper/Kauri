@@ -15,17 +15,17 @@ public class InventoryC extends Check {
 
     @Packet
     public void use(WrappedInWindowClickPacket packet, long current) {
-        if(current - lastFlying < 10) {
+        if (current - lastFlying < 10) {
             vl++;
-            if(vl > 11) {
+            if (vl > 11) {
                 flag("delta=%s", current - lastFlying);
             }
-        } else if(vl > 0) vl--;
+        } else if (vl > 0) vl--;
     }
 
     @Packet
     public void flying(WrappedInFlyingPacket packet, long current) {
-        if(data.playerInfo.lastTeleportTimer.isPassed(0))
+        if (data.playerInfo.lastTeleportTimer.isPassed(0))
             lastFlying = current;
     }
 }

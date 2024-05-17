@@ -15,11 +15,11 @@ public class BadPacketsG extends Check {
     private int verbose;
     @Packet
     public void onPacket(WrappedInBlockDigPacket packet, long timeStamp) {
-        if(packet.getAction().equals(WrappedInBlockDigPacket.EnumPlayerDigType.DROP_ITEM)) {
+        if (packet.getAction().equals(WrappedInBlockDigPacket.EnumPlayerDigType.DROP_ITEM)) {
             long delta = timeStamp - lastItemDrop;
 
-            if(delta < 35) {
-                if(verbose++ > 5) {
+            if (delta < 35) {
+                if (verbose++ > 5) {
                     vl++;
                     flag("delta=" + delta);
                 }

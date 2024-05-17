@@ -16,7 +16,7 @@ public class FlyG extends Check {
 
     @Packet
     public void onFlying(WrappedInFlyingPacket packet) {
-        if(!packet.isPos()
+        if (!packet.isPos()
                 || data.playerInfo.canUseElytra
                 || data.playerInfo.doingBlockUpdate) return;
 
@@ -26,17 +26,17 @@ public class FlyG extends Check {
         TagsBuilder tags = new TagsBuilder();
 
         double max = data.playerInfo.jumpHeight;
-        if(toGround) {
-            if(!fromGround) {
-                if(data.playerInfo.lDeltaY > 0 && data.playerInfo.lastFenceBelow.isPassed(4)
+        if (toGround) {
+            if (!fromGround) {
+                if (data.playerInfo.lDeltaY > 0 && data.playerInfo.lastFenceBelow.isPassed(4)
                         && data.playerInfo.blockAboveTimer.isPassed(2)) {
                     tags.addTag("INVALID_LANDING");
                     max = 0;
                 }
             } else {
-                if(data.blockInfo.onSlab || data.blockInfo.onStairs)
+                if (data.blockInfo.onSlab || data.blockInfo.onStairs)
                     max = 0.5;
-                else if(data.blockInfo.onHalfBlock || data.blockInfo.miscNear)
+                else if (data.blockInfo.onHalfBlock || data.blockInfo.miscNear)
                     max = 0.5625;
 
                 tags.addTag("GROUND_STEP");
@@ -44,7 +44,7 @@ public class FlyG extends Check {
             }
         }
 
-        if(data.playerInfo.deltaY > max && tags.getSize() > 0
+        if (data.playerInfo.deltaY > max && tags.getSize() > 0
                 && data.playerInfo.lastEntityCollision.isPassed(1)
                 && !data.playerInfo.flightCancel) {
             vl++;

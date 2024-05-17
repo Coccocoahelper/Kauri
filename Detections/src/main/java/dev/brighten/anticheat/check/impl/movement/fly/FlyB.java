@@ -20,7 +20,7 @@ public class FlyB extends Check {
 
     @Packet
     public void onVelocity(WrappedOutVelocityPacket packet) {
-        if(packet.getId() == data.getPlayer().getEntityId()) {
+        if (packet.getId() == data.getPlayer().getEntityId()) {
             velocityY = MovementUtils.getTotalHeight(data.playerVersion, (float)packet.getY());
         }
     }
@@ -39,25 +39,25 @@ public class FlyB extends Check {
         }
 
 
-        if(data.playerInfo.serverGround || data.playerInfo.clientGround
+        if (data.playerInfo.serverGround || data.playerInfo.clientGround
                 || data.playerInfo.lastGhostCollision.isNotPassed(1)) {
             vertical = 0;
 
             pistonBelow = data.blockInfo.pistonNear && data.playerInfo.slimeTimer.isNotPassed(20);
 
             limit = MovementUtils.getTotalHeight(data.playerVersion, MovementUtils.getJumpHeight(data));
-            if(data.playerInfo.lastVelocity.isPassed(3)) velocityY = 0;
+            if (data.playerInfo.lastVelocity.isPassed(3)) velocityY = 0;
 
-            if(data.playerInfo.wasOnSlime && data.playerInfo.clientGround) {
+            if (data.playerInfo.wasOnSlime && data.playerInfo.clientGround) {
                 slimeY = MovementUtils.getTotalHeight(data.playerVersion, (float)Math.abs(data.playerInfo.lDeltaY));
                 debug("SLIME: sy=%.2f dy=%.2f", slimeY, data.playerInfo.lDeltaY);
-            } else if(data.playerInfo.slimeTimer.isPassed(4)) slimeY = 0;
+            } else if (data.playerInfo.slimeTimer.isPassed(4)) slimeY = 0;
         } else {
             vertical += data.playerInfo.deltaY;
 
             double limit = (this.limit + slimeY + velocityY) * 1.6;
 
-            if(vertical > limit && !pistonBelow) {
+            if (vertical > limit && !pistonBelow) {
                 vl++;
                 flag("%.3f>-%.3f", vertical, limit);
             }

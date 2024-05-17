@@ -41,7 +41,7 @@ public class MySQL {
     public static void initSqlLite() {
         File dataFolder = new File(Kauri.INSTANCE.getDataFolder(), MySQLConfig.database + ".db");
         try {//https://nexus.funkemunky.cc/service/local/repositories/releases/content/com/h2database/h2/1.4.199/h2-1.4.199.jar
-            if(dataFolder.createNewFile()) {
+            if (dataFolder.createNewFile()) {
                 Kauri.INSTANCE.getLogger().info("Successfully created " + MySQLConfig.database + ".db" + " in Kauri folder!");
             }
         } catch (IOException e) {
@@ -64,8 +64,8 @@ public class MySQL {
 
     public static void shutdown() {
         try {
-            if(conn != null && !conn.isClosed()) {
-                if(conn instanceof NonClosableConnection) {
+            if (conn != null && !conn.isClosed()) {
+                if (conn instanceof NonClosableConnection) {
                     ((NonClosableConnection)conn).shutdown();
                 } else conn.close();
                 conn = null;

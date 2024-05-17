@@ -14,12 +14,12 @@ public class BadPacketsK extends Check {
 
     @Packet
     public void onHeld(WrappedInHeldItemSlotPacket packet) {
-        if(lastSlot != -1 && lastSlot == packet.getSlot() && data.lagInfo.lastPacketDrop.isPassed(2)) {
-            if(++buffer > 3) {
+        if (lastSlot != -1 && lastSlot == packet.getSlot() && data.lagInfo.lastPacketDrop.isPassed(2)) {
+            if (++buffer > 3) {
                 vl++;
                 flag("current=%s;last=%s", packet.getSlot(), lastSlot);
             }
-        } else if(buffer > 0) buffer--;
+        } else if (buffer > 0) buffer--;
         debug("slot=%s lastslot=%s", packet.getSlot(), lastSlot);
         lastSlot = packet.getSlot();
     }

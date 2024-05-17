@@ -15,7 +15,7 @@ public class LagCheck extends AtlasEvent {
 
     @Listen
     public void onEvent(TickEvent event) {
-        if(!enabled || !Kauri.INSTANCE.enabled) return;
+        if (!enabled || !Kauri.INSTANCE.enabled) return;
 
         //We do this to ensure no one is abusing fake lag attempts.
         long timeStamp = System.currentTimeMillis();
@@ -23,8 +23,8 @@ public class LagCheck extends AtlasEvent {
                 .parallelStream()
                 .forEach(data -> {
                     //Packet exemption check
-                    if(KauriAPI.INSTANCE.getPacketExemptedPlayers().contains(data.uuid)) return;
-                    if(timeStamp - data.lagInfo.lastClientTrans > 10000L
+                    if (KauriAPI.INSTANCE.getPacketExemptedPlayers().contains(data.uuid)) return;
+                    if (timeStamp - data.lagInfo.lastClientTrans > 10000L
                             && Kauri.INSTANCE.keepaliveProcessor.tick - data.playerInfo.to.timeStamp < 2L) {
                         data.lagTicks++;
 

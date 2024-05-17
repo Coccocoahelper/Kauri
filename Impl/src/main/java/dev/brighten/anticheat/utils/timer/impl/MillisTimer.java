@@ -58,7 +58,7 @@ public class MillisTimer implements Timer {
 
     @Override
     public void reset() {
-        if(getPassed() <= 60L) resetStreak++;
+        if (getPassed() <= 60L) resetStreak++;
         else resetStreak = 0;
 
         currentStamp = System.currentTimeMillis();

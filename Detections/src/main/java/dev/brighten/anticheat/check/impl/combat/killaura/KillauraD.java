@@ -13,7 +13,7 @@ public class KillauraD extends Check {
 
     @Packet
     public void onPacket(WrappedInFlyingPacket packet) {
-        if((packet.isPos() || packet.isLook())
+        if ((packet.isPos() || packet.isLook())
                 && data.playerInfo.lastWindowClick.isNotPassed(3)
                 && data.playerInfo.lastAttack.isNotPassed(1)
                 && data.playerInfo.inventoryOpen) {

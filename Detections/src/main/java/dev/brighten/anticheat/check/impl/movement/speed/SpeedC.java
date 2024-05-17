@@ -17,11 +17,11 @@ public class SpeedC extends Check {
 
     @Packet
     public void onPacket(WrappedInFlyingPacket packet) {
-        if(!packet.isPos()
+        if (!packet.isPos()
                 || data.playerInfo.generalCancel
                 || data.playerInfo.canUseElytra
                 || data.playerInfo.lastVelocity.isNotPassed(25)) {
-            if(data.playerInfo.generalCancel)verbose.subtract();
+            if (data.playerInfo.generalCancel)verbose.subtract();
             return;
         }
 
@@ -37,13 +37,13 @@ public class SpeedC extends Check {
                 : 0;
         baseSpeed+= data.playerInfo.wasOnSlime ? 0.1 : 0;
 
-        if(data.playerInfo.lastBlockPlace.isNotPassed(10))
+        if (data.playerInfo.lastBlockPlace.isNotPassed(10))
             baseSpeed+= 0.2;
 
-        if(data.playerInfo.baseSpeed < 0.2) return;
+        if (data.playerInfo.baseSpeed < 0.2) return;
 
-        if(data.playerInfo.deltaXZ > baseSpeed) {
-            if(verbose.add(data.playerInfo.deltaXZ - baseSpeed > 0.45f ? 4 : 1) > 25
+        if (data.playerInfo.deltaXZ > baseSpeed) {
+            if (verbose.add(data.playerInfo.deltaXZ - baseSpeed > 0.45f ? 4 : 1) > 25
                     || data.playerInfo.deltaXZ - baseSpeed > 0.45f) {
                 vl++;
                 flag("%s>-%s",

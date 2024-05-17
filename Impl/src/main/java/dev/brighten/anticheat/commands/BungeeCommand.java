@@ -19,11 +19,11 @@ public class BungeeCommand extends BaseCommand {
     @CommandAlias("bungeecmd")
     @CommandPermission("kauri.command.bungee")
     public void onCommand(Player player, String[] args) {
-        if(!bungeeCmd) {
+        if (!bungeeCmd) {
             player.sendMessage(Color.Red + "Bungee command is disabled!");
             return;
         }
-        if(args.length == 0) {
+        if (args.length == 0) {
             player.sendMessage(Color.Red + "Invalid arguments.");
             return;
         }

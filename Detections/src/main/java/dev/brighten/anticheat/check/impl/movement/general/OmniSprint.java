@@ -19,22 +19,22 @@ public class OmniSprint extends Check {
     @Packet
     public void onFlying(WrappedInFlyingPacket packet) {
 
-        if(Math.abs(data.predictionService.motionYaw) > 95 || data.predictionService.key.contains("W")) return;
+        if (Math.abs(data.predictionService.motionYaw) > 95 || data.predictionService.key.contains("W")) return;
 
         double angle = Math.abs( MiscUtils.getAngle(data.playerInfo.to, data.playerInfo.from));
 
-        if(angle < 100 || (data.playerInfo.lastEntityCollision.isNotPassed(4)
+        if (angle < 100 || (data.playerInfo.lastEntityCollision.isNotPassed(4)
                 && data.playerVersion.isOrAbove(ProtocolVersion.V1_9))) return;
 
         omniSprint: {
-            if(!data.playerInfo.sprinting || !data.playerInfo.serverGround) break omniSprint;
+            if (!data.playerInfo.sprinting || !data.playerInfo.serverGround) break omniSprint;
 
-            if(data.playerInfo.deltaXZ > 0.2
+            if (data.playerInfo.deltaXZ > 0.2
                     && data.playerInfo.lastAttack.isPassed(2)
                     && !data.playerInfo.doingVelocity
                     && !data.playerInfo.generalCancel
                     && data.playerInfo.lastVelocity.isPassed(20)) {
-                if(++sprintBuffer > 3) {
+                if (++sprintBuffer > 3) {
                     vl++;
                     flag("type=SPRINT a=%.1f b=%s", data.predictionService.motionYaw, sprintBuffer);
                 }
@@ -42,19 +42,19 @@ public class OmniSprint extends Check {
         }
 
         invalidMove: {
-            if(data.playerInfo.groundTicks < 9 || !data.playerInfo.serverGround || data.getPlayer().getGameMode().equals(GameMode.SPECTATOR)) break invalidMove;
+            if (data.playerInfo.groundTicks < 9 || !data.playerInfo.serverGround || data.getPlayer().getGameMode().equals(GameMode.SPECTATOR)) break invalidMove;
 
             double base = .235;
             int speed = data.potionProcessor.getEffectByType(PotionEffectType.SPEED)
                     .map(ef -> ef.getAmplifier() + 1).orElse(0);
 
-            if(speed > 0)
+            if (speed > 0)
             base *= 1.2 * speed;
 
-            if(data.playerInfo.deltaXZ > base
+            if (data.playerInfo.deltaXZ > base
                     && data.playerInfo.lastVelocity.isPassed(20)
                     && data.playerInfo.lastTeleportTimer.isPassed(1)) {
-                if(++invalidBuffer > 6) {
+                if (++invalidBuffer > 6) {
                     vl+= 0.25f;
                     flag("type=INVALID sprint=%s a=%.1f b=%s delta=%.6f>-%.6f",
                             data.playerInfo.sprinting, data.predictionService.motionYaw, invalidBuffer,

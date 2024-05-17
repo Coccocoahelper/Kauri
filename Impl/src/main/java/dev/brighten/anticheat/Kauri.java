@@ -118,7 +118,7 @@ public class Kauri extends JavaPlugin {
         Bukkit.getScheduler().cancelTasks(this); //Cancelling all Bukkit tasks for this plugin.
 
         MiscUtils.printToConsole("&7Unloading Discord Webhooks...");
-        if(DiscordAPI.INSTANCE != null) DiscordAPI.INSTANCE.unload();
+        if (DiscordAPI.INSTANCE != null) DiscordAPI.INSTANCE.unload();
         DiscordAPI.INSTANCE = null;
 
         try {
@@ -137,12 +137,12 @@ public class Kauri extends JavaPlugin {
         Check.checkClasses.clear();
         Check.checkSettings.clear();
         Atlas.getInstance().getPacketProcessor().removeListeners(Kauri.INSTANCE);
-        if(!reload) {
+        if (!reload) {
             PacketProcessor.incomingPackets.clear();
             PacketProcessor.outgoingPackets.clear();
         }
 
-        if(reload) {
+        if (reload) {
             SystemUtil.CRC_32 = new CRC32();
         }
 
@@ -151,13 +151,13 @@ public class Kauri extends JavaPlugin {
         MiscUtils.printToConsole("&7Finshing up nullification...");
         msgHandler = null;
         onReload.clear();
-        if(!reload)
+        if (!reload)
         onReload = null;
         KauriAPI.INSTANCE.service.shutdown();
         KauriAPI.INSTANCE.dataManager = null;
         KauriAPI.INSTANCE.exemptHandler = null;
         KauriAPI.INSTANCE = null;
-        if(!reload)
+        if (!reload)
         tps = null;
         dev.brighten.anticheat.utils.MiscUtils.testers.clear();
         //Shutting down threads.
@@ -167,7 +167,7 @@ public class Kauri extends JavaPlugin {
         Atlas.getInstance().getBukkitCommandManagers().remove(Kauri.INSTANCE.getDescription().getName());
         commandManager = null;
 
-        if(!reload)
+        if (!reload)
             INSTANCE = null;
         MiscUtils.printToConsole("&aCompleted shutdown process.");
     }
@@ -195,10 +195,10 @@ public class Kauri extends JavaPlugin {
             currentTick++;
             long currentTime = System.currentTimeMillis();
 
-            if(currentTime - lastTick > 120) {
+            if (currentTime - lastTick > 120) {
                 lastTickLag.reset();
             }
-            if(ticks.get() >= 10) {
+            if (ticks.get() >= 10) {
                 ticks.set(0);
                 tps.add(500D / (currentTime - lastTimeStamp.get()) * 20);
                 lastTimeStamp.set(currentTime);

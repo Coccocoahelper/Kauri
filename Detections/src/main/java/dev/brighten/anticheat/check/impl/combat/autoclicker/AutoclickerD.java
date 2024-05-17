@@ -19,7 +19,7 @@ public class AutoclickerD extends Check {
 
     @Packet
     public void onClick(WrappedInArmAnimationPacket packet, long timeStamp) {
-        if(!data.playerInfo.breakingBlock
+        if (!data.playerInfo.breakingBlock
                 && !data.playerInfo.lookingAtBlock
                 && data.playerInfo.lastBrokenBlock.isPassed(5)
                 && data.playerInfo.lastBlockDigPacket.isPassed(1)

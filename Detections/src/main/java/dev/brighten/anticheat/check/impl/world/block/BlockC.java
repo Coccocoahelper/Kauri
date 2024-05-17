@@ -44,19 +44,19 @@ public class BlockC extends Check {
         Location loc = event.getBlockPosition().toBukkitVector().toLocation(event.getPlayer().getWorld());
         Optional<Block> optionalBlock = BlockUtils.getBlockAsync(loc);
 
-        if(!optionalBlock.isPresent()) return;
+        if (!optionalBlock.isPresent()) return;
 
         final Block block = optionalBlock.get();
         CollisionBox box = BlockData.getData(block.getType()).getBox(block, data.playerVersion);
 
-        if(!(box instanceof SimpleCollisionBox)) {
+        if (!(box instanceof SimpleCollisionBox)) {
             debug("Not SimpleCollisionBox");
             return;
         }
 
         final SimpleCollisionBox simpleBox = ((SimpleCollisionBox) box);
 
-        if(Math.abs(simpleBox.yMax - simpleBox.yMin) != 1.
+        if (Math.abs(simpleBox.yMax - simpleBox.yMin) != 1.
                 || Math.abs(simpleBox.xMax - simpleBox.xMin) != 1.
                 || Math.abs(simpleBox.zMax - simpleBox.zMin) != 1.) {
             debug("not full block: x=%.1f y=%.1f z=%.1f",
@@ -91,8 +91,8 @@ public class BlockC extends Check {
 
             final boolean collided = rayTo.isCollided(box) || rayFrom.isCollided(box);
 
-            if(!collided) {
-                if(verbose.add() > 4) {
+            if (!collided) {
+                if (verbose.add() > 4) {
                     vl++;
                     flag("to=[x=%.1f y=%.1f z=%.1f yaw=%.1f pitch=%.1f] loc=[%.1f,%.1f,%.1f]",
                             to.x, to.y, to.z, to.yaw, from.pitch,

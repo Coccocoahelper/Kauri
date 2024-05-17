@@ -28,7 +28,7 @@ public class VelocityB extends Check {
 
     @Packet
     public void onUseEntity(WrappedInUseEntityPacket packet) {
-        if(!useEntity
+        if (!useEntity
                 && packet.getAction().equals(WrappedInUseEntityPacket.EnumEntityUseAction.ATTACK)) {
             useEntity = true;
         }
@@ -36,20 +36,20 @@ public class VelocityB extends Check {
 
     @Packet
     public void onFlying(WrappedInFlyingPacket packet, long timeStamp) {
-        if(data.playerInfo.cvc) {
+        if (data.playerInfo.cvc) {
             pvZ = data.playerInfo.velocityZ;
             pvX = data.playerInfo.velocityX;
             data.playerInfo.cvc = false;
             ticks = 0;
         }
-        if((pvX != 0 || pvZ != 0) && (data.playerInfo.deltaX != 0
+        if ((pvX != 0 || pvZ != 0) && (data.playerInfo.deltaX != 0
                 || data.playerInfo.deltaY != 0
                 || data.playerInfo.deltaZ != 0)) {
             boolean found = false;
 
             double drag = 0.91;
 
-            if(data.blockInfo.blocksNear
+            if (data.blockInfo.blocksNear
                     || data.blockInfo.blocksAbove
                     || data.blockInfo.inLiquid
                     || data.playerInfo.creative
@@ -58,16 +58,16 @@ public class VelocityB extends Check {
                 pvX = pvZ = 0;
                 buffer-= buffer > 0 ? 1 : 0;
                 return;
-            } else if(data.playerInfo.doingBlockUpdate) {
+            } else if (data.playerInfo.doingBlockUpdate) {
                 pvX = pvZ = 0;
                 return;
             }
 
-            if(data.playerInfo.lClientGround) {
+            if (data.playerInfo.lClientGround) {
                 drag*= data.blockInfo.fromFriction;
             }
 
-            if(useEntity && (sprint || (data.getPlayer().getItemInHand() != null
+            if (useEntity && (sprint || (data.getPlayer().getItemInHand() != null
                     && data.getPlayer().getItemInHand().containsEnchantment(Enchantment.KNOCKBACK)))) {
                 pvX*= 0.6;
                 pvZ*= 0.6;
@@ -117,7 +117,7 @@ public class VelocityB extends Check {
                         return (deltaX * deltaX + deltaZ * deltaZ);
                     }));
 
-            if(!velocity.isPresent()) {
+            if (!velocity.isPresent()) {
                 double s2 = data.predictionService.strafe;
                 double f2 = data.predictionService.forward;
 
@@ -138,13 +138,13 @@ public class VelocityB extends Check {
             double ratioX = data.playerInfo.deltaX / pvX, ratioZ = data.playerInfo.deltaZ / pvZ;
             double ratio = (Math.abs(ratioX) + Math.abs(ratioZ)) / 2;
 
-            if((ratio < 0.85 || ratio > 3) && pvX != 0
+            if ((ratio < 0.85 || ratio > 3) && pvX != 0
                     && pvZ != 0
                     && timeStamp - data.creation > 3000L
                     && data.playerInfo.lastTeleportTimer.isPassed(1)
                     && !data.getPlayer().getItemInHand().getType().isEdible()
                     && !data.blockInfo.blocksNear) {
-                if(data.playerInfo.lastUseItem.isPassed(2) && ++buffer > 30) {
+                if (data.playerInfo.lastUseItem.isPassed(2) && ++buffer > 30) {
                     vl++;
                     flag("pct=%.2f buffer=%.1f forward=%.2f strafe=%.2f",
                             ratio * 100, buffer, moveStrafe, moveForward);
@@ -160,13 +160,13 @@ public class VelocityB extends Check {
             pvX *= drag;
             pvZ *= drag;
 
-            if(++ticks > 6) {
+            if (++ticks > 6) {
                 ticks = 0;
                 pvX = pvZ = 0;
             }
 
-            if(Math.abs(pvX) < 0.005) pvX = 0;
-            if(Math.abs(pvZ) < 0.005) pvZ = 0;
+            if (Math.abs(pvX) < 0.005) pvX = 0;
+            if (Math.abs(pvZ) < 0.005) pvZ = 0;
         }
         sprint = data.playerInfo.sprinting;
         useEntity = false;

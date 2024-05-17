@@ -112,9 +112,9 @@ public class ObjectData implements Data {
                 || Atlas.getInstance().getBungeeManager().isAtlasBungeeInstalled();
 
         //Alerts from database update
-        if(getPlayer().hasPermission("kauri.command.alerts")) {
+        if (getPlayer().hasPermission("kauri.command.alerts")) {
             Kauri.INSTANCE.loggerManager.storage.alertsStatus(uuid, result -> {
-                if(result) {
+                if (result) {
                     synchronized (Kauri.INSTANCE.dataManager.hasAlerts) {
                         Kauri.INSTANCE.dataManager.hasAlerts.add(uuid.hashCode());
                     }
@@ -124,9 +124,9 @@ public class ObjectData implements Data {
             });
         }
 
-        if(getPlayer().hasPermission("kauri.command.alerts.dev")) {
+        if (getPlayer().hasPermission("kauri.command.alerts.dev")) {
             Kauri.INSTANCE.loggerManager.storage.devAlertsStatus(uuid, result -> {
-                if(result) {
+                if (result) {
                     synchronized (Kauri.INSTANCE.dataManager.devAlerts) {
                         Kauri.INSTANCE.dataManager.devAlerts.add(uuid.hashCode());
                     }
@@ -176,7 +176,7 @@ public class ObjectData implements Data {
         Kauri.INSTANCE.dataManager.hasAlerts.remove(uuid.hashCode());
         Kauri.INSTANCE.dataManager.devAlerts.remove(uuid.hashCode());
         Kauri.INSTANCE.dataManager.dataMap.remove(uuid.hashCode());
-        if(checkManager != null) {
+        if (checkManager != null) {
             checkManager.checkMethods.clear();
             checkManager.checks.clear();
             checkManager = null;
@@ -218,7 +218,7 @@ public class ObjectData implements Data {
         int[] toReturn = new int[] {0, 0};
         val op = Kauri.INSTANCE.keepaliveProcessor.getResponse(this);
 
-        if(op.isPresent()) {
+        if (op.isPresent()) {
             toReturn[0] = op.get().start;
             val op2 = op.get().getReceived(uuid);
 
@@ -274,7 +274,7 @@ public class ObjectData implements Data {
     }
 
     public void sendPacket(Object packet) {
-        if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_8)) {
+        if (ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_8)) {
             TinyProtocol1_8 tp = (TinyProtocol1_8) TinyProtocolHandler.getInstance();
             tp.sendPacket(tp.getChannel(player), packet);
         } else {
@@ -292,7 +292,7 @@ public class ObjectData implements Data {
     }
 
     public Player getPlayer() {
-        if(player == null) {
+        if (player == null) {
             this.player = Bukkit.getPlayer(uuid);
         }
         return this.player;
@@ -314,14 +314,14 @@ public class ObjectData implements Data {
         debugBoxes(debugging, debugger, new ObjectData[0]);
     }
     public static void debugBoxes(boolean debugging, Player debugger, ObjectData... targets) {
-        if(!debugging) {
+        if (!debugging) {
             List<ObjectData> toRemove = targets.length == 0
                     ? new ArrayList<>(Kauri.INSTANCE.dataManager.dataMap.values()) : Arrays.asList(targets);
 
             toRemove.stream()
                     .filter(d -> d.boxDebuggers.contains(debugger))
                     .forEach(d -> d.boxDebuggers.remove(debugger));
-        } else if(targets.length > 0) {
+        } else if (targets.length > 0) {
             Arrays.stream(targets).forEach(d -> d.boxDebuggers.add(debugger));
         }
     }

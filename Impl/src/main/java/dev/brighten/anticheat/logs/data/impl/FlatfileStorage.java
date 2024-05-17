@@ -70,7 +70,7 @@ public class FlatfileStorage implements DataStorage {
         });
 
         RunUtils.taskTimerAsync(() -> {
-            if(logs.size() > 0) {
+            if (logs.size() > 0) {
                 synchronized (logs) {
                     final StringBuilder values = new StringBuilder();
 
@@ -86,7 +86,7 @@ public class FlatfileStorage implements DataStorage {
                         objectsToInsert.add(log.tps);
                         objectsToInsert.add(log.info);
 
-                        if(++amount >= 150) break;
+                        if (++amount >= 150) break;
                     }
 
                     for (int i = 0; i < amount; i++) {
@@ -98,7 +98,7 @@ public class FlatfileStorage implements DataStorage {
                             .append(objectsToInsert.toArray());
 
 
-                    if(MySQLConfig.debugMessages)
+                    if (MySQLConfig.debugMessages)
                         Kauri.INSTANCE.getLogger().log(Level.INFO, "Inserted " + amount
                                 + " logs into the database.");
 
@@ -107,7 +107,7 @@ public class FlatfileStorage implements DataStorage {
                     objectsToInsert.clear();
                 }
             }
-            if(punishments.size() > 0) {
+            if (punishments.size() > 0) {
                 synchronized (punishments) {
                     final StringBuilder values = new StringBuilder();
 
@@ -119,7 +119,7 @@ public class FlatfileStorage implements DataStorage {
                         objectsToInsert.add(punishment.timeStamp);
                         objectsToInsert.add(punishment.checkName);
 
-                        if(++amount >= 150) break;
+                        if (++amount >= 150) break;
                     }
 
                     for (int i = 0; i < amount; i++) {
@@ -130,7 +130,7 @@ public class FlatfileStorage implements DataStorage {
                             "(`uuid`,`time`,`check`) values " + values)
                             .append(objectsToInsert.toArray());
                     
-                    if(MySQLConfig.debugMessages)
+                    if (MySQLConfig.debugMessages)
                         Kauri.INSTANCE.getLogger().log(Level.INFO, "Inserted " + amount
                                 + " punishments into the database.");
 
@@ -142,7 +142,7 @@ public class FlatfileStorage implements DataStorage {
 
     @Override
     public void shutdown() {
-        if(task != null) {
+        if (task != null) {
             task.cancel();
             task = null;
         }
@@ -160,7 +160,7 @@ public class FlatfileStorage implements DataStorage {
     public List<Log> getLogs(UUID uuid, Check check, int arrayMin, int arrayMax, long timeFrom, long timeTo) {
         List<Log> logs = new ArrayList<>();
 
-        if(uuid != null) {
+        if (uuid != null) {
             Query.prepare("select `time`, `vl`, `check`, `ping`, `tps`, `info` " +
                     "from `violations` where `uuid` = ?"+ (check != null ? " and where `check` = " + check.name : "")
                     + " and `time` between ? and ? order by `time` desc limit ?,?")
@@ -191,7 +191,7 @@ public class FlatfileStorage implements DataStorage {
     public List<Punishment> getPunishments(UUID uuid, int arrayMin, int arrayMax, long timeFrom, long timeTo) {
         List<Punishment> punishments = new ArrayList<>();
 
-        if(uuid != null) {
+        if (uuid != null) {
             Query.prepare("select `time`, `check` from `punishments` " +
                     "where `uuid` = ? and TIME between ? and ? order by `time` desc limit ?,?")
                     .append(uuid.toString()).append(timeFrom).append(timeTo).append(arrayMin).append(arrayMax)
@@ -217,10 +217,10 @@ public class FlatfileStorage implements DataStorage {
         Map<String, Log> logsMax = new HashMap<>();
 
         logs.forEach(log -> {
-            if(logsMax.containsKey(log.checkName)) {
+            if (logsMax.containsKey(log.checkName)) {
                 Log toCheck = logsMax.get(log.checkName);
 
-                if(toCheck.vl < log.vl) {
+                if (toCheck.vl < log.vl) {
                     logsMax.put(log.checkName, log);
                 }
             } else logsMax.put(log.checkName, log);
@@ -268,10 +268,10 @@ public class FlatfileStorage implements DataStorage {
            while(rs.next()) {
                String uuidString = rs.getString("uuid");
 
-               if(uuidString != null) {
+               if (uuidString != null) {
                    UUID uuid = UUID.fromString(rs.getString("uuid"));
 
-                   if(System.currentTimeMillis() - rs.getTimestamp("timestamp").getTime() > TimeUnit.DAYS.toMillis(1)) {
+                   if (System.currentTimeMillis() - rs.getTimestamp("timestamp").getTime() > TimeUnit.DAYS.toMillis(1)) {
                        Kauri.INSTANCE.loggingThread.execute(() -> {
                            Query.prepare("delete from `namecache` where `uuid` = ?").append(uuidString).execute();
                            MiscUtils.printToConsole("Deleted " + uuidString + " from name cache (age > 1 day).");
@@ -298,8 +298,8 @@ public class FlatfileStorage implements DataStorage {
            while(rs.next()) {
                String name = rs.getString("name");
 
-               if(name != null) {
-                   if(System.currentTimeMillis() - rs.getTimestamp("timestamp").getTime() > TimeUnit.DAYS.toMillis(1)) {
+               if (name != null) {
+                   if (System.currentTimeMillis() - rs.getTimestamp("timestamp").getTime() > TimeUnit.DAYS.toMillis(1)) {
                        Kauri.INSTANCE.loggingThread.execute(() -> {
                            Query.prepare("delete from `namecache` where `name` = ?").append(name).execute();
                            MiscUtils.printToConsole("Deleted " + name + " from name cache (age > 1 day).");
@@ -317,7 +317,7 @@ public class FlatfileStorage implements DataStorage {
     @Override
     public void updateAlerts(UUID uuid, boolean alertsEnabled) {
         Kauri.INSTANCE.loggingThread.execute(() -> {
-            if(alertsEnabled) {
+            if (alertsEnabled) {
                 Query.prepare("insert into `alerts` (`uuid`) values (?)")
                         .append(uuid.toString()).execute();
             } else Query.prepare("delete from `alerts` where `uuid` = ?").append(uuid.toString()).execute();
@@ -327,7 +327,7 @@ public class FlatfileStorage implements DataStorage {
     @Override
     public void updateDevAlerts(UUID uuid, boolean devAlertsEnabled) {
         Kauri.INSTANCE.loggingThread.execute(() -> {
-            if(devAlertsEnabled) {
+            if (devAlertsEnabled) {
                 Query.prepare("insert into `dev_alerts` (`uuid`) values (?)")
                         .append(uuid.toString()).execute();
             } else Query.prepare("delete from `dev_alerts` where `uuid` = ?").append(uuid.toString()).execute();

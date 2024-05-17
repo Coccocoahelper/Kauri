@@ -46,20 +46,20 @@ public class BukkitListener implements Listener {
     public void onLeave(PlayerQuitEvent event) {
         ThreadHandler.INSTANCE.removePlayer(event.getPlayer());
         //Removing if the player has debug access so there aren't any null objects left to cause problems later.
-        if(event.getPlayer().hasPermission("kauri.debug"))
+        if (event.getPlayer().hasPermission("kauri.debug"))
             ObjectData.debugBoxes(false, event.getPlayer());
         ObjectData data = Kauri.INSTANCE.dataManager.getData(event.getPlayer());
-        if(data != null) data.unregister();
+        if (data != null) data.unregister();
     }
 
     @EventHandler
     public void onInteract(PlayerInteractEvent event) {
         //Packet exemption check
-        if(KauriAPI.INSTANCE.getPacketExemptedPlayers().contains(event.getPlayer().getUniqueId())) return;
+        if (KauriAPI.INSTANCE.getPacketExemptedPlayers().contains(event.getPlayer().getUniqueId())) return;
 
-        if(event.getClickedBlock() == null || !event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) return;
+        if (event.getClickedBlock() == null || !event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) return;
 
-        if(event.getItem() != null && event.getItem().isSimilar(MAGIC_WAND)) {
+        if (event.getItem() != null && event.getItem().isSimilar(MAGIC_WAND)) {
             BlockData data = BlockData.getData(event.getClickedBlock().getType());
 
             CollisionBox box = data.getBox(event.getClickedBlock(), ProtocolVersion.getGameVersion());
@@ -82,7 +82,7 @@ public class BukkitListener implements Listener {
                 event.getPlayer().sendMessage("x=" + subbed.getX() + " y=" + subbed.getY() + " z=" + subbed.getZ());
             }
 
-            if(BlockUtils.isDoor(event.getClickedBlock())) {
+            if (BlockUtils.isDoor(event.getClickedBlock())) {
                 int direction = (int) BlockStateManager.getInterface("facing", event.getClickedBlock());
                 boolean open = (boolean) BlockStateManager.getInterface("open", event.getClickedBlock());
                 boolean hinge = (boolean) BlockStateManager.getInterface("hinge", event.getClickedBlock());
@@ -100,13 +100,13 @@ public class BukkitListener implements Listener {
     @EventHandler(priority = EventPriority.MONITOR)
     public void onBlockPlace(BlockPlaceEvent event) {
         //Packet exemption check
-        if(KauriAPI.INSTANCE.getPacketExemptedPlayers().contains(event.getPlayer().getUniqueId())) return;
+        if (KauriAPI.INSTANCE.getPacketExemptedPlayers().contains(event.getPlayer().getUniqueId())) return;
 
         ObjectData data = Kauri.INSTANCE.dataManager.getData(event.getPlayer());
 
-        if(data == null || event.getBlockPlaced() == null) return;
+        if (data == null || event.getBlockPlaced() == null) return;
 
-        if(event.isCancelled()) {
+        if (event.isCancelled()) {
             data.ghostBlocks.put(event.getBlockPlaced().getLocation(),
                     BlockData.getData(event.getBlockPlaced().getType())
                             .getBox(event.getBlockPlaced(), data.playerVersion));
@@ -116,11 +116,11 @@ public class BukkitListener implements Listener {
     @EventHandler
     public void onEntityInteract(PlayerInteractEntityEvent event) {
         //Packet exemption check
-        if(KauriAPI.INSTANCE.getPacketExemptedPlayers().contains(event.getPlayer().getUniqueId())) return;
+        if (KauriAPI.INSTANCE.getPacketExemptedPlayers().contains(event.getPlayer().getUniqueId())) return;
 
-        if(event.getPlayer().getItemInHand() == null
+        if (event.getPlayer().getItemInHand() == null
                 || !event.getPlayer().getItemInHand().isSimilar(MAGIC_WAND)) return;
-        if(MiscUtils.entityDimensions.containsKey(event.getRightClicked().getType())) {
+        if (MiscUtils.entityDimensions.containsKey(event.getRightClicked().getType())) {
             Vector dimension = MiscUtils.entityDimensions.get(event.getRightClicked().getType());
 
             SimpleCollisionBox box = new SimpleCollisionBox(event.getRightClicked().getLocation().toVector(), event.getRightClicked().getLocation().toVector())
@@ -146,7 +146,7 @@ public class BukkitListener implements Listener {
 
     private static String vectorString = "{%1$.2f, %2$.2f, %3$.2f}";
     private static String boxToString(CollisionBox box) {
-        if(box instanceof SimpleCollisionBox) {
+        if (box instanceof SimpleCollisionBox) {
             SimpleCollisionBox sbox = (SimpleCollisionBox) box;
             return "SimpleCollisionBox[" + vectorToString(sbox.toBoundingBox().getMinimum())
                     + ", " + vectorToString(sbox.toBoundingBox().getMaximum()) + "]";

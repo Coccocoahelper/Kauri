@@ -64,7 +64,7 @@ public class MySQLStorage implements DataStorage {
         });
 
         task = Kauri.INSTANCE.loggingThread.scheduleAtFixedRate(() -> {
-            if(logs.size() > 0) {
+            if (logs.size() > 0) {
                 synchronized (logs) {
                     final StringBuilder values = new StringBuilder();
 
@@ -80,7 +80,7 @@ public class MySQLStorage implements DataStorage {
                         objectsToInsert.add(log.tps);
                         objectsToInsert.add(log.info);
 
-                        if(++amount >= 150) break;
+                        if (++amount >= 150) break;
                     }
 
                     for (int i = 0; i < amount; i++) {
@@ -92,7 +92,7 @@ public class MySQLStorage implements DataStorage {
                             .append(objectsToInsert.toArray());
 
 
-                    if(MySQLConfig.debugMessages)
+                    if (MySQLConfig.debugMessages)
                         Kauri.INSTANCE.getLogger().log(Level.INFO, "Inserted " + amount
                                 + " logs into the database.");
 
@@ -101,7 +101,7 @@ public class MySQLStorage implements DataStorage {
                     objectsToInsert.clear();
                 }
             }
-            if(punishments.size() > 0) {
+            if (punishments.size() > 0) {
                 synchronized (punishments) {
                     String values = IntStream.range(0, Math.min(punishments.size(), 150)).mapToObj(i -> "(?,?,?)")
                             .collect(Collectors.joining(","));
@@ -115,10 +115,10 @@ public class MySQLStorage implements DataStorage {
                         statement = statement.append(punishment.uuid.toString()).append(punishment.uuid.toString())
                                 .append(punishment.timeStamp).append(punishment.checkName);
 
-                        if(++amount >= 150) break;
+                        if (++amount >= 150) break;
                     }
 
-                    if(MySQLConfig.debugMessages)
+                    if (MySQLConfig.debugMessages)
                         Kauri.INSTANCE.getLogger().log(Level.INFO, "Inserted " + amount
                                 + " punishments into the database.");
 
@@ -146,7 +146,7 @@ public class MySQLStorage implements DataStorage {
     public List<Log> getLogs(UUID uuid, Check check, int arrayMin, int arrayMax, long timeFrom, long timeTo) {
         List<Log> logs = new ArrayList<>();
 
-        if(uuid != null) {
+        if (uuid != null) {
             Query.prepare("SELECT `TIME`, `vl`, `CHECK`, `PING`, `TPS`, `INFO` " +
                     "FROM `VIOLATIONS` WHERE `UUID` = ?"+ (check != null ? " AND WHERE `CHECK` = " + check.name : "")
                     + " AND `TIME` BETWEEN ? AND ? ORDER BY `TIME` DESC LIMIT ?,?")
@@ -176,7 +176,7 @@ public class MySQLStorage implements DataStorage {
     public List<Punishment> getPunishments(UUID uuid, int arrayMin, int arrayMax, long timeFrom, long timeTo) {
         List<Punishment> punishments = new ArrayList<>();
 
-        if(uuid != null) {
+        if (uuid != null) {
             Query.prepare("SELECT `TIME`, `CHECK` FROM `PUNISHMENTS` " +
                     "WHERE `UUID` = ? AND TIME BETWEEN ? AND ? ORDER BY `TIME` DESC LIMIT ?,?")
                     .append(uuid.toString()).append(timeFrom).append(timeTo).append(arrayMin).append(arrayMax)
@@ -247,10 +247,10 @@ public class MySQLStorage implements DataStorage {
 
             String uuidString = rs.getString("UUID");
 
-            if(uuidString != null) {
+            if (uuidString != null) {
                 UUID uuid = UUID.fromString(rs.getString("UUID"));
 
-                if(System.currentTimeMillis() - rs.getLong("TIMESTAMP") > TimeUnit.DAYS.toMillis(1)) {
+                if (System.currentTimeMillis() - rs.getLong("TIMESTAMP") > TimeUnit.DAYS.toMillis(1)) {
                     Kauri.INSTANCE.loggingThread.execute(() -> {
                         Query.prepare("DELETE FROM `NAMECACHE` WHERE `UUID` = ?").append(uuidString).execute();
                         MiscUtils.printToConsole("Deleted " + uuidString + " from name cache (age > 1 day).");
@@ -275,8 +275,8 @@ public class MySQLStorage implements DataStorage {
 
             String name = rs.getString("NAME");
 
-            if(name != null) {
-                if(System.currentTimeMillis() - rs.getLong("TIMESTAMP") > TimeUnit.DAYS.toMillis(1)) {
+            if (name != null) {
+                if (System.currentTimeMillis() - rs.getLong("TIMESTAMP") > TimeUnit.DAYS.toMillis(1)) {
                     Kauri.INSTANCE.loggingThread.execute(() -> {
                         Query.prepare("DELETE FROM `NAMECACHE` WHERE `NAME` = ?").append(name).execute();
                         MiscUtils.printToConsole("Deleted " + name + " from name cache (age > 1 day).");
@@ -293,7 +293,7 @@ public class MySQLStorage implements DataStorage {
     @Override
     public void updateAlerts(UUID uuid, boolean alertsEnabled) {
         Kauri.INSTANCE.loggingThread.execute(() -> {
-            if(alertsEnabled) {
+            if (alertsEnabled) {
                 Query.prepare("insert into `ALERTS` (`UUID`) values (?)")
                         .append(uuid.toString()).execute();
             } else Query.prepare("delete from `ALERTS` where `UUID` = ?").append(uuid.toString()).execute();
@@ -303,7 +303,7 @@ public class MySQLStorage implements DataStorage {
     @Override
     public void updateDevAlerts(UUID uuid, boolean devAlertsEnabled) {
         Kauri.INSTANCE.loggingThread.execute(() -> {
-            if(devAlertsEnabled) {
+            if (devAlertsEnabled) {
                 Query.prepare("insert into `DEV_ALERTS` (`UUID`) values (?)")
                         .append(uuid.toString()).execute();
             } else Query.prepare("delete from `DEV_ALERTS` where `UUID` = ?").append(uuid.toString()).execute();

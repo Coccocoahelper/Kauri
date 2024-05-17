@@ -20,19 +20,19 @@ public class HandA extends Check {
     @Packet
     public void use(WrappedInBlockPlacePacket packet, long current) {
         long delta = current - lastFlying;
-        if(delta < 10 && data.lagInfo.lastPacketDrop.isPassed(1)) {
-            if(++buffer > 7) {
+        if (delta < 10 && data.lagInfo.lastPacketDrop.isPassed(1)) {
+            if (++buffer > 7) {
                 vl++;
                 flag("delta=%s", delta);
             }
-        } else if(buffer > 0) buffer--;
+        } else if (buffer > 0) buffer--;
 
         debug("delta=%sms buffer=%s", delta, buffer);
     }
 
     @Packet
     public void flying(WrappedInFlyingPacket packet, long current) {
-        if(data.playerInfo.lastTeleportTimer.isPassed(0) && !data.excuseNextFlying)
+        if (data.playerInfo.lastTeleportTimer.isPassed(0) && !data.excuseNextFlying)
             lastFlying = current;
     }
 }

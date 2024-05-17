@@ -54,7 +54,7 @@ public class ExemptHandler {
 
     @Deprecated
     public boolean isExempt(UUID uuid, KauriCheck... checks) {
-        if(!exemptions.containsKey(uuid)) return false;
+        if (!exemptions.containsKey(uuid)) return false;
 
         return isExempt(uuid, Arrays.stream(checks).map(KauriCheck::getCheckType).toArray(CheckType[]::new));
     }
@@ -72,7 +72,7 @@ public class ExemptHandler {
     }
 
     public Optional<Exemption> getPlayerExemption(UUID uuid) {
-        if(!exemptions.containsKey(uuid)) return Optional.empty();
+        if (!exemptions.containsKey(uuid)) return Optional.empty();
 
         return Optional.of(exemptions.get(uuid));
     }

@@ -30,7 +30,7 @@ public class WrappedCheck {
 
         methodIndex = this.access.getIndex(method.getName(), method.getMethod().getParameterTypes());
 
-        if(!oneParam) {
+        if (!oneParam) {
             isTick = method.getMethod().getParameterTypes()[1] == int.class;
             isTimeStamp = !isTick;
         }
@@ -39,9 +39,9 @@ public class WrappedCheck {
     }
 
     public boolean isCompatible() {
-        if(didVersionCheck) return canRunWithVersion;
+        if (didVersionCheck) return canRunWithVersion;
 
-        if(!check.data.playerVersion.equals(ProtocolVersion.UNKNOWN)) {
+        if (!check.data.playerVersion.equals(ProtocolVersion.UNKNOWN)) {
             didVersionCheck = true;
             return this.canRunWithVersion = check.data.playerVersion.isOrBelow(check.maxVersion)
                     && check.data.playerVersion.isOrAbove(check.minVersion);

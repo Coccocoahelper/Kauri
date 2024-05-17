@@ -20,7 +20,7 @@ public class KillauraG extends Check {
 
     @Packet
     public void onUse(WrappedInUseEntityPacket packet) {
-        if(packet.getAction() == WrappedInUseEntityPacket.EnumEntityUseAction.ATTACK
+        if (packet.getAction() == WrappedInUseEntityPacket.EnumEntityUseAction.ATTACK
                 && sent
                 && data.playerInfo.lastFlyingTimer.isNotPassed(1)) {
             vl++;

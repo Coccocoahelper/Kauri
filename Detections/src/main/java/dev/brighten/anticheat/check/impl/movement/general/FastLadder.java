@@ -25,13 +25,13 @@ public class FastLadder extends Check {
 
     @Packet
     public void onFlying(WrappedInFlyingPacket packet) {
-        if(packet.isPos()
+        if (packet.isPos()
                 && data.playerInfo.lastVelocity.isPassed(10)
                 && data.blockInfo.onClimbable
                 && !data.playerInfo.generalCancel) {
-            if(data.playerInfo.jumped) lastJump.reset();
-            if(data.playerInfo.deltaY > (lastJump.isNotPassed() ? data.playerInfo.jumpHeight : 0.144)) {
-                if((vl+=(data.playerInfo.deltaY > data.playerInfo.jumpHeight * 1.5 ? 10 : 1)) > 8) {
+            if (data.playerInfo.jumped) lastJump.reset();
+            if (data.playerInfo.deltaY > (lastJump.isNotPassed() ? data.playerInfo.jumpHeight : 0.144)) {
+                if ((vl+=(data.playerInfo.deltaY > data.playerInfo.jumpHeight * 1.5 ? 10 : 1)) > 8) {
                     flag("deltaY=" + data.playerInfo.deltaY);
                 }
             } else vl-= vl > 0 ? 0.5f : 0;

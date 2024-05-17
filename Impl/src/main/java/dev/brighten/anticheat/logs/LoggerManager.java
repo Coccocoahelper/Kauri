@@ -19,9 +19,9 @@ public class LoggerManager {
     public DataStorage storage;
 
     public LoggerManager() {
-        if(MongoConfig.enabled) {
+        if (MongoConfig.enabled) {
             storage = new MongoStorage();
-        } else if(MySQLConfig.enabled) {
+        } else if (MySQLConfig.enabled) {
             storage = new MySQLStorage();
         } else storage = new FlatfileStorage();
     }

@@ -19,9 +19,9 @@ public class BadPacketsA extends Check {
 
     @Packet
     public void onDig(WrappedInBlockDigPacket packet, long timeStamp) {
-        if(timeStamp - lastBlockPlace < 5 && !data.lagInfo.lagging
+        if (timeStamp - lastBlockPlace < 5 && !data.lagInfo.lagging
                 && data.lagInfo.lastPacketDrop.isPassed(5)) {
-            if(vl++ > 4) {
+            if (vl++ > 4) {
                 flag("unblocked and blocked in same tick.");
             }
         } else vl-= vl > 0 ? 0.5 : 0;
@@ -29,7 +29,7 @@ public class BadPacketsA extends Check {
 
     @Packet
     public void onPlace(WrappedInBlockPlacePacket packet, long timeStamp) {
-        if(packet.getPlayer().getItemInHand() != null
+        if (packet.getPlayer().getItemInHand() != null
                 && BlockUtils.isTool(packet.getPlayer().getItemInHand())) lastBlockPlace = timeStamp;
     }
 }

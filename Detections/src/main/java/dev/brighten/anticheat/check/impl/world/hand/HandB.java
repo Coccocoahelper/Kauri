@@ -20,8 +20,8 @@ public class HandB extends Check {
     public void onDig(WrappedInBlockDigPacket packet, long timeStamp) {
         long delta = timeStamp - lastFlying;
 
-        if(!data.lagInfo.lagging && data.lagInfo.lastPacketDrop.isPassed(5) && delta < 10) {
-            if(vl++ > 6) {
+        if (!data.lagInfo.lagging && data.lagInfo.lastPacketDrop.isPassed(5) && delta < 10) {
+            if (vl++ > 6) {
                 flag("delta=%sms action=%s", delta, packet.getAction().name());
             }
         } else vl-= vl > 0 ? 1f : 0;
@@ -31,7 +31,7 @@ public class HandB extends Check {
 
     @Packet
     public void onFlying(WrappedInFlyingPacket packet, long current) {
-        if(data.playerInfo.lastTeleportTimer.isPassed(0))
+        if (data.playerInfo.lastTeleportTimer.isPassed(0))
             lastFlying = current;
     }
 }

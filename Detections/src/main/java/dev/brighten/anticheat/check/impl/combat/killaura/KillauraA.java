@@ -25,12 +25,12 @@ public class KillauraA extends Check {
 
     @Packet
     public void onUse(WrappedInUseEntityPacket packet) {
-        if(data.target == null
+        if (data.target == null
                 || packet.getAction() != WrappedInUseEntityPacket.EnumEntityUseAction.ATTACK)
             return;
 
         //We can't run this check if we have no block boxes to check!
-        if(data.getLookingAtBoxes().size() == 0) {
+        if (data.getLookingAtBoxes().size() == 0) {
             debug("No block boxes to look at");
             buffer = 0; //Resetting buffer
             return;
@@ -39,7 +39,7 @@ public class KillauraA extends Check {
         //Get a single target box.
         SimpleCollisionBox targetBox = (SimpleCollisionBox) EntityData.getEntityBox(data.target.getLocation(), data.target);
 
-        if(targetBox == null) return;
+        if (targetBox == null) return;
 
         KLocation origin = data.playerInfo.to.clone();
 
@@ -49,7 +49,7 @@ public class KillauraA extends Check {
 
         Vector targetPoint = ray.collisionPoint(targetBox);
         //If the ray isn't collided, we might as well not run this check. Just a simple boxes on array check
-        if(targetPoint == null) return;
+        if (targetPoint == null) return;
 
         double dist = origin.toVector().distanceSquared(targetPoint);
 
@@ -57,10 +57,10 @@ public class KillauraA extends Check {
 
         synchronized (data.getLookingAtBoxes()) {
             for (CollisionBox lookingAtBox : data.getLookingAtBoxes()) {
-                if((lookingAtBox instanceof SimpleCollisionBox)) {
+                if ((lookingAtBox instanceof SimpleCollisionBox)) {
                     SimpleCollisionBox box = (SimpleCollisionBox) lookingAtBox;
                     
-                    if(box.xMin % 1 != 0 || box.yMin % 1 != 0 || box.zMin % 1 != 0 
+                    if (box.xMin % 1 != 0 || box.yMin % 1 != 0 || box.zMin % 1 != 0 
                             || box.xMax % 1 != 0 || box.yMax % 1 != 0 || box.zMax % 1 != 0)
                         continue;
 
@@ -73,12 +73,12 @@ public class KillauraA extends Check {
                 }
             }
 
-            if(rayCollidedOnBlock) {
-                if(++buffer > 2) {
+            if (rayCollidedOnBlock) {
+                if (++buffer > 2) {
                     vl++;
                     flag("b=%s s=%s", buffer, data.getLookingAtBoxes().size());
                 }
-            } else if(buffer > 0) buffer--;
+            } else if (buffer > 0) buffer--;
         }
 
         debug("b=%s collides=%s", buffer, rayCollidedOnBlock);

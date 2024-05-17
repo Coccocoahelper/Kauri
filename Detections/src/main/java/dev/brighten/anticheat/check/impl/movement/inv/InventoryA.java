@@ -22,8 +22,8 @@ public class InventoryA extends Check {
 
     @Packet
     public void onWindow(WrappedInWindowClickPacket packet) {
-        if(data.playerInfo.lastFlyingTimer.isPassed(2)) moveStreak = 0;
-        if(moveStreak > 5 && data.playerInfo.lastVelocity.isPassed(20))  {
+        if (data.playerInfo.lastFlyingTimer.isPassed(2)) moveStreak = 0;
+        if (moveStreak > 5 && data.playerInfo.lastVelocity.isPassed(20))  {
             vl++;
             flag("slot=%s clickType=%s ms=%s o=%s", packet.getSlot(), packet.getAction().name(), moveStreak,
                     data.playerInfo.inventoryOpen);
@@ -32,7 +32,7 @@ public class InventoryA extends Check {
 
     @Packet
     public void onFlyng(WrappedInFlyingPacket packet) {
-        if(packet.isPos()
+        if (packet.isPos()
                 && data.playerInfo.deltaXZ > 0
                 && data.playerInfo.liquidTimer.isPassed(2)
                 && data.playerInfo.climbTimer.isPassed(3)

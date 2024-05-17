@@ -20,7 +20,7 @@ public class PotionProcessor {
 
     public void onFlying(WrappedInFlyingPacket packet) {
         for (PotionEffect effect : potionEffects) {
-            if(packet.getPlayer().hasPotionEffect(effect.getType())) continue;
+            if (packet.getPlayer().hasPotionEffect(effect.getType())) continue;
 
             data.runKeepaliveAction(d -> data.potionProcessor.potionEffects.remove(effect));
         }
@@ -39,7 +39,7 @@ public class PotionProcessor {
 
     public boolean hasPotionEffect(PotionEffectType type) {
         for (PotionEffect potionEffect : potionEffects) {
-            if(potionEffect.getType().equals(type))
+            if (potionEffect.getType().equals(type))
                 return true;
         }
         return false;
@@ -47,7 +47,7 @@ public class PotionProcessor {
 
     public Optional<PotionEffect> getEffectByType(PotionEffectType type) {
         for (PotionEffect potionEffect : potionEffects) {
-            if(potionEffect.getType().equals(type))
+            if (potionEffect.getType().equals(type))
                 return Optional.of(potionEffect);
         }
         return Optional.empty();

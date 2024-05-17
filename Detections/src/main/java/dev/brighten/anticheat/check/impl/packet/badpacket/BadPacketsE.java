@@ -20,8 +20,8 @@ public class BadPacketsE extends Check {
 
     @Packet
     public void onFlying(WrappedInFlyingPacket packet, long now) {
-        if(!packet.isPos()) {
-            if(++noPosTicks > 1
+        if (!packet.isPos()) {
+            if (++noPosTicks > 1
                     && now - data.creation > 2000L
                     && data.playerInfo.lastTeleportTimer.isPassed(2)
                     && lastGround != packet.isGround()

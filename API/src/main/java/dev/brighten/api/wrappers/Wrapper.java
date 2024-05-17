@@ -30,7 +30,7 @@ public class Wrapper {
         assert object != null;
 
         return cachedFields.compute(wrappedClass.getParent().getName() + ";;;" + fieldName, (key, field) -> {
-            if(field != null) return field;
+            if (field != null) return field;
 
             return wrappedClass.getFieldByName(fieldName);
         }).get(object);
@@ -42,7 +42,7 @@ public class Wrapper {
         return cachedMethods.compute(wrappedClass.getParent().getName() + ";;;" + methodName + ";;;"
                 + Arrays.stream(parameters).map(ob -> ob.getClass().getSimpleName())
                         .collect(Collectors.joining(",")), (key, field) -> {
-            if(field != null) return field;
+            if (field != null) return field;
 
             return wrappedClass.getMethod(methodName);
         }).invoke(object, parameters);

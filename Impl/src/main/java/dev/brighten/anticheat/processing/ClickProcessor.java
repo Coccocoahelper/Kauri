@@ -42,9 +42,9 @@ public class ClickProcessor {
     public void onArm(WrappedInArmAnimationPacket packet, long timeStamp) {
         long delta = flyingTicks;
 
-        if(data.playerInfo.breakingBlock) cpsList.clear();
+        if (data.playerInfo.breakingBlock) cpsList.clear();
 
-        if(delta < 15
+        if (delta < 15
                 && !data.playerInfo.breakingBlock
                 && !data.playerInfo.lookingAtBlock
                 && data.playerInfo.lastBlockPlacePacket.isPassed(1)
@@ -53,7 +53,7 @@ public class ClickProcessor {
             cpsList.add(delta);
 
             zeros = cpsList.stream().filter(dt -> dt <= 2).count();
-            if(cpsList.size() >= 20) {
+            if (cpsList.size() >= 20) {
                 outliersTuple = MiscUtils.getOutliersLong(cpsList);
                 outliers = (lowOutliers = outliersTuple.one.size()) + (highOutliers = outliersTuple.two.size());
             }
@@ -63,7 +63,7 @@ public class ClickProcessor {
             sum = 0;
             for (Long v : cpsList) {
                 sum+= v;
-                if(v > 20) {
+                if (v > 20) {
                     min = Math.min(v, min);
                     max = Math.max(v, max);
                 }

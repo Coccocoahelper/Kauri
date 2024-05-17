@@ -28,14 +28,14 @@ public class NoFallA extends Check {
                 || !packet.isPos()
                 || (data.playerInfo.deltaXZ == 0 && data.playerInfo.deltaY == 0)
                 || (data.blockInfo.inWater /* && Todo: T1 */)) {
-            if(buffer > 0) buffer-= 0.5f;
+            if (buffer > 0) buffer-= 0.5f;
             return;
         }
 
         boolean onGround = packet.isGround();
         boolean flag = false;
 
-        if(onGround) {
+        if (onGround) {
             flag = Math.abs(data.playerInfo.deltaY) > 0.0051
                     // Precautionary since it causes falses with onGround = false
                     && data.playerInfo.slimeTimer.isPassed(2)
@@ -55,12 +55,12 @@ public class NoFallA extends Check {
                     && data.playerInfo.slimeTimer.isPassed(2);
         }
 
-        if(flag) {
-            if(++buffer > 1) {
+        if (flag) {
+            if (++buffer > 1) {
                 vl++;
                 flag("g=%s;dy=%.4f;ldy=%.4f", onGround, data.playerInfo.deltaY, data.playerInfo.lDeltaY);
             }
-        } else if(buffer > 0) buffer-= 0.25f;
+        } else if (buffer > 0) buffer-= 0.25f;
 
         debug("[%.1f] g=%s;dy=%.4f;ldy=%.4f",
                 buffer, onGround, data.playerInfo.deltaY, data.playerInfo.lDeltaY);

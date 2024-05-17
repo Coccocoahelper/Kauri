@@ -71,7 +71,7 @@ public class EntityLocation {
     public void interpolateLocation() {
         oldLocation = new KLocation(x, y, z, yaw, pitch);
         oldLocations.add(oldLocation);
-        if(increment > 0) {
+        if (increment > 0) {
             double d0 = x + (newX - x) / increment;
             double d1 = y + (newY - y) / increment;
             double d2 = z + (newZ - z) / increment;

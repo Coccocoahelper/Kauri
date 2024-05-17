@@ -48,7 +48,7 @@ public class EntityLocationProcessor {
      *
      */
     void onFlying() {
-        if(lastFlying.isNotPassed(1)) streak++;
+        if (lastFlying.isNotPassed(1)) streak++;
         else {
             streak = 1;
         }
@@ -66,24 +66,24 @@ public class EntityLocationProcessor {
     void onRelPosition(WrappedOutRelativePosition packet) {
         Optional<Entity> op = Atlas.getInstance().getWorldInfo(data.getPlayer().getWorld()).getEntity(packet.getId());
 
-        if(!op.isPresent()) return;
+        if (!op.isPresent()) return;
 
         Entity entity = op.get();
 
-        if(!allowedEntityTypes.contains(entity.getType())) return;
+        if (!allowedEntityTypes.contains(entity.getType())) return;
 
         EntityLocation eloc = entityLocationMap.computeIfAbsent(entity.getUniqueId(),
                 key -> new EntityLocation(entity));
 
         runAction(entity, () -> {
             //We don't need to do version checking here. Atlas handles this for us.
-            if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_9)) {
+            if (ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_9)) {
                 eloc.newX += (byte)packet.getX() / 32D;
                 eloc.newY += (byte)packet.getY() / 32D;
                 eloc.newZ += (byte)packet.getZ() / 32D;
                 eloc.newYaw += (float)(byte)packet.getYaw() / 256.0F * 360.0F;
                 eloc.newPitch += (float)(byte)packet.getPitch() / 256.0F * 360.0F;
-            } else if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_14)) {
+            } else if (ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_14)) {
                 eloc.newX += (int)packet.getX() / 4096D;
                 eloc.newY += (int)packet.getY() / 4096D;
                 eloc.newZ += (int)packet.getZ() / 4096D;
@@ -110,17 +110,17 @@ public class EntityLocationProcessor {
     void onTeleportSent(WrappedOutEntityTeleportPacket packet) {
         Optional<Entity> op = Atlas.getInstance().getWorldInfo(data.getPlayer().getWorld()).getEntity(packet.entityId);
 
-        if(!op.isPresent()) return;
+        if (!op.isPresent()) return;
 
         Entity entity = op.get();
 
-        if(!allowedEntityTypes.contains(entity.getType())) return;
+        if (!allowedEntityTypes.contains(entity.getType())) return;
 
         EntityLocation eloc = entityLocationMap.computeIfAbsent(entity.getUniqueId(),
                 key -> new EntityLocation(entity));
 
         runAction(entity, () -> {
-            if(data.playerVersion.isOrAbove(ProtocolVersion.V1_9)) {
+            if (data.playerVersion.isOrAbove(ProtocolVersion.V1_9)) {
                 if (!(Math.abs(eloc.x - packet.x) >= 0.03125D)
                         && !(Math.abs(eloc.y - packet.y) >= 0.015625D)
                         && !(Math.abs(eloc.z - packet.z) >= 0.03125D)) {
@@ -165,13 +165,13 @@ public class EntityLocationProcessor {
      * @param action Runnable
      */
     private void runAction(Entity entity, Runnable action) {
-        if(data.target != null && data.target.getEntityId() == entity.getEntityId()) {
+        if (data.target != null && data.target.getEntityId() == entity.getEntityId()) {
             AtomicLong start = new AtomicLong();
             data.runInstantAction(ia -> {
-                if(!ia.isEnd()) {
+                if (!ia.isEnd()) {
                     long delta = System.currentTimeMillis() - start.get();
 
-                    if(delta > 10) {
+                    if (delta > 10) {
                         lastProblem.reset();
                     }
                     action.run();

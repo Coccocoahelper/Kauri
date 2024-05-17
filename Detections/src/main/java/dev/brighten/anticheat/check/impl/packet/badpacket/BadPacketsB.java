@@ -17,10 +17,10 @@ public class BadPacketsB extends Check {
     private MaxInteger ticks = new MaxInteger(Integer.MAX_VALUE);
     @Packet
     public void onPlace(WrappedInEntityActionPacket action, long timeStamp) {
-        if(action.getAction().name().contains("SNEAK")) {
-            if(timeStamp - lastSneak <= 10) {
+        if (action.getAction().name().contains("SNEAK")) {
+            if (timeStamp - lastSneak <= 10) {
                 ticks.add();
-                if(ticks.value() > 80) {
+                if (ticks.value() > 80) {
                     vl++;
                     flag("ticks=%s", ticks.value());
                 }

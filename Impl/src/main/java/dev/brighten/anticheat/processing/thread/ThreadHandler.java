@@ -26,7 +26,7 @@ public class ThreadHandler {
 
     public PlayerThread getThread(ObjectData player) {
         synchronized (threadCorrelations) {
-            if(threadCorrelations.containsKey(player.getUUID())) {
+            if (threadCorrelations.containsKey(player.getUUID())) {
                 return services.get(threadCorrelations.get(player.getUUID()));
             }
 
@@ -47,7 +47,7 @@ public class ThreadHandler {
 
     public void removePlayer(Player player) {
         synchronized (threadCorrelations) {
-            if(threadCorrelations.containsKey(player.getUniqueId())) {
+            if (threadCorrelations.containsKey(player.getUniqueId())) {
                 int index = threadCorrelations.remove(player.getUniqueId());
 
                 services.get(index).subtractCount();

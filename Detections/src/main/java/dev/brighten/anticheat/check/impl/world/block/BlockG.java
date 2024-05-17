@@ -19,7 +19,7 @@ public class BlockG extends Check {
 
     @Packet
     public void onFlying(WrappedInFlyingPacket packet) {
-        if(packet.isLook()) {
+        if (packet.isLook()) {
             aimCount++;
             rotChange+= Math.abs(data.playerInfo.deltaYaw) + Math.abs(data.playerInfo.deltaPitch);
         }
@@ -28,11 +28,11 @@ public class BlockG extends Check {
     @Event
     public void onBlockPlace(BlockPlaceEvent event) {
         BlockFace face = event.getBlockPlaced().getFace(event.getBlockAgainst());
-        if((Math.abs(aimCount - lastAimCount) <= 1 && aimCount > 2 && rotChange > 100)
+        if ((Math.abs(aimCount - lastAimCount) <= 1 && aimCount > 2 && rotChange > 100)
                 || (aimCount <= 5 && rotChange > 300
                 && event.getPlayer().getLocation().distanceSquared(event.getBlockPlaced().getLocation()) <= 4
                 && event.getPlayer().getLocation().getY() > event.getBlockPlaced().getY() + 0.8)) {
-            if(++buffer > 3) {
+            if (++buffer > 3) {
                vl++;
                flag("a=%s,r=%.2f,b=%s", aimCount, rotChange, buffer);
             }

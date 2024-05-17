@@ -16,7 +16,7 @@ public class AutoclickerG extends Check {
     float buffer;
     @Packet
     public void check(WrappedInArmAnimationPacket packet) {
-        if(data.playerInfo.breakingBlock
+        if (data.playerInfo.breakingBlock
                 || data.playerInfo.lookingAtBlock
                 || data.clickProcessor.isNotReady()
                 || data.playerInfo.lastBrokenBlock.isNotPassed(5)
@@ -26,8 +26,8 @@ public class AutoclickerG extends Check {
 
         int low = data.clickProcessor.getLowOutliers(), high = data.clickProcessor.getHighOutliers();
         double cpsAvg = 20L / Math.max(0.0001, data.clickProcessor.getMean()); //I used long for 1000 since long is 64 bit with double.
-        if((low + high) == 0 && data.clickProcessor.getMean() < 2.52) {
-            if((buffer < 20 ? ++buffer : buffer) > 6) {
+        if ((low + high) == 0 && data.clickProcessor.getMean() < 2.52) {
+            if ((buffer < 20 ? ++buffer : buffer) > 6) {
                 vl++;
                 flag(20 * 30,
                         "buffer=%.1f avgCps=%.1f std=%.2f low=%s high=%s", buffer, cpsAvg,

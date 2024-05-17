@@ -21,13 +21,13 @@ public class FlyA extends Check {
     private static double mult = 0.98f;
     @Packet
     public void onFlying(WrappedInFlyingPacket packet, long timeStamp) {
-        if(packet.isPos() && (data.playerInfo.deltaXZ > 0 || data.playerInfo.deltaY != 0)) {
+        if (packet.isPos() && (data.playerInfo.deltaXZ > 0 || data.playerInfo.deltaY != 0)) {
             /* We check if the player is in ground, since theoretically the y should be zero. */
             double lDeltaY = data.playerInfo.lClientGround ? 0 : data.playerInfo.lDeltaY;
             boolean onGround = data.playerInfo.clientGround;
             double predicted = onGround ? lDeltaY : (lDeltaY - 0.08) * mult;
 
-            if(data.playerInfo.lClientGround && !onGround && data.playerInfo.deltaY > 0) {
+            if (data.playerInfo.lClientGround && !onGround && data.playerInfo.deltaY > 0) {
                 predicted = MovementUtils.getJumpHeight(data);
             }
 
@@ -35,22 +35,22 @@ public class FlyA extends Check {
             If it is, it won't send any position packet. Usually this only occurs when the magnitude
             of motionY is less than 0.005 and it rounds it to 0.
             The easiest way I found to produce this oddity is by putting myself in a corner and just jumping. */
-            if(Math.abs(predicted) < 0.005
+            if (Math.abs(predicted) < 0.005
                     && ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.V1_9)) {
                 predicted = 0;
             }
 
-            if(timeStamp - lastPos > 60L) {
+            if (timeStamp - lastPos > 60L) {
                 double toCheck = (predicted - 0.08) * mult;
 
-                if(Math.abs(data.playerInfo.deltaY - toCheck) < Math.abs(data.playerInfo.deltaY - predicted))
+                if (Math.abs(data.playerInfo.deltaY - toCheck) < Math.abs(data.playerInfo.deltaY - predicted))
                     predicted = toCheck;
             }
 
             double deltaPredict = MathUtils.getDelta(data.playerInfo.deltaY, predicted);
 
             boolean flagged = false;
-            if(!data.playerInfo.flightCancel
+            if (!data.playerInfo.flightCancel
                     && !data.blockInfo.fenceNear
                     && data.playerInfo.lastBlockPlace.isPassed(1)
                     && data.playerInfo.lastVelocity.isPassed(3)
@@ -60,13 +60,13 @@ public class FlyA extends Check {
                     && data.playerInfo.blockAboveTimer.isPassed(5)
                     && deltaPredict > 0.016) {
                 flagged = true;
-                if(++buffer > 5) {
+                if (++buffer > 5) {
                     ++vl;
                     flag("dY=%.3f p=%.3f dx=%.3f", data.playerInfo.deltaY, predicted,
                             data.playerInfo.deltaXZ);
                     fixMovementBugs();
 
-                    if(buffer > 6) buffer = 6;
+                    if (buffer > 6) buffer = 6;
                 }
             } else buffer-= buffer > 0 ? 0.25f : 0;
 

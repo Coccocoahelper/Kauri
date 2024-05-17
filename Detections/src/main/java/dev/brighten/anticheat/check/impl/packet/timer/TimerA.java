@@ -33,7 +33,7 @@ public class TimerA extends Check {
     @Packet
     public void onBlockPlace(WrappedInBlockPlacePacket packet) {
         //In versions 1.17 and newer, players will send an extra flying when right clicking
-        if(data.playerVersion.isOrAbove(ProtocolVersion.v1_17))
+        if (data.playerVersion.isOrAbove(ProtocolVersion.v1_17))
         totalTimer-= 50;
     }
 
@@ -41,13 +41,13 @@ public class TimerA extends Check {
     //can infinitely never flag if a user was cheating on a 1.9+ client.
     @Packet
     public void onTransaction(WrappedInTransactionPacket packet, long now) {
-        if(data.playerVersion.isBelow(ProtocolVersion.V1_9)) return;
+        if (data.playerVersion.isBelow(ProtocolVersion.V1_9)) return;
 
         Kauri.INSTANCE.keepaliveProcessor.getKeepById(packet.getAction()).ifPresent(ka -> {
             long delta = now - ka.startStamp;
 
             //We want to make sure the player isn't lagging before we reset their timer.
-            if(delta < 1095L && totalTimer - (now + 100) > 3000L) {
+            if (delta < 1095L && totalTimer - (now + 100) > 3000L) {
                 totalTimer = now - 300;
             }
         });
@@ -57,7 +57,7 @@ public class TimerA extends Check {
     public void onFlying(WrappedInFlyingPacket packet, long now) {
         check: {
             //This means we haven't started counting
-            if(totalTimer == -1) {
+            if (totalTimer == -1) {
                 totalTimer = data.creation - 50;
                 debug("Set base time");
             }
@@ -70,7 +70,7 @@ public class TimerA extends Check {
             boolean isLagProblem = (Kauri.INSTANCE.keepaliveProcessor.laggyPlayers
                     / (double)Kauri.INSTANCE.keepaliveProcessor.totalPlayers) > 0.8;
 
-            if(totalTimer > threshold
+            if (totalTimer > threshold
                     //If most players on the server are lagging, it's very likely we have an unstable netty thread
                     //and therefore cannot rely on this detection.
                     && !isLagProblem) {
@@ -81,7 +81,7 @@ public class TimerA extends Check {
                 totalTimer = now - 80;
                 debug("Reset time");
                 lastFlag.reset();
-            } else if(lastFlag.isPassed(5000L)) buffer = 0;
+            } else if (lastFlag.isPassed(5000L)) buffer = 0;
 
             debug("d=%s, thr=%s, b=%s lp=%s cp=%s", delta, threshold, buffer,
                     isLagProblem, (data.lagInfo.lastPingDrop.isPassed(4)

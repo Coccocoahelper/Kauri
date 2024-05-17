@@ -29,7 +29,7 @@ public class VelocityC extends Check {
 
     @Packet
     public void onVelocity(WrappedOutVelocityPacket packet) {
-        if(packet.getId() == data.getPlayer().getEntityId() && packet.getY() > 0.1) {
+        if (packet.getId() == data.getPlayer().getEntityId() && packet.getY() > 0.1) {
             data.runKeepaliveAction(ka -> {
                 synchronized (velocityY) {
                     velocityY.add(new Velocity(packet.getY()));
@@ -41,15 +41,15 @@ public class VelocityC extends Check {
 
     @Packet
     public void onFlying(WrappedInFlyingPacket packet, long now) {
-        if(velocityY.size() == 0) return;
+        if (velocityY.size() == 0) return;
 
         var toRemove = velocityY.stream()
                 .filter(t -> Math.abs(data.playerInfo.deltaY - t.getVelocity()) < 0.001)
                 .collect(Collectors.toList());
 
-        if(toRemove.size() > 0) {
+        if (toRemove.size() > 0) {
 
-            if(buffer > 0) buffer--;
+            if (buffer > 0) buffer--;
             debug("Reset velocity: dy=%.4f b=%s",
                     data.playerInfo.deltaY, buffer);
 
@@ -62,7 +62,7 @@ public class VelocityC extends Check {
         }
 
         //All potential causes of false positives
-        if(data.playerInfo.doingBlockUpdate
+        if (data.playerInfo.doingBlockUpdate
                 || data.playerInfo.webTimer.isNotPassed(3)
                 || data.playerInfo.liquidTimer.isNotPassed(3)
                 || data.playerInfo.slimeTimer.isNotPassed(2)
@@ -76,14 +76,14 @@ public class VelocityC extends Check {
         toRemove = velocityY.stream().filter(t -> now - t.getTimestamp() > 4000L)
                 .collect(Collectors.toList());
 
-        if(toRemove.size() > 0) {
+        if (toRemove.size() > 0) {
             for (Velocity v : toRemove) {
                 velocityY.remove(v);
             }
 
             toRemove.clear();
-        } else if(velocityY.size() > 0 && lastVelocity.isPassed(2000L)) {
-            if(++buffer > 2) {
+        } else if (velocityY.size() > 0 && lastVelocity.isPassed(2000L)) {
+            if (++buffer > 2) {
                 vl++;
                 flag("lv=%s s=%s", lastVelocity.getPassed(), velocityY.size());
             }

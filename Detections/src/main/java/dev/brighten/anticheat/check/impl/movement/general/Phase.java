@@ -47,7 +47,7 @@ public class Phase extends Check {
 
         allowedMaterials.add(XMaterial.VINE.parseMaterial());
         allowedMaterials.add(XMaterial.CAKE.parseMaterial());
-        if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_14)) {
+        if (ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_14)) {
             allowedMaterials.add(XMaterial.SCAFFOLDING.parseMaterial());
         }
     }
@@ -63,7 +63,7 @@ public class Phase extends Check {
 
     @Packet
     public void onFlying(WrappedInFlyingPacket packet, long now) {
-        if(!packet.isPos() || now - data.creation < 800L || ((now - data.playerInfo.lastRespawn < 500L
+        if (!packet.isPos() || now - data.creation < 800L || ((now - data.playerInfo.lastRespawn < 500L
                 || data.playerInfo.moveTicks == 0) && lastFlag.isPassed(12))
                 || data.playerInfo.creative || data.playerInfo.canFly) {
             return;
@@ -86,9 +86,9 @@ public class Phase extends Check {
                     newb = Helper.blockCollisions(blocks, toUpdate);
 
             for (Block block : newb) {
-                if(!current.contains(block)) {
+                if (!current.contains(block)) {
                     Material type = block.getType();
-                    if(Materials.checkFlag(type, Materials.SOLID)
+                    if (Materials.checkFlag(type, Materials.SOLID)
                             && !allowedMaterials.contains(type)
                             && !Materials.checkFlag(type, Materials.STAIRS)) {
                         tags.addTag("INTO_BLOCK");
@@ -101,7 +101,7 @@ public class Phase extends Check {
         }
         
         phaseThru: {
-            if(playerBox.isIntersected(toUpdate)) break phaseThru;
+            if (playerBox.isIntersected(toUpdate)) break phaseThru;
             
             Vector to = data.playerInfo.to.toVector(), from = data.playerInfo.from.toVector();
 
@@ -115,17 +115,17 @@ public class Phase extends Check {
 
             for (Block block : blocks) {
                 Material type = block.getType();
-                if(!Materials.checkFlag(type, Materials.SOLID)
+                if (!Materials.checkFlag(type, Materials.SOLID)
                         || allowedMaterials.contains(type) || Materials.checkFlag(type, Materials.STAIRS))
                     continue;
 
                 CollisionBox box = BlockData.getData(type).getBox(block, data.playerVersion);
 
-                if(box instanceof SimpleCollisionBox) {
+                if (box instanceof SimpleCollisionBox) {
                     Tuple<Double, Double> result = new Tuple<>(0., 0.);
                     boolean intersected = RayCollision.intersect(ray, (SimpleCollisionBox) box);
 
-                    if(intersected && result.one <= dist) {
+                    if (intersected && result.one <= dist) {
                         vl++;
                         tags.addTag("THROUGH_BLOCK");
                         tags.addTag("material=" + type);
@@ -142,13 +142,13 @@ public class Phase extends Check {
                         Tuple<Double, Double> result = new Tuple<>(0., 0.);
                         boolean intersected = RayCollision.intersect(ray, sbox);
 
-                        if(intersected && result.one <= dist) {
+                        if (intersected && result.one <= dist) {
                             flagged = true;
                             break;
                         }
                     }
 
-                    if(flagged) {
+                    if (flagged) {
                         vl++;
                         tags.addTag("THROUGH_BLOCK");
                         tags.addTag("material=" + type);
@@ -158,18 +158,18 @@ public class Phase extends Check {
             }
         }
 
-        if(tags.getSize() > 0) {
-            if(flagIntoChat)
+        if (tags.getSize() > 0) {
+            if (flagIntoChat)
                 flag("tags=%s", tags.build());
 
-            if(fromWhereShitAintBad == null) fromWhereShitAintBad = data.playerInfo.from;
+            if (fromWhereShitAintBad == null) fromWhereShitAintBad = data.playerInfo.from;
 
             final Location finalSetbackLocation = fromWhereShitAintBad.toLocation(data.getPlayer().getWorld());
-            if(finalSetbackLocation != null) {
+            if (finalSetbackLocation != null) {
                 RunUtils.task(() -> data.getPlayer().teleport(finalSetbackLocation));
             }
             lastFlag.reset();
-        } else if(lastFlag.isPassed(5) && !data.blockInfo.collidesHorizontally)
+        } else if (lastFlag.isPassed(5) && !data.blockInfo.collidesHorizontally)
             fromWhereShitAintBad = data.playerInfo.from;
     }
 }

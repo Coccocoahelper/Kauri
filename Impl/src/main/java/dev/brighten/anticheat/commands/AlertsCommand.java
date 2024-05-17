@@ -19,11 +19,11 @@ public class AlertsCommand extends BaseCommand {
     public void onCommand(Player player) {
         ObjectData data = Kauri.INSTANCE.dataManager.getData(player);
 
-        if(data != null) {
+        if (data != null) {
             synchronized (Kauri.INSTANCE.dataManager.hasAlerts) {
                 boolean hasAlerts = Kauri.INSTANCE.dataManager.hasAlerts.contains(data.uuid.hashCode());
 
-                if(!hasAlerts) {
+                if (!hasAlerts) {
                     Kauri.INSTANCE.dataManager.hasAlerts.add(data.uuid.hashCode());
                     player.sendMessage(Kauri.INSTANCE.msgHandler.getLanguage().msg("alerts-on",
                             "&aYou are now viewing cheat alerts."));
@@ -45,10 +45,10 @@ public class AlertsCommand extends BaseCommand {
     public void onDevAlertsMain(Player player) {
         ObjectData data = Kauri.INSTANCE.dataManager.getData(player);
 
-        if(data != null) {
+        if (data != null) {
             synchronized (Kauri.INSTANCE.dataManager.devAlerts) {
                 boolean hasDevAlerts = Kauri.INSTANCE.dataManager.devAlerts.contains(data.uuid.hashCode());
-                if(!hasDevAlerts) {
+                if (!hasDevAlerts) {
                     Kauri.INSTANCE.dataManager.devAlerts.add(data.uuid.hashCode());
                     player.sendMessage(Kauri.INSTANCE.msgHandler.getLanguage().msg("dev-alerts-on",
                             "&aYou are now viewing developer cheat alerts."));

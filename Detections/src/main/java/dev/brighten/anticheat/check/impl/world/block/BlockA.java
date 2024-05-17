@@ -31,15 +31,15 @@ public class BlockA extends Check {
         double dist = delta.distance(dir), dist2 = opposite.distance(MathUtils.getDirection(data.playerInfo.to).setY(0));
         boolean check = dist <= 1 && dist > 0.7 && dist2 >= 0.5 && dist2 < 1;
 
-        if(check && event.getFace().getAdjacentY() == 0
+        if (check && event.getFace().getAdjacentY() == 0
                 && event.getPlayer().getItemInHand().getType().isBlock()
                 && data.playerInfo.sprinting) {
-            if((buffer+= 4) > 15) {
+            if ((buffer+= 4) > 15) {
                 vl++;
                 flag("dist=%.3f dist2=%.3f placeVec=%s", dist, dist2, dir.toString());
                 buffer = 14;
             }
-        } else if(buffer > 0) buffer--;
+        } else if (buffer > 0) buffer--;
 
         debug("dist=%.3f dist2=%.3f", dist, dist2);
     }

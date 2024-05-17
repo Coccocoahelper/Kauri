@@ -43,7 +43,7 @@ public class KauriAPI {
 
     public void registerEvent(Plugin plugin, KauriEvent event) {
         registeredEvents.compute(plugin.getName(), (key, list) -> {
-            if(list == null) {
+            if (list == null) {
                 list = new ArrayList<>();
             }
 

@@ -27,7 +27,7 @@ public class PredictionService {
     public void onReceive(WrappedInFlyingPacket packet) {
         error = true; //Will be stay true if something went wrong
 
-        if(data.playerInfo.to == null || data.playerInfo.from == null) return;
+        if (data.playerInfo.to == null || data.playerInfo.from == null) return;
 
         //Updating position and look values
         motionX = data.playerInfo.deltaX;
@@ -39,13 +39,13 @@ public class PredictionService {
         onGround = data.playerInfo.lClientGround;
 
         //Calculations
-        if(packet.isPos()) {
+        if (packet.isPos()) {
             //Checking for other conditions that may cause us problems
-            if(velocity) {
+            if (velocity) {
                 lmotionX = data.playerInfo.velocityX;
                 lmotionZ = data.playerInfo.velocityZ;
             }
-            if(!velocity
+            if (!velocity
                     && !data.blockInfo.inLiquid
                     && !data.playerInfo.onLadder
                     //If player is not moving but sending positions anyway
@@ -53,7 +53,7 @@ public class PredictionService {
                     //When a player jumps, we don't want to check since we don't have math for it and checking for jump
                     //can be unreliable
                     && !(!data.playerInfo.clientGround && data.playerInfo.lClientGround && (lSprinting || sprinting))) {
-                if(lSprinting && hit) {
+                if (lSprinting && hit) {
                     lmotionX*= 0.6;
                     lmotionZ*= 0.6;
                 }
@@ -72,13 +72,13 @@ public class PredictionService {
         }
 
         //Miscellanious caveat updating
-        if(dropItem) usingItem = dropItem = false;
+        if (dropItem) usingItem = dropItem = false;
 
         //lMotion calculations
         lmotionX = motionX;
         lmotionZ = motionZ;
 
-        if(!error) {
+        if (!error) {
             lmotionX*= drag;
             lmotionZ*= drag;
         }
@@ -95,7 +95,7 @@ public class PredictionService {
         calculation: {
             float cstrafe = (float)strafe, cforward = (float)forward;
 
-            if(sneaking) {
+            if (sneaking) {
                 cstrafe*= .3;
                 cforward*= .3;
             }
@@ -106,7 +106,7 @@ public class PredictionService {
 
             aiMoveSpeed = data.getPlayer().getWalkSpeed() / 2f;
 
-            if(sprinting) aiMoveSpeed+= aiMoveSpeed * 0.3f;
+            if (sprinting) aiMoveSpeed+= aiMoveSpeed * 0.3f;
 
             data.potionProcessor.getEffectByType(PotionEffectType.SPEED).ifPresent(speed ->
                     aiMoveSpeed+= (speed.getAmplifier() + 1) * (double)0.2f * aiMoveSpeed);
@@ -115,12 +115,12 @@ public class PredictionService {
 
             double motionForward;
 
-            if(onGround) {
+            if (onGround) {
                 Block underBlock = BlockUtils.getBlock(data.playerInfo.to
                         .toLocation(data.getPlayer().getWorld())
                         .clone().subtract(0, 1, 0));
 
-                if(underBlock == null)
+                if (underBlock == null)
                     break calculation;
 
                 drag*= MinecraftReflection.getFriction(underBlock);
@@ -130,7 +130,7 @@ public class PredictionService {
 
             double keyedMotion = cforward * cforward + cstrafe + cstrafe;
 
-            if(keyedMotion >= 1.0E-4F) {
+            if (keyedMotion >= 1.0E-4F) {
                 keyedMotion = motionForward / Math.max(1.0, Math.sqrt(keyedMotion));
                 cforward*= keyedMotion;
                 cstrafe*= keyedMotion;
@@ -221,7 +221,7 @@ public class PredictionService {
         forward = moveF;
         this.key = key;
 
-        /*if(data.getPlayer().getName().equals("Dogeritoz")) {
+        /*if (data.getPlayer().getName().equals("Dogeritoz")) {
             Bukkit.broadcastMessage("key=" + key + " mx=" + MathUtils.round(mx, 6)
                     + " mz=" + MathUtils.round(mz, 6) + " myaw=" + MathUtils.round(motionYaw, 4)
                     + " velocity=" + velocity + " vx=" + data.playerInfo.velocityX + " vz=" + data.playerInfo.velocityZ);

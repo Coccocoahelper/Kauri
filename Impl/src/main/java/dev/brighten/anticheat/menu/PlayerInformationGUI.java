@@ -42,7 +42,7 @@ public class PlayerInformationGUI extends ChestMenu {
                 modData == null
                 || modData.getMods().size() == 0 ? null : (player, info) -> modsGUI().showMenu(player)));
         violationsButton = new Button(false, violationsButton(), (player, info) -> {
-            if(info.getClickType().name().contains("LEFT")) {
+            if (info.getClickType().name().contains("LEFT")) {
                 info.getMenu().close(player);
                 Bukkit.dispatchCommand(player, "kauri logs " + data.getPlayer().getName());
             }
@@ -82,7 +82,7 @@ public class PlayerInformationGUI extends ChestMenu {
                 "&eUsing Lunar&7: &f" + data.usingLunar,
                 ""));
 
-        if(modData != null) {
+        if (modData != null) {
             List<String> modList = new ArrayList<>(modData.getMods());
 
             loreList.add(modList.size() > 0 ? "&7&oRight click to view mods" : "&c&oNo mods.");
@@ -133,7 +133,7 @@ public class PlayerInformationGUI extends ChestMenu {
 
     private void update() {
         updatingTask = RunUtils.taskTimerAsync(() -> {
-            if(data == null) {
+            if (data == null) {
                 updatingTask.cancel();
                 return;
             }

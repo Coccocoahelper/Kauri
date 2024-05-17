@@ -18,14 +18,14 @@ public class SimpleAverage {
     public void add(double value) {
         total+= value;
 
-        if(++count > size) {
+        if (++count > size) {
             total-= getAverage();
             count--;
         }
     }
 
     public double getAverage() {
-        if(count == 0) return initial;
+        if (count == 0) return initial;
         return total / count;
     }
 

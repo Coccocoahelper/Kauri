@@ -158,7 +158,7 @@ public class Helper {
 			for (Block block : handler.getBlocks()) {
 				final Material type = block.getType();
 
-				if(type.equals(AIR)
+				if (type.equals(AIR)
 						|| !BlockData.getData(type).getBox(block, ProtocolVersion.getGameVersion())
 						.isIntersected(collisionBox))
 					continue;
@@ -261,14 +261,14 @@ public class Helper {
 				.map(loc -> {
 					Block block = BlockUtils.getBlock(loc);
 
-					if(block == null) return null;
-					if(Materials.checkFlag(block.getType(), Materials.SOLID)) {
+					if (block == null) return null;
+					if (Materials.checkFlag(block.getType(), Materials.SOLID)) {
 						return BlockData.getData(block.getType()).getBox(block, ProtocolVersion.getGameVersion());
 					}
 					return null;
 				})
 				.filter(box -> {
-					if(box == null) return false;
+					if (box == null) return false;
 					return collision.isCollided(box);
 				}).collect(Collectors.toList());
 	}

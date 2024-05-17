@@ -49,7 +49,7 @@ public class MovementProcessor {
     public final EvictingList<Integer> sensitivitySamples = new EvictingList<>(50);
     private static String keepaliveAcceptListener = Kauri.INSTANCE.eventHandler
             .listen(KeepaliveAcceptedEvent.class,  listner -> {
-                if(listner.getData().playerInfo.serverGround || listner.getData().playerInfo.clientGround) {
+                if (listner.getData().playerInfo.serverGround || listner.getData().playerInfo.clientGround) {
                     listner.getData().playerInfo.kGroundTicks++;
                     listner.getData().playerInfo.kAirTicks = 0;
                 } else {
@@ -63,7 +63,7 @@ public class MovementProcessor {
     public MovementProcessor(ObjectData data) {
         this.data = data;
 
-        if(ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_8)) {
+        if (ProtocolVersion.getGameVersion().isOrAbove(ProtocolVersion.V1_8)) {
             try {
                 levitation = PotionEffectType.getByName("LEVITATION");
             } catch(Exception e) {
@@ -90,18 +90,18 @@ public class MovementProcessor {
     }
 
     public void process(WrappedInFlyingPacket packet, long timeStamp) {
-        if(data.playerInfo.checkMovement) data.playerInfo.moveTicks++;
+        if (data.playerInfo.checkMovement) data.playerInfo.moveTicks++;
         else {
             data.playerInfo.moveTicks = 0;
         }
 
-        if(data.playerInfo.moveTicks == 0) {
+        if (data.playerInfo.moveTicks == 0) {
             data.playerInfo.doingTeleport = true;
         } else data.playerInfo.doingTeleport = false;
 
         data.playerInfo.doingBlockUpdate = data.blockUpdates > 0;
 
-        if(timeStamp - data.lagInfo.lastClientTrans > 1000L) {
+        if (timeStamp - data.lagInfo.lastClientTrans > 1000L) {
             for (ObjectData.Action action : data.keepAliveStamps) {
                 if (System.currentTimeMillis() - action.stamp > 1000L) continue;
 
@@ -111,13 +111,13 @@ public class MovementProcessor {
             }
         }
 
-        if(data.playerInfo.doingBlockUpdate) {
+        if (data.playerInfo.doingBlockUpdate) {
             data.playerInfo.lastGhostCollision.reset();
         }
         //We check if it's null and intialize the from and to as equal to prevent large deltas causing false positives since there
         //was no previous from (Ex: delta of 380 instead of 0.45 caused by jump jump in location from 0,0,0 to 380,0,0)
 
-        if(data.playerInfo.moveTicks > 0) {
+        if (data.playerInfo.moveTicks > 0) {
 
             if (data.playerInfo.from == null && packet.isPos()) {
                 data.playerInfo.from
@@ -140,20 +140,20 @@ public class MovementProcessor {
                 data.playerInfo.to.y = packet.getY();
                 data.playerInfo.to.z = packet.getZ();
                 //if this is the case, this assumes client movement in between therefore we have to calculate where ground would be.
-            } else if(packet.isGround() && !data.playerInfo.clientGround) { //this is the last ground
+            } else if (packet.isGround() && !data.playerInfo.clientGround) { //this is the last ground
                 synchronized (data.blockInfo.belowCollisions) {
                     val optional = data.blockInfo.belowCollisions.stream()
                             .filter(box -> Math.pow(box.yMax - data.playerInfo.to.y, 2) <= 9.0E-4D && data.box.copy()
                                     .offset(0, -.1, 0).isCollided(box)).findFirst();
 
-                    if(optional.isPresent()) {
+                    if (optional.isPresent()) {
                         data.playerInfo.to.y-= data.playerInfo.to.y - optional.get().yMax;
                         data.playerInfo.clientGround = data.playerInfo.serverGround = true;
                     }
                 }
             }
 
-            if(data.playerInfo.serverGround && data.playerInfo.lastMoveCancel.isPassed()) {
+            if (data.playerInfo.serverGround && data.playerInfo.lastMoveCancel.isPassed()) {
                 data.playerInfo.setbackLocation = new Location(data.getPlayer().getWorld(),
                         data.playerInfo.to.x, data.playerInfo.to.y, data.playerInfo.to.z,
                         data.playerInfo.to.yaw, data.playerInfo.to.pitch);
@@ -177,14 +177,14 @@ public class MovementProcessor {
             data.playerInfo.blockBelow = BlockUtils.getBlock(data.playerInfo.to.toLocation(data.getPlayer().getWorld())
                     .subtract(0, 1, 0));
 
-            if(packet.isPos()) {
+            if (packet.isPos()) {
                 //We create a separate from BoundingBox for the predictionService since it should operate on pre-motion data.
                 data.box = PlayerSizeHandler.instance.bounds(data.getPlayer(),
                         data.playerInfo.to.x, data.playerInfo.to.y, data.playerInfo.to.z);
                 data.playerInfo.lastMoveTimer.reset();
 
                 //Looking for teleport packets
-                if(packet.isLook() && !data.playerInfo.clientGround) {
+                if (packet.isLook() && !data.playerInfo.clientGround) {
                     synchronized (data.playerInfo.posLocs) {
                         Iterator<KLocation> iterator = data.playerInfo.posLocs.iterator();
 
@@ -195,7 +195,7 @@ public class MovementProcessor {
 
                             double distance = MiscUtils.getDistanceWithoutRoot(data.playerInfo.to, posLoc);
 
-                            if(distance < 1E-9) {
+                            if (distance < 1E-9) {
                                 data.playerInfo.lastTeleportTimer.reset();
                                 iterator.remove();
                                 break;
@@ -203,7 +203,7 @@ public class MovementProcessor {
                         }
 
                         //Ensuring the list doesn't overflow with old locations, a potential crash exploit.
-                        if(data.teleportsToConfirm == 0 && data.playerInfo.posLocs.size() > 0) {
+                        if (data.teleportsToConfirm == 0 && data.playerInfo.posLocs.size() > 0) {
                             data.playerInfo.posLocs.clear();
                         }
                     }
@@ -211,7 +211,7 @@ public class MovementProcessor {
             }
             data.blockInfo.runCollisionCheck();
 
-            if(packet.isPos() || packet.isLook()) {
+            if (packet.isPos() || packet.isLook()) {
                 KLocation origin = data.playerInfo.to.clone();
                 origin.y+= data.playerInfo.sneaking ? 1.54f : 1.62f;
                 RayCollision collision = new RayCollision(origin.toVector(), MathUtils.getDirection(origin));
@@ -226,38 +226,38 @@ public class MovementProcessor {
             }
         }
 
-        if(!data.getPlayer().getGameMode().equals(lastGamemode)) data.playerInfo.lastGamemodeTimer.reset();
+        if (!data.getPlayer().getGameMode().equals(lastGamemode)) data.playerInfo.lastGamemodeTimer.reset();
         lastGamemode = data.getPlayer().getGameMode();
         data.playerInfo.creative = !data.getPlayer().getGameMode().equals(GameMode.SURVIVAL)
                 && !data.getPlayer().getGameMode().equals(GameMode.ADVENTURE);
 
         data.blockInfo.fromFriction = data.blockInfo.currentFriction;
-        if(data.playerInfo.blockBelow != null) {
+        if (data.playerInfo.blockBelow != null) {
             val mat = XMaterial.matchXMaterial(
                     data.playerInfo.blockBelow.getType().name());
 
             mat.ifPresent(xMaterial -> data.blockInfo.currentFriction = BlockUtils.getFriction(xMaterial));
         }
 
-        if(data.playerInfo.nearGround || data.playerInfo.serverGround) data.playerInfo.nearGroundTimer.reset();
+        if (data.playerInfo.nearGround || data.playerInfo.serverGround) data.playerInfo.nearGroundTimer.reset();
 
-        if(data.playerInfo.calcVelocityY > 0) {
+        if (data.playerInfo.calcVelocityY > 0) {
             data.playerInfo.calcVelocityY-= 0.08f;
             data.playerInfo.calcVelocityY*= 0.98f;
         } else data.playerInfo.calcVelocityY = 0;
 
-        if(Math.abs(data.playerInfo.calcVelocityX) > 0.005) {
+        if (Math.abs(data.playerInfo.calcVelocityX) > 0.005) {
             data.playerInfo.calcVelocityX*= data.playerInfo.lClientGround
                     ? data.blockInfo.currentFriction * 0.91f : 0.91f;
         } else data.playerInfo.calcVelocityX = 0;
 
-        if(Math.abs(data.playerInfo.calcVelocityZ) > 0.005) {
+        if (Math.abs(data.playerInfo.calcVelocityZ) > 0.005) {
             data.playerInfo.calcVelocityZ*= data.playerInfo.lClientGround
                     ? data.blockInfo.currentFriction * 0.91f : 0.91f;
         } else data.playerInfo.calcVelocityZ = 0;
 
         //Setting player's previous locations
-        if(packet.isPos() && !data.playerInfo.doingTeleport & !data.playerInfo.canFly && !data.playerInfo.creative
+        if (packet.isPos() && !data.playerInfo.doingTeleport & !data.playerInfo.canFly && !data.playerInfo.creative
                 && !data.playerInfo.inVehicle && timeStamp - data.creation > 500L) {
 
             synchronized (data.pastLocations) { //To prevent ConcurrentModificationExceptions
@@ -269,8 +269,8 @@ public class MovementProcessor {
 
         synchronized (data.playerInfo.velocities) {
             for (Vector velocity : data.playerInfo.velocities) {
-                if(Math.abs(velocity.getY() - data.playerInfo.deltaY) < 0.01) {
-                    if(data.playerInfo.doingVelocity) {
+                if (Math.abs(velocity.getY() - data.playerInfo.deltaY) < 0.01) {
+                    if (data.playerInfo.doingVelocity) {
                         data.playerInfo.lastVelocity.reset();
                         data.playerInfo.doingVelocity = false;
                         data.playerInfo.lastVelocityTimestamp = System.currentTimeMillis();
@@ -286,14 +286,14 @@ public class MovementProcessor {
                 }
             }
 
-            if(data.playerInfo.insideBlock = (data.playerInfo.blockOnTo != null && !data.playerInfo.blockOnTo.getType()
+            if (data.playerInfo.insideBlock = (data.playerInfo.blockOnTo != null && !data.playerInfo.blockOnTo.getType()
                     .equals(XMaterial.AIR.parseMaterial()))) {
                 data.playerInfo.lastInsideBlock.reset();
             }
 
             //We set the yaw and pitch like this to prevent inaccurate data input. Like above, it will return both pitch
             //and yaw as 0 if it isnt a look packet.
-            if(packet.isLook()) {
+            if (packet.isLook()) {
                 data.playerInfo.to.yaw = packet.getYaw();
                 data.playerInfo.to.pitch = packet.getPitch();
             }
@@ -328,7 +328,7 @@ public class MovementProcessor {
 
                 origin.y+= data.playerInfo.sneaking ? 1.54 : 1.62;
 
-                if(data.playerInfo.lastTeleportTimer.isPassed(1)) {
+                if (data.playerInfo.lastTeleportTimer.isPassed(1)) {
                     predictionHandling:
                     {
                         float yawGcd = data.playerInfo.yawGCD,
@@ -341,7 +341,7 @@ public class MovementProcessor {
                         if (data.playerInfo.pitchGCD > 0.01 && data.playerInfo.pitchGCD < 1.2)
                             pitchGcdList.add(pitchGcd);
 
-                        if(yawGcdList.size() < 20 || pitchGcdList.size() < 20) {
+                        if (yawGcdList.size() < 20 || pitchGcdList.size() < 20) {
                             accurateYawData = false;
                             break predictionHandling;
                         }
@@ -454,7 +454,7 @@ public class MovementProcessor {
                 data.playerInfo.wasOnSlime = data.blockInfo.onSlime;
             }
 
-            if((data.playerInfo.onLadder = MovementUtils.isOnLadder(data))
+            if ((data.playerInfo.onLadder = MovementUtils.isOnLadder(data))
                     && (data.playerInfo.deltaY <= 0 || data.blockInfo.collidesHorizontally)) {
                 data.playerInfo.isClimbing = true;
             }
@@ -463,9 +463,9 @@ public class MovementProcessor {
             synchronized (data.ghostBlocks) {
                 SimpleCollisionBox boxToCheck = data.box.copy().expand(0.4f);
                 for (Location location : data.ghostBlocks.keySet()) {
-                    if(location.toVector().distanceSquared(data.playerInfo.to.toVector()) > 25) continue;
+                    if (location.toVector().distanceSquared(data.playerInfo.to.toVector()) > 25) continue;
 
-                    if(data.ghostBlocks.get(location).isCollided(boxToCheck)) {
+                    if (data.ghostBlocks.get(location).isCollided(boxToCheck)) {
                         data.playerInfo.lastGhostCollision.reset();
                         break;
                     }
@@ -503,12 +503,12 @@ public class MovementProcessor {
             data.playerInfo.baseSpeed = MovementUtils.getBaseSpeed(data);
         }
 
-        if(data.playerInfo.inVehicle) {
+        if (data.playerInfo.inVehicle) {
             data.playerInfo.vehicleTimer.reset();
             data.runKeepaliveAction(ka -> data.playerInfo.vehicleTimer.reset());
         }
 
-        if(data.playerInfo.gliding = BukkitAPI.INSTANCE.isGliding(data.getPlayer()))
+        if (data.playerInfo.gliding = BukkitAPI.INSTANCE.isGliding(data.getPlayer()))
             data.playerInfo.lastGlideTimer.reset();
 
         /*
@@ -516,7 +516,7 @@ public class MovementProcessor {
          * It only sends when they start gliding. So basically, for some checks we need to see if they even have
          * the ability to glide at all.
          */
-        if(data.playerVersion.isOrAbove(ProtocolVersion.V1_9)) {
+        if (data.playerVersion.isOrAbove(ProtocolVersion.V1_9)) {
             data.playerInfo.canUseElytra = data.getPlayer().getInventory()
                     .getChestplate() == XMaterial.ELYTRA.parseItem();
         }
@@ -531,10 +531,10 @@ public class MovementProcessor {
                     (float)data.playerInfo.jumpHeight);
         }
 
-        if(data.blockInfo.fenceBelow)
+        if (data.blockInfo.fenceBelow)
             data.playerInfo.lastFenceBelow.reset();
 
-        if(!data.playerInfo.worldLoaded)
+        if (!data.playerInfo.worldLoaded)
             data.playerInfo.lastChunkUnloaded.reset();
 
         data.lagInfo.lagging = data.lagInfo.lagTicks.subtract() > 0

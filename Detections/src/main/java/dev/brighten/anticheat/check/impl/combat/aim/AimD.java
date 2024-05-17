@@ -15,12 +15,12 @@ public class AimD extends Check {
 
     @Packet
     public void onFlying(WrappedInFlyingPacket packet) {
-        if(packet.isLook() && Math.abs(data.playerInfo.deltaPitch) >= 0.5f) {
+        if (packet.isLook() && Math.abs(data.playerInfo.deltaPitch) >= 0.5f) {
 
             float shit1 = data.playerInfo.deltaPitch % 0.1f, shit2 = data.playerInfo.deltaPitch % 0.05f;
-            if(data.playerInfo.deltaPitch > 0 && Math.abs(data.playerInfo.deltaPitch) < 100
+            if (data.playerInfo.deltaPitch > 0 && Math.abs(data.playerInfo.deltaPitch) < 100
                     && (shit1 == 0 || shit2 == 0 || data.playerInfo.deltaPitch % 1f == 0)) {
-                if(verbose.add(1) > 10) {
+                if (verbose.add(1) > 10) {
                     vl++;
                     flag("deltaPitch=%s trimmed=%s vb=%s", data.playerInfo.deltaPitch,
                             data.playerInfo.deltaPitch, verbose.value());

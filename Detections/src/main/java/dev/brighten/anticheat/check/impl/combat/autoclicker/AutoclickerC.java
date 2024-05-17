@@ -26,7 +26,7 @@ public class AutoclickerC extends Check {
 
     @Packet
     public void onArm(WrappedInArmAnimationPacket packet, long timeStamp) {
-        if(data.playerInfo.breakingBlock || data.playerInfo.lookingAtBlock) return;
+        if (data.playerInfo.breakingBlock || data.playerInfo.lookingAtBlock) return;
         cps = 1000D / (timeStamp - lastArm);
         lastArm = timeStamp;
         armTicks++;
@@ -34,11 +34,11 @@ public class AutoclickerC extends Check {
 
     @Packet
     public void onFlying(WrappedInFlyingPacket packet) {
-        if(blocked) {
-            if(armTicks > 0) {
-                if(armTicks == 1 && cps > 3) {
-                    if(cps > 7) verbose.add();
-                    if(verbose.value() > 15) {
+        if (blocked) {
+            if (armTicks > 0) {
+                if (armTicks == 1 && cps > 3) {
+                    if (cps > 7) verbose.add();
+                    if (verbose.value() > 15) {
                         flag("arm=%s cps=%.3f lagging=%s", armTicks,
                                 cps, data.lagInfo.lagging);
                     }
@@ -52,7 +52,7 @@ public class AutoclickerC extends Check {
 
     @Packet
     public void onPlace(WrappedInBlockPlacePacket packet) {
-        if(packet.getItemStack() == null || !packet.getItemStack().getType().name().contains("SWORD")) return;
+        if (packet.getItemStack() == null || !packet.getItemStack().getType().name().contains("SWORD")) return;
         blocked = true;
     }
 }

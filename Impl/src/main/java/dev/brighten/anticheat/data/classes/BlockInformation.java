@@ -58,7 +58,7 @@ public class BlockInformation {
     }
 
     public void runCollisionCheck() {
-        if(!Kauri.INSTANCE.enabled
+        if (!Kauri.INSTANCE.enabled
                 || Kauri.INSTANCE.lastEnabled.isNotPassed(6))
             return;
 
@@ -73,9 +73,9 @@ public class BlockInformation {
                 = onIce = onSoulSand = blocksAbove = collidesVertically = bedNear = collidesHorizontally =
                 blocksNear = inBlock = miscNear = collidedWithEntity = blocksBelow = inPortal = false;
 
-        if(dy > 10) dy = 10;
-        else if(dy < -10) dy = -10;
-        if(dh > 10) dh = 10;
+        if (dy > 10) dy = 10;
+        else if (dy < -10) dy = -10;
+        if (dh > 10) dh = 10;
 
         int startX = Location.locToBlock(objectData.playerInfo.to.x - 1 - dh);
         int endX = Location.locToBlock(objectData.playerInfo.to.x + 1 + dh);
@@ -141,7 +141,7 @@ public class BlockInformation {
                                 if (it-- <= 0) {
                                     break start;
                                 }
-                                if(y > 400 || y < -50) continue;
+                                if (y > 400 || y < -50) continue;
                                 Block block = chunk.getBlock(x & 15, y, z & 15);
                                 final Material type = block.getType();
                                 if (type != Material.AIR) {
@@ -150,59 +150,59 @@ public class BlockInformation {
                                     CollisionBox blockBox = BlockData.getData(type)
                                             .getBox(block, objectData.playerVersion);
 
-                                    if(blockBox.isCollided(normalBox)) {
-                                        if(type.equals(cobweb))
+                                    if (blockBox.isCollided(normalBox)) {
+                                        if (type.equals(cobweb))
                                             inWeb = true;
-                                        else if(type.equals(scaffolding)) inScaffolding = true;
-                                        else if(type.equals(honey)) inHoney = true;
+                                        else if (type.equals(scaffolding)) inScaffolding = true;
+                                        else if (type.equals(honey)) inHoney = true;
                                     }
 
-                                    if(type.equals(rosebush))
+                                    if (type.equals(rosebush))
                                         roseBush = true;
 
-                                    if(normalBox.copy().offset(0, 0.6f, 0).isCollided(blockBox))
+                                    if (normalBox.copy().offset(0, 0.6f, 0).isCollided(blockBox))
                                         blocksAbove = true;
 
-                                    if(normalBox.copy().expand(1, -0.0001, 1).isIntersected(blockBox))
+                                    if (normalBox.copy().expand(1, -0.0001, 1).isIntersected(blockBox))
                                         blocksNear = true;
 
-                                    if(normalBox.copy().expand(0.1, 0, 0.1)
+                                    if (normalBox.copy().expand(0.1, 0, 0.1)
                                             .offset(0, 1,0).isCollided(blockBox)) {
                                         synchronized (aboveCollisions) {
                                             blockBox.downCast(aboveCollisions);
                                         }
                                     }
 
-                                    if(normalBox.copy().expand(0.1, 0, 0.1).offset(0, -1, 0)
+                                    if (normalBox.copy().expand(0.1, 0, 0.1).offset(0, -1, 0)
                                             .isCollided(blockBox)) {
                                         synchronized (belowCollisions) {
                                             blockBox.downCast(belowCollisions);
                                         }
 
-                                        if(Materials.checkFlag(type, Materials.FENCE)
+                                        if (Materials.checkFlag(type, Materials.FENCE)
                                                 || Materials.checkFlag(type, Materials.WALL)) {
                                             fenceBelow = true;
                                         }
                                     }
 
-                                    if(normalBox.copy().expand(0.25, 0, 0.25)
+                                    if (normalBox.copy().expand(0.25, 0, 0.25)
                                             .offset(0, -0.8, 0).isCollided(blockBox)
                                             && (Materials.checkFlag(type, Materials.FENCE)
                                             || Materials.checkFlag(type, Materials.WALL))) {
                                         fenceNear = true;
                                     }
 
-                                    if(Materials.checkFlag(type, Materials.SOLID)) {
+                                    if (Materials.checkFlag(type, Materials.SOLID)) {
                                         SimpleCollisionBox groundBox = normalBox.copy()
                                                 .offset(0, -.49, 0).expandMax(0, -1.2, 0);
 
                                         XMaterial blockMaterial = getXMaterial(type);
 
-                                        if(normalBox.copy().expand(0.4, 0, 0.4).expandMin(0, -1, 0)
+                                        if (normalBox.copy().expand(0.4, 0, 0.4).expandMin(0, -1, 0)
                                                 .isIntersected(blockBox))
                                             blocksBelow = true;
 
-                                        if(normalBox.isIntersected(blockBox)) inBlock = true;
+                                        if (normalBox.isIntersected(blockBox)) inBlock = true;
 
                                         SimpleCollisionBox box = objectData.box.copy();
 
@@ -217,14 +217,14 @@ public class BlockInformation {
                                         if (blockBox.isCollided(box))
                                             collidesVertically = true;
 
-                                        if(groundBox.copy().expandMin(0, -0.8, 0).expand(0.2, 0, 0.2)
+                                        if (groundBox.copy().expandMin(0, -0.8, 0).expand(0.2, 0, 0.2)
                                                 .isIntersected(blockBox))
                                             objectData.playerInfo.nearGround = true;
 
-                                        if(groundBox.isCollided(blockBox)) {
+                                        if (groundBox.isCollided(blockBox)) {
                                             objectData.playerInfo.serverGround = true;
 
-                                            if(blockMaterial != null)
+                                            if (blockMaterial != null)
                                             switch (blockMaterial) {
                                                 case ICE:
                                                 case BLUE_ICE:
@@ -243,7 +243,7 @@ public class BlockInformation {
                                                 }
                                             }
                                         }
-                                        if(objectData.playerInfo.deltaY > 0
+                                        if (objectData.playerInfo.deltaY > 0
                                                 && objectData.playerVersion.isBelow(ProtocolVersion.V1_14)
                                                 && Materials.checkFlag(type, Materials.LADDER)
                                                 && normalBox.copy().expand(0.2f, 0, 0.2f)
@@ -251,13 +251,13 @@ public class BlockInformation {
                                             onClimbable = true;
                                         }
 
-                                        if(blockMaterial != null) {
+                                        if (blockMaterial != null) {
                                             switch (blockMaterial) {
                                                 case PISTON:
                                                 case PISTON_HEAD:
                                                 case MOVING_PISTON:
                                                 case STICKY_PISTON: {
-                                                    if(normalBox.copy().expand(0.5, 0.5, 0.5)
+                                                    if (normalBox.copy().expand(0.5, 0.5, 0.5)
                                                             .isCollided(blockBox))
                                                     pistonNear = true;
                                                     break;
@@ -265,14 +265,14 @@ public class BlockInformation {
                                             }
                                         }
 
-                                        if(groundBox.copy().expand(0.5, 0.6, 0.5).isCollided(blockBox)) {
-                                            if(Materials.checkFlag(type, Materials.SLABS))
+                                        if (groundBox.copy().expand(0.5, 0.6, 0.5).isCollided(blockBox)) {
+                                            if (Materials.checkFlag(type, Materials.SLABS))
                                                 onSlab = true;
                                             else
-                                            if(Materials.checkFlag(type, Materials.STAIRS))
+                                            if (Materials.checkFlag(type, Materials.STAIRS))
                                                 onStairs = true;
                                             else
-                                            if(blockMaterial != null)
+                                            if (blockMaterial != null)
                                             switch(blockMaterial) {
                                                 case CAKE:
                                                 case BREWING_STAND:
@@ -315,10 +315,10 @@ public class BlockInformation {
                                                 }
                                             }
                                         }
-                                    } else if(blockBox.isCollided(normalBox)) {
+                                    } else if (blockBox.isCollided(normalBox)) {
                                         XMaterial blockMaterial = getXMaterial(type);
 
-                                        if(blockMaterial != null)
+                                        if (blockMaterial != null)
                                             switch(blockMaterial) {
                                                 case END_PORTAL:
                                                 case NETHER_PORTAL: {
@@ -335,7 +335,7 @@ public class BlockInformation {
             }
         }
 
-        if(!objectData.playerInfo.worldLoaded)
+        if (!objectData.playerInfo.worldLoaded)
             return;
 
         CollisionHandler handler = new CollisionHandler(blocks,
@@ -347,25 +347,25 @@ public class BlockInformation {
         for (Entity entity : handler.getEntities()) {
             CollisionBox entityBox = EntityData.getEntityBox(entity.getLocation(), entity);
 
-            if(entityBox == null) continue;
+            if (entityBox == null) continue;
 
-            if(entityBox.isCollided(normalBox.copy().offset(0, -.25, 0)))
+            if (entityBox.isCollided(normalBox.copy().offset(0, -.25, 0)))
                 objectData.playerInfo.serverGround = true;
 
-            if(entityBox.isCollided(normalBox))
+            if (entityBox.isCollided(normalBox))
                 collidedWithEntity = true;
         }
 
         //Bukkit.broadcastMessage("chigga5");
         onHalfBlock = onSlab || onStairs || miscNear || bedNear;
 
-        if((objectData.playerInfo.deltaY <= 0 || objectData.playerVersion.isOrAbove(ProtocolVersion.V1_14))
+        if ((objectData.playerInfo.deltaY <= 0 || objectData.playerVersion.isOrAbove(ProtocolVersion.V1_14))
                 && !onClimbable) {
             onClimbable = objectData.playerInfo.blockOnTo != null
                     && BlockUtils.isClimbableBlock(objectData.playerInfo.blockOnTo);
         }
 
-        if(objectData.boxDebuggers.size() > 0) {
+        if (objectData.boxDebuggers.size() > 0) {
             handler.setSize(4, 4);
             handler.setOffset(-1);
             handler.getCollisionBoxes().forEach(cb -> cb.draw(WrappedEnumParticle.FLAME, objectData.boxDebuggers));

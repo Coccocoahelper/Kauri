@@ -41,7 +41,7 @@ public class Pastebin {
         String data = "body=" + content + "&name=" + title + "&privacy=" + privacy.name();
         String response = Pastebin.page(Pastebin.pasteURL, data);
 
-        if(response == null) return "";
+        if (response == null) return "";
         String check = Pastebin.checkResponse(response);
         if (!check.equals("")) {
             return check;

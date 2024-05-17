@@ -16,7 +16,7 @@ public class SpeedD extends Check {
 
     @Packet
     public void onFlying(WrappedInFlyingPacket packet, long now) {
-        if(!packet.isPos() || now - data.creation < 800L || now - data.playerInfo.lastRespawn < 500L
+        if (!packet.isPos() || now - data.creation < 800L || now - data.playerInfo.lastRespawn < 500L
                 || data.playerInfo.lastTeleportTimer.isPassed(1)
                 || data.playerInfo.canUseElytra
                 || data.playerInfo.doingTeleport ||data.playerInfo.canFly || data.playerInfo.creative
@@ -24,25 +24,25 @@ public class SpeedD extends Check {
 
         double threshold = data.potionProcessor.hasPotionEffect(PotionEffectType.JUMP) ? 0.62 : 0.5;
 
-        if(data.blockInfo.pistonNear) threshold = 0.95;
-        else if(data.playerInfo.blockAboveTimer.isNotPassed(20)) {
+        if (data.blockInfo.pistonNear) threshold = 0.95;
+        else if (data.playerInfo.blockAboveTimer.isNotPassed(20)) {
             //TODO Fix under block falses
             threshold = 0.8;
-            if(data.playerInfo.iceTimer.isNotPassed(20)) threshold+= 0.4;
+            if (data.playerInfo.iceTimer.isNotPassed(20)) threshold+= 0.4;
         }
-        else if(data.playerInfo.jumped) threshold = 0.68;
-        else if(data.playerInfo.iceTimer.isNotPassed(4)) threshold = 0.6;
+        else if (data.playerInfo.jumped) threshold = 0.68;
+        else if (data.playerInfo.iceTimer.isNotPassed(4)) threshold = 0.6;
 
-        if(data.playerInfo.lastVelocity.isNotPassed(20))
+        if (data.playerInfo.lastVelocity.isNotPassed(20))
             threshold = Math.max(threshold, data.playerInfo.velocityXZ + 0.3);
 
         Optional<PotionEffect> speed = data.potionProcessor.getEffectByType(PotionEffectType.SPEED);
 
-        if(speed.isPresent()) {
+        if (speed.isPresent()) {
             threshold*= 1.2 * (speed.get().getAmplifier() + 1);
         }
 
-        if(data.playerInfo.deltaXZ > threshold) {
+        if (data.playerInfo.deltaXZ > threshold) {
             vl++;
             flag(80, "%.3f>-%.3f", data.playerInfo.deltaXZ, threshold);
         }

@@ -30,15 +30,15 @@ public class ChatCheck {
 
     private final PacketListener chatCheckListener = Atlas.getInstance().getPacketProcessor()
             .process(Kauri.INSTANCE, EventPriority.HIGHEST, event -> {
-                if(!enabled) return;
+                if (!enabled) return;
                 //Packet exemption check
-                if(KauriAPI.INSTANCE.getPacketExemptedPlayers().contains(event.getPlayer().getUniqueId())) return;
+                if (KauriAPI.INSTANCE.getPacketExemptedPlayers().contains(event.getPlayer().getUniqueId())) return;
 
                 WrappedInChatPacket packet = new WrappedInChatPacket(event.getPacket(), event.getPlayer());
 
-                if(packet.getMessage().length() <= 0) return;
+                if (packet.getMessage().length() <= 0) return;
 
-                if(packet.getMessage().length() > lengthMax) {
+                if (packet.getMessage().length() > lengthMax) {
                     event.getPlayer().sendMessage(Kauri.INSTANCE.msgHandler.getLanguage()
                             .msg("msg-too-long",
                                     "&8[&6K&8] &cYour chat message was cancelled because it was too long."));
@@ -49,7 +49,7 @@ public class ChatCheck {
                 int max = allowExtendedCharacters ? 591 : 255;
 
                 for (char c : packet.getMessage().toCharArray()) {
-                    if((int)c > min && (int)c < max || whitelistedCharacters.contains(c)) continue;
+                    if ((int)c > min && (int)c < max || whitelistedCharacters.contains(c)) continue;
 
                     event.getPlayer().sendMessage(Kauri.INSTANCE.msgHandler.getLanguage()
                             .msg("illegal-chars",

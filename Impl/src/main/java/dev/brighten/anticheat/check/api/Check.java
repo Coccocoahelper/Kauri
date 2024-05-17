@@ -83,13 +83,13 @@ public class Check implements KauriCheck {
 
     public <T extends Check> T find(Class<? extends T> clazz) {
         Check check = detectionCache.computeIfAbsent(clazz, key -> {
-            if(!clazz.isAnnotationPresent(CheckInfo.class)) {
+            if (!clazz.isAnnotationPresent(CheckInfo.class)) {
                 return null;
             }
             return data.checkManager.checks.get(clazz.getAnnotation(CheckInfo.class).name());
         });
 
-        if(check != null)
+        if (check != null)
         return clazz.cast(check);
 
         return null;
@@ -100,7 +100,7 @@ public class Check implements KauriCheck {
     }
 
     public static void register(Class<?> checkRawClass) {
-        if(!checkRawClass.isAnnotationPresent(CheckInfo.class)) {
+        if (!checkRawClass.isAnnotationPresent(CheckInfo.class)) {
             Log.warn("Attempted to register class {} without CheckInfo annotations",
                     checkRawClass.getName());
             return;
@@ -111,7 +111,7 @@ public class Check implements KauriCheck {
         String name = info.name();
 
         CancelType type = null;
-        if(checkRawClass.isAnnotationPresent(Cancellable.class)) {
+        if (checkRawClass.isAnnotationPresent(Cancellable.class)) {
             type = checkRawClass.getAnnotation(Cancellable.class).cancelType();
         }
 
@@ -152,7 +152,7 @@ public class Check implements KauriCheck {
 
     private static void runLoop(CheckSettings settings) {
         for(String executableCommand : settings.executableCommands) {
-            if(executableCommand.equals("%global_commands%")) {
+            if (executableCommand.equals("%global_commands%")) {
                 settings.executableCommands.remove(executableCommand);
                 settings.executableCommands.addAll(Config.punishCommands);
                 runLoop(settings);
@@ -190,11 +190,11 @@ public class Check implements KauriCheck {
 
     public void flag(boolean devAlerts, int resetVLTime, String information, Object... variables) {
         Kauri.INSTANCE.loggingThread.execute(() -> {
-            if(Kauri.INSTANCE.getTps() < 18)
+            if (Kauri.INSTANCE.getTps() < 18)
                 vl = 0;
 
-            if(KauriAPI.INSTANCE.exemptHandler.isExempt(data.uuid, checkType)) return;
-            if(System.currentTimeMillis() - lastFlagRun < 50L) return;
+            if (KauriAPI.INSTANCE.exemptHandler.isExempt(data.uuid, checkType)) return;
+            if (System.currentTimeMillis() - lastFlagRun < 50L) return;
             lastFlagRun = System.currentTimeMillis();
 
             final String finalInformation = String.format(information, variables);
@@ -208,26 +208,26 @@ public class Check implements KauriCheck {
                         .onFlag(data.getPlayer(), this, information, currentResult.isCancelled());
             }
 
-            if(currentResult.isCancelled()) return;
+            if (currentResult.isCancelled()) return;
 
-            if(cancellable && cancelMode != null && vl > vlToFlag) {
+            if (cancellable && cancelMode != null && vl > vlToFlag) {
                 cancelAction(cancelMode);
             }
 
             boolean dev = devAlerts || (!devStage.isRelease() || vl <= vlToFlag) || Kauri.INSTANCE.getTps() < 18;
-            if(lastAlert.isPassed(resetVLTime)) vl = 0;
+            if (lastAlert.isPassed(resetVLTime)) vl = 0;
             final String info = finalInformation
                     .replace("%p", String.valueOf(data.lagInfo.transPing))
                     .replace("%t", String.valueOf(MathUtils.round(Kauri.INSTANCE.getTps(), 2)));
-            if(vl > 0) Kauri.INSTANCE.loggerManager.addLog(data, this, info);
+            if (vl > 0) Kauri.INSTANCE.loggerManager.addLog(data, this, info);
 
             if (lastAlert.isPassed(MathUtils.millisToTicks(Config.alertsDelay))) {
                 //Sending Discord webhook alert
-                if(DiscordAPI.INSTANCE != null)
+                if (DiscordAPI.INSTANCE != null)
                     DiscordAPI.INSTANCE.sendFlag(data.getPlayer(), this, dev, vl);
                 List<TextComponent> components = new ArrayList<>();
 
-                if(dev) {
+                if (dev) {
                     components.add(new TextComponent(createTxt("&8[&cDev&8] ")));
                 }
                 val text = createTxt(Kauri.INSTANCE.msgHandler.getLanguage().msg("cheat-alert",
@@ -245,12 +245,12 @@ public class Check implements KauriCheck {
 
                 TextComponent[] toSend = components.toArray(new TextComponent[0]);
 
-                if(Config.testMode && (dev ? !Kauri.INSTANCE.dataManager.hasAlerts.contains(data.uuid.hashCode())
+                if (Config.testMode && (dev ? !Kauri.INSTANCE.dataManager.hasAlerts.contains(data.uuid.hashCode())
                         : !Kauri.INSTANCE.dataManager.devAlerts.contains(data.uuid.hashCode())))
                     data.getPlayer().spigot().sendMessage(toSend);
 
-                if(Config.alertsConsole) MiscUtils.printToConsole(new TextComponent(toSend).toPlainText());
-                if(!dev) {
+                if (Config.alertsConsole) MiscUtils.printToConsole(new TextComponent(toSend).toPlainText());
+                if (!dev) {
                     synchronized (Kauri.INSTANCE.dataManager.hasAlerts) {
                         for (int data : Kauri.INSTANCE.dataManager.hasAlerts.toArray(new int[0])) {
                             Kauri.INSTANCE.dataManager.dataMap.get(data).getPlayer().spigot().sendMessage(toSend);
@@ -296,7 +296,7 @@ public class Check implements KauriCheck {
     }
 
     public void cancelAction(CancelType type, boolean overrideUserSetting) {
-        if(!cancellable && !overrideUserSetting) return;
+        if (!cancellable && !overrideUserSetting) return;
 
         final List<KauriEvent> events = KauriAPI.INSTANCE.getAllEvents();
 
@@ -310,7 +310,7 @@ public class Check implements KauriCheck {
         }
 
         // Did an API call say we should cancel this? Then we will cancel
-        if(currentResult.isCancelled()) {
+        if (currentResult.isCancelled()) {
             return;
         }
 
@@ -340,7 +340,7 @@ public class Check implements KauriCheck {
 
     public void fixMovementBugs() {
         BukkitAPI.INSTANCE.setGliding(data.getPlayer(), false);
-        if(ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_18))
+        if (ProtocolVersion.getGameVersion().isBelow(ProtocolVersion.v1_18))
         RunUtils.task(() -> {
             synchronized (data.blockInfo.blocks) {
                 for (Block b : data.blockInfo.blocks) {
@@ -360,7 +360,7 @@ public class Check implements KauriCheck {
 
     public void punish() {
        Kauri.INSTANCE.loggingThread.execute(() -> {
-           if(devStage.ordinal() > Arrays.stream(DevStage.values())
+           if (devStage.ordinal() > Arrays.stream(DevStage.values())
                    .filter(ds -> ds.name().equalsIgnoreCase(Config.minimumStageBan)).findFirst()
                    .orElseThrow(() -> new IllegalArgumentException("\"" + Config.minimumStageBan
                            + "\" is not a proper DevStage. Options: [Release, Beta, Alpha]")).ordinal()
@@ -371,7 +371,7 @@ public class Check implements KauriCheck {
 
            vl = 0;
 
-           if(!executable || (banExempt && Config.punishmentBypassPerm)) return;
+           if (!executable || (banExempt && Config.punishmentBypassPerm)) return;
 
            PunishResult punishResult = PunishResult.builder().cancelled(false)
                    .broadcastMessage(Config.broadcastMessage).commands(executableCommands).build();
@@ -390,10 +390,10 @@ public class Check implements KauriCheck {
            final String broadcastMessage = punishResult.getBroadcastMessage();
            final List<String> punishCommands = punishResult.getCommands();
 
-           if(!punishResult.isCancelled()) {
+           if (!punishResult.isCancelled()) {
                Kauri.INSTANCE.loggerManager.addPunishment(data, this);
-               if(!data.banned) {
-                   if(!Config.broadcastMessage.equalsIgnoreCase("off")) {
+               if (!data.banned) {
+                   if (!Config.broadcastMessage.equalsIgnoreCase("off")) {
                        if (!Config.bungeeBroadcast) {
                            RunUtils.task(() -> {
                                if (!broadcastMessage.equalsIgnoreCase("off")) {
@@ -404,7 +404,7 @@ public class Check implements KauriCheck {
                            BungeeAPI.broadcastMessage(Color.translate(addPlaceHolders(broadcastMessage)));
                        }
                    }
-                   if(!Config.bungeePunishments) {
+                   if (!Config.bungeePunishments) {
                        RunUtils.task(() -> {
                            ConsoleCommandSender sender = Bukkit.getConsoleSender();
                            punishCommands.
@@ -421,7 +421,7 @@ public class Check implements KauriCheck {
                    }
                    data.banned = true;
                    RunUtils.taskLater(() -> {
-                       if(data != null) data.banned = false;
+                       if (data != null) data.banned = false;
                    }, Kauri.INSTANCE, 10);
                }
            }
@@ -429,7 +429,7 @@ public class Check implements KauriCheck {
     }
 
     public void debug(String information, Object... variables) {
-        if(data.debugging.size() == 0) return;
+        if (data.debugging.size() == 0) return;
 
         Kauri.INSTANCE.loggingThread.execute(() -> {
             final String finalInformation = String.format(information, variables);

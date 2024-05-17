@@ -28,7 +28,7 @@ public class MojangAPI {
         if (name == null) {
             name = lookupName(uuid);
 
-            if(name != null) {
+            if (name != null) {
                 Kauri.INSTANCE.loggerManager.storage.cacheAPICall(uuid, name);
             }
         }
@@ -39,10 +39,10 @@ public class MojangAPI {
     public static UUID getUUID(String name) {
         UUID uuid = Kauri.INSTANCE.loggerManager.storage.getUUIDFromName(name);
 
-        if(uuid == null) {
+        if (uuid == null) {
             uuid = lookupUUID(name);
 
-            if(uuid != null) {
+            if (uuid != null) {
                 Kauri.INSTANCE.loggerManager.storage.cacheAPICall(uuid, name);
             }
         }
@@ -53,7 +53,7 @@ public class MojangAPI {
         String uuid = "";
         for(int i = 0; i <= 31; i++) {
             uuid = uuid + mojangUUID.charAt(i);
-            if(i == 7 || i == 11 || i == 15 || i == 19) {
+            if (i == 7 || i == 11 || i == 15 || i == 19) {
                 uuid = uuid + "-";
             }
         }
@@ -89,7 +89,7 @@ public class MojangAPI {
 
         OfflinePlayer player = Bukkit.getOfflinePlayer(playername);
 
-        if(player != null) return player.getUniqueId();
+        if (player != null) return player.getUniqueId();
         return null;
     }
 

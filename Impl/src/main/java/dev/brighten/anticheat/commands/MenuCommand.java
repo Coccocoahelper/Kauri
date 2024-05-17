@@ -241,7 +241,7 @@ public class MenuCommand extends BaseCommand {
                                         .forEach(data -> {
                                             Check check = data.checkManager.checks.get(val.name);
 
-                                            if(check == null) {
+                                            if (check == null) {
                                                 Kauri.INSTANCE.getLogger()
                                                         .warning("Check " + val.name + " is null for player "
                                                                 + data.getPlayer());
@@ -278,7 +278,7 @@ public class MenuCommand extends BaseCommand {
                                         .forEach(data -> {
                                             Check check = data.checkManager.checks.get(val.name);
 
-                                            if(check == null) {
+                                            if (check == null) {
                                                 Kauri.INSTANCE.getLogger()
                                                         .warning("Check " + val.name + " is null for player "
                                                                 + data.getPlayer());
@@ -316,7 +316,7 @@ public class MenuCommand extends BaseCommand {
                                         .forEach(data -> {
                                             Check check = data.checkManager.checks.get(val.name);
 
-                                            if(check == null) {
+                                            if (check == null) {
                                                 Kauri.INSTANCE.getLogger()
                                                         .warning("Check " + val.name + " is null for player "
                                                                 + data.getPlayer());
@@ -395,7 +395,7 @@ public class MenuCommand extends BaseCommand {
                             .forEach(data -> {
                                 Check check = data.checkManager.checks.get(settings.name);
 
-                                if(check == null) {
+                                if (check == null) {
                                     Kauri.INSTANCE.getLogger()
                                             .warning("Check " + settings.name + " is null for player "
                                                     + data.getPlayer());
@@ -427,7 +427,7 @@ public class MenuCommand extends BaseCommand {
                             .forEach(data -> {
                                 Check check = data.checkManager.checks.get(settings.name);
 
-                                if(check == null) {
+                                if (check == null) {
                                     Kauri.INSTANCE.getLogger()
                                             .warning("Check " + settings.name + " is null for player "
                                                     + data.getPlayer());
@@ -460,7 +460,7 @@ public class MenuCommand extends BaseCommand {
                             .forEach(data -> {
                                 Check check = data.checkManager.checks.get(settings.name);
 
-                                if(check == null) {
+                                if (check == null) {
                                     Kauri.INSTANCE.getLogger()
                                             .warning("Check " + settings.name + " is null for player "
                                                     + data.getPlayer());
